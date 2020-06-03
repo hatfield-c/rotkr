@@ -137,6 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 513714507065963223}
+  - component: {fileID: 5110376098066411463}
   m_Layer: 0
   m_Name: exit_gates
   m_TagString: Untagged
@@ -164,6 +165,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5110376098066411463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 513714507065963222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2e3cbb053967d47abb2b8a30d5cbce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GatePositions:
+  - prefab: {fileID: 513714506923862637}
+  - prefab: {fileID: 513714506352365156}
+  - prefab: {fileID: 513714506316870855}
+  - prefab: {fileID: 513714507669499736}
+  - prefab: {fileID: 513714505911814508}
+  - prefab: {fileID: 513714507721974310}
+  MinGates: 3
+  MaxGates: 6
 --- !u!1 &513714507669499736
 GameObject:
   m_ObjectHideFlags: 0
