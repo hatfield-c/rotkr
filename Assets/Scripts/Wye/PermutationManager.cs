@@ -8,10 +8,12 @@ public class PermutationManager : MonoBehaviour
 
     void Start(){
         foreach(PermutationLayer layer in this.layers){
-            IPermutable Permuter = layer.prefab.GetComponent<IPermutable>();
-            GameObject permutation = Permuter.generate();
-
-            permutation.transform.parent = this.transform;
+            IPermutable permuter = layer.prefab.GetComponent<IPermutable>();
+            
+            if(!(permuter is null)){
+                GameObject permutation = permuter.generate();
+                permutation.transform.parent = this.transform;
+            }
         }
     }
 
