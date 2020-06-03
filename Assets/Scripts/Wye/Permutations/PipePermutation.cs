@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PipePermutations : MonoBehaviour, IPermutable
+public class PipePermutation : MonoBehaviour, IPermutable
 {
     public List<PermutationLayer> layer;
     
