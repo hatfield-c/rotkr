@@ -48,7 +48,7 @@ public class PillarPermutation : MonoBehaviour, IPermutable
             float diceRoll = Random.Range(0.0f, 1.0f);
 
             if(diceRoll <= this.spawnRate){
-                GameObject pillar = Instantiate(pillarPrefab, pillarTransform.position, Quaternion.identity, permutation.transform);
+                GameObject pillar = Instantiate(pillarPrefab, pillarTransform.position, pillarTransform.rotation, permutation.transform);
             }
         }
 
