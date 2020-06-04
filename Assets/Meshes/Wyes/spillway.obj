@@ -1,8 +1,8 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 30.05.2020 22:41:48
+# File Created: 03.06.2020 08:41:34
 
 #
-# object spaillway
+# object spillway
 #
 
 v  -649.7604 1533.6815 3084.2703
@@ -280,8 +280,8 @@ vt 0.7670 0.3711 0.0000
 vt 1.0000 0.0000 0.0000
 # 127 texture coords
 
-o spaillway
-g spaillway
+o spillway
+g spillway
 f 1/41/1 2/48/2 3/43/3 4/42/4 
 f 2/48/2 5/47/5 6/44/6 3/43/3 
 f 5/47/5 7/46/7 8/45/8 6/44/6 
