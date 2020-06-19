@@ -8,17 +8,18 @@ public class RatAnimatorController : MonoBehaviour
     public float steerValue = 0.5f;
     public enum RatAnimationMode
     {
-        Falling = 0,
-        Swimming = 1,
+        Default = 0,
+        Steering = 1,
         Repairing = 2,
-        Steering = 3,
-        Default = 4
+        Swimming = 3,
+        Falling = 4,
+        Drowned = 5
     };
 
     public RatAnimationMode AnimationMode;
     void Start()
     {
-        ChangeAnimationMode(RatAnimationMode.Steering);
+        ChangeAnimationMode(RatAnimationMode.Default);
     }
 
     void Update()
@@ -41,8 +42,8 @@ public class RatAnimatorController : MonoBehaviour
 
     public void ChangeAnimationMode(RatAnimationMode mode)
     {
-        float toFloat = (float)AnimationMode;
-        animator.SetFloat("animationMode", toFloat);
+        int toInteger = (int)AnimationMode;
+        animator.SetInteger("animationMode", toInteger);
     }
 
     void UpdateSteerValue(float value)
