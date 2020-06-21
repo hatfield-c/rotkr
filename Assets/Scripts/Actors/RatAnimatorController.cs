@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class RatAnimatorController : MonoBehaviour
 {
-    [SerializeField] Animator animator;
-    public float steerValue = 0.5f;
+    [SerializeField] Animator animator = null;
+    public float SteerValue = 0.5f;
+    public bool Grounded = false;
+    public bool Swimming = false;
     public enum RatAnimationMode
     {
         Default = 0,
@@ -22,6 +24,30 @@ public class RatAnimatorController : MonoBehaviour
         ChangeAnimationMode(RatAnimationMode.Default);
     }
 
+    private void FixedUpdate()
+    {
+        bool wasGrounded = Grounded;
+        Grounded = isGrounded();
+        Swimming = isSwimming();
+
+        if (Grounded)
+        {
+            //Don't interrupt a task if you were already grounded
+            if(wasGrounded != Grounded)
+                ChangeAnimationMode(RatAnimationMode.Default);
+        }
+        else
+        {
+            if (Swimming)
+            {
+                ChangeAnimationMode(RatAnimationMode.Swimming);
+            }
+            else
+            {
+                ChangeAnimationMode(RatAnimationMode.Falling);
+            }
+        }
+    }
     void Update()
     {
         switch (AnimationMode)
@@ -33,15 +59,20 @@ public class RatAnimatorController : MonoBehaviour
             case RatAnimationMode.Repairing:
                 break;
             case RatAnimationMode.Steering:
-                UpdateSteerValue(steerValue);
+                UpdateSteerValue(SteerValue);
                 break;
             case RatAnimationMode.Default:
                 break;
         }
+
+        //TODO: Detect if we're falling
+
+        //TODO: Detect if we're in water
     }
 
     public void ChangeAnimationMode(RatAnimationMode mode)
     {
+        if(mode == AnimationMode) { return; }
         int toInteger = (int)AnimationMode;
         animator.SetInteger("animationMode", toInteger);
     }
@@ -49,5 +80,23 @@ public class RatAnimatorController : MonoBehaviour
     void UpdateSteerValue(float value)
     {
         animator.SetFloat("steerValue", value);
+    }
+    bool isGrounded()
+    {
+        //Physics.Raycast();
+        return true;
+    }
+    bool isSwimming()
+    {
+        return false;
+    }
+    public void GoRepairThisPlace(Vector3 pos)
+    {
+        //TODO: 
+    }
+    public void SteerTheShip(Vector3 pos)
+    {
+        //TODO:
+        Debug.Log("Look-look at me. I am the captain now.");
     }
 }
