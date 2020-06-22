@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 423877742368268028}
   - component: {fileID: 423877742368268031}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 423877742542531214}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 423877743060067779}
   - component: {fileID: 423877743060067776}
   - component: {fileID: 728955730356070621}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: popsicle-broken1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

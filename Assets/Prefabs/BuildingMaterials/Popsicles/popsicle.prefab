@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2139803031858544327}
   - component: {fileID: 2139803031858544326}
   - component: {fileID: 1632867555028708402}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: popsicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2139803032106619481}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2139803032554131382}
   - component: {fileID: 2139803032554131383}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: box
   m_TagString: Untagged
   m_Icon: {fileID: 0}

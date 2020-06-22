@@ -5,16 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class HunkManager
 {
-    public GameObject jointOrigin;
+    
     public Transform hunkBlueprint;
-    public float breakForce = 0.0f;
-    public float breakTorque = 0.0f;
-    public bool jointCollision = false;
-    public bool enablePreprocessing = true;
+    public HunkJointData jointData;
+    public HunkRigidbodyData rigidBodyData;
 
     protected List<Hunk> hunkList;
 
     public void Init(List<HunkData> hunkData){
+        this.hunkBlueprint.parent = null;
         if(hunkData != null){
             this.hunkList = this.loadHunkData(hunkData);
         } else {
@@ -32,13 +31,21 @@ public class HunkManager
         foreach(Transform hunkTransform in this.hunkBlueprint){
             GameObject hunkObject = hunkTransform.gameObject;
 
-            FixedJoint hunkJoint = hunkObject.AddComponent<FixedJoint>();
-            //hunkJoint.connectedBody = jointOrigin.rigidbody;
-            hunkJoint.breakForce = this.breakForce;
-            hunkJoint.breakTorque = this.breakTorque;
-            hunkJoint.enableCollision = this.jointCollision;
-            hunkJoint.enablePreprocessing = this.enablePreprocessing;
+            if(hunkObject.GetComponent<Rigidbody>() == null){
+                Rigidbody hunkBody = hunkObject.AddComponent<Rigidbody>();
+                hunkBody.mass = this.rigidBodyData.mass;
+                hunkBody.useGravity = this.rigidBodyData.useGravity;
+                hunkBody.drag = this.rigidBodyData.drag;
+                hunkBody.angularDrag = this.rigidBodyData.angularDrag;
+            }
 
+            FixedJoint hunkJoint = hunkObject.AddComponent<FixedJoint>();
+            hunkJoint.connectedBody = this.jointData.origin.GetComponent<Rigidbody>();
+            hunkJoint.breakForce = this.jointData.breakForce;
+            hunkJoint.breakTorque = this.jointData.breakTorque;
+            hunkJoint.enableCollision = this.jointData.jointCollision;
+            hunkJoint.enablePreprocessing = this.jointData.enablePreprocessing;
+            
         }
 
         return hunks;
