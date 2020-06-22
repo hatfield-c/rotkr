@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219012908}
-  m_LocalRotation: {x: -0.027400972, y: 0.0030516265, z: 0.00008364928, w: 0.9996199}
+  m_LocalRotation: {x: -0.027400974, y: 0.0030516244, z: 0.000083649014, w: 0.9996199}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -350,7 +350,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110767920}
-  m_LocalRotation: {x: -0.096373335, y: 0.0030385347, z: 0.00029420466, w: 0.9953406}
+  m_LocalRotation: {x: -0.096373335, y: 0.003038535, z: 0.00029420474, w: 0.9953406}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -424,7 +424,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281046598}
-  m_LocalRotation: {x: 0.08219536, y: 0.0030424416, z: -0.00025092484, w: 0.9966116}
+  m_LocalRotation: {x: 0.08219533, y: 0.0030424749, z: -0.0002509275, w: 0.9966116}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -776,7 +776,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2486281390903155866}
   m_Layer: 0
-  m_Name: hunks
+  m_Name: wasoMoli_hunks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1143,12 +1143,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hunkManager:
-    jointOrigin: {fileID: 7589817684636043897}
     hunkBlueprint: {fileID: 2486281390903155866}
-    breakForce: 10
-    breakTorque: Infinity
-    jointCollision: 0
-    enablePreprocessing: 1
+    jointData:
+      origin: {fileID: 7589817684636043897}
+      breakForce: 15000
+      breakTorque: Infinity
+      jointCollision: 0
+      enablePreprocessing: 1
+    rigidBodyData:
+      angularDrag: 0.05
+      drag: 0
+      mass: 1
+      useGravity: 0
 --- !u!1 &7589817685780845273
 GameObject:
   m_ObjectHideFlags: 0

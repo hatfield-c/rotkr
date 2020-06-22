@@ -7,7 +7,7 @@ public class Hunk : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("flag");
     }
 
     // Update is called once per frame
@@ -17,6 +17,7 @@ public class Hunk : MonoBehaviour
     }
 
     void OnJointBreak(float breakForce){
+        Debug.Log(breakForce);
         this.transform.parent = null;
     }
 }
