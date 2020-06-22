@@ -6,10 +6,10 @@ using UnityEngine;
 public class HunkJointData
 {
     public GameObject origin;
-    public float breakForce = 0.0f;
-    public float breakTorque = 0.0f;
+    public float breakForce = 15000.0f;
+    public float breakTorque = Mathf.Infinity;
     public bool jointCollision = false;
-    public bool enablePreprocessing = true;
+    public bool enablePreprocessing = false;
     public float massScale = 1f;
-    public float connectedMassScale = 1f;
+    public float connectedMassScale = .00001f;
 }

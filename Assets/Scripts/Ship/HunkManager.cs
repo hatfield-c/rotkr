@@ -13,6 +13,7 @@ public class HunkManager
     protected List<Hunk> hunkList;
 
     public void Init(List<HunkData> hunkData){
+
         this.hunkBlueprint.parent = null;
         if(hunkData != null){
             this.hunkList = this.loadHunkData(hunkData);
@@ -45,7 +46,8 @@ public class HunkManager
             hunkJoint.breakTorque = this.jointData.breakTorque;
             hunkJoint.enableCollision = this.jointData.jointCollision;
             hunkJoint.enablePreprocessing = this.jointData.enablePreprocessing;
-            
+            hunkJoint.connectedMassScale = this.jointData.connectedMassScale;
+            hunkJoint.massScale = this.jointData.massScale;
         }
 
         return hunks;
