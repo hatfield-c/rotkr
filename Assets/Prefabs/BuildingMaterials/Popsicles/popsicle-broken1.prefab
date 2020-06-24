@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 423877742368268028}
   - component: {fileID: 423877742368268031}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 423877742542531214}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,8 @@ GameObject:
   - component: {fileID: 423877743060067778}
   - component: {fileID: 423877743060067779}
   - component: {fileID: 423877743060067776}
-  m_Layer: 0
+  - component: {fileID: 728955730356070621}
+  m_Layer: 14
   m_Name: popsicle-broken1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -155,3 +156,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &728955730356070621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423877743060067806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe1b0197dc082247a142dc2681337e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
