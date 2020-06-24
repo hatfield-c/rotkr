@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class RatAnimatorController : MonoBehaviour
 {
+    #region references
     [SerializeField] Animator animator = null;
+    [SerializeField] CapsuleCollider ratCollider = null;
+    #endregion
+
+    #region state variables
     public float SteerValue = 0.5f;
     public bool Grounded = false;
     public bool Swimming = false;
+    public float feetOffset = 0f;
+    #endregion
+
     public enum RatAnimationMode
     {
         Default = 0,
@@ -83,7 +91,8 @@ public class RatAnimatorController : MonoBehaviour
     }
     bool isGrounded()
     {
-        //Physics.Raycast();
+        float checkDistance = 3f;
+        //Physics.BoxCast(ratCollider.center, 
         return true;
     }
     bool isSwimming()
@@ -98,5 +107,28 @@ public class RatAnimatorController : MonoBehaviour
     {
         //TODO:
         Debug.Log("Look-look at me. I am the captain now.");
+    }
+    private void OnDrawGizmos()
+    {
+        float maxDistance = 10f;
+        RaycastHit hit;
+
+        Vector3 position = ratCollider.center;
+        Vector3 direction = -transform.up;
+
+        bool isHit = Physics.SphereCast(position, ratCollider.radius, direction, out hit,
+            maxDistance);
+
+        if (isHit)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(position, direction * hit.distance);
+            Gizmos.DrawWireSphere(position + direction * hit.distance, transform.lossyScale.x/2);
+        }
+        else
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(position, direction * maxDistance);
+        }
     }
 }
