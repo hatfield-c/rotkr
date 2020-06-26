@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 2408411536687183556}
   - component: {fileID: 2408411536687183559}
   - component: {fileID: 200278465292144839}
+  - component: {fileID: 4316710077611746648}
   m_Layer: 0
   m_Name: tack
   m_TagString: Untagged
@@ -138,6 +139,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe1b0197dc082247a142dc2681337e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  predecessor: {fileID: 0}
+--- !u!54 &4316710077611746648
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408411536687183553}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2408411536715258103
 GameObject:
   m_ObjectHideFlags: 0
