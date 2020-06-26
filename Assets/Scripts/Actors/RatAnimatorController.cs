@@ -4,18 +4,7 @@ using UnityEngine;
 
 public class RatAnimatorController : MonoBehaviour
 {
-    #region references
-    [SerializeField] Animator animator = null;
-    [SerializeField] CapsuleCollider ratCollider = null;
-    #endregion
-
-    #region state variables
-    public float SteerValue = 0.5f;
-    public bool Grounded = false;
-    public bool Swimming = false;
-    public float feetOffset = 0f;
-    #endregion
-
+    #region enums
     public enum RatAnimationMode
     {
         Default = 0,
@@ -25,11 +14,38 @@ public class RatAnimatorController : MonoBehaviour
         Falling = 4,
         Drowned = 5
     };
+    #endregion
 
+    #region references
+    [SerializeField] Animator animator = null;
+    [SerializeField] CapsuleCollider ratCollider = null;
+    [SerializeField] RatHealthSystem healthSystem = null;
     public RatAnimationMode AnimationMode;
+    #endregion
+
+    #region state variables
+    public LayerMask LayerMask;
+    public float SteerValue = 0.5f;
+    public bool Grounded = false;
+    public bool Swimming = false;
+    public float feetOffset = 0f;
+    public float maxDistance = 10f;
+    #endregion
+
+
+    #region blackboard variables
+    RaycastHit hit;
+    Vector3 position;
+    Vector3 direction;
+    bool isHit;
+    #endregion
+
+
+
+    #region logic
     void Start()
     {
-        ChangeAnimationMode(RatAnimationMode.Default);
+        //ChangeAnimationMode(RatAnimationMode.Default);
     }
 
     private void FixedUpdate()
@@ -40,9 +56,17 @@ public class RatAnimatorController : MonoBehaviour
 
         if (Grounded)
         {
+            Debug.Log("1");
             //Don't interrupt a task if you were already grounded
-            if(wasGrounded != Grounded)
+            if (wasGrounded != Grounded)
+            {
+                Debug.Log("2");
                 ChangeAnimationMode(RatAnimationMode.Default);
+            }
+            else
+            {
+                Debug.Log("3");
+            }
         }
         else
         {
@@ -72,32 +96,20 @@ public class RatAnimatorController : MonoBehaviour
             case RatAnimationMode.Default:
                 break;
         }
-
-        //TODO: Detect if we're falling
-
-        //TODO: Detect if we're in water
     }
+    #endregion
 
+    #region public
     public void ChangeAnimationMode(RatAnimationMode mode)
     {
         if(mode == AnimationMode) { return; }
-        int toInteger = (int)AnimationMode;
+        int toInteger = (int)mode;
+        AnimationMode = mode;
         animator.SetInteger("animationMode", toInteger);
-    }
-
-    void UpdateSteerValue(float value)
-    {
-        animator.SetFloat("steerValue", value);
-    }
-    bool isGrounded()
-    {
-        float checkDistance = 3f;
-        //Physics.BoxCast(ratCollider.center, 
-        return true;
-    }
-    bool isSwimming()
-    {
-        return false;
+        if (mode == RatAnimationMode.Swimming)
+        {
+            // Start the drowned timer
+        }
     }
     public void GoRepairThisPlace(Vector3 pos)
     {
@@ -108,22 +120,35 @@ public class RatAnimatorController : MonoBehaviour
         //TODO:
         Debug.Log("Look-look at me. I am the captain now.");
     }
-    private void OnDrawGizmos()
+    #endregion
+
+    #region private
+    void UpdateSteerValue(float value)
     {
-        float maxDistance = 10f;
-        RaycastHit hit;
+        animator.SetFloat("steerValue", value);
+    }
+    bool isGrounded()
+    {        
+        position = transform.TransformPoint(ratCollider.center);
+        direction = -transform.up;
 
-        Vector3 position = ratCollider.center;
-        Vector3 direction = -transform.up;
-
-        bool isHit = Physics.SphereCast(position, ratCollider.radius, direction, out hit,
+        isHit = Physics.SphereCast(position, ratCollider.radius, direction, out hit,
             maxDistance);
+        return isHit;
+    }
+    bool isSwimming()
+    {
+        return false;
+    }
 
+    void OnDrawGizmos()
+    {
         if (isHit)
         {
+
             Gizmos.color = Color.red;
             Gizmos.DrawRay(position, direction * hit.distance);
-            Gizmos.DrawWireSphere(position + direction * hit.distance, transform.lossyScale.x/2);
+            Gizmos.DrawWireSphere(position + direction * hit.distance, ratCollider.radius);
         }
         else
         {
@@ -131,4 +156,5 @@ public class RatAnimatorController : MonoBehaviour
             Gizmos.DrawRay(position, direction * maxDistance);
         }
     }
+    #endregion
 }
