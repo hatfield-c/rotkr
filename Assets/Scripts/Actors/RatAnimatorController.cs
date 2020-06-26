@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class RatAnimatorController : MonoBehaviour
 {
@@ -56,17 +57,9 @@ public class RatAnimatorController : MonoBehaviour
 
         if (Grounded)
         {
-            Debug.Log("1");
             //Don't interrupt a task if you were already grounded
             if (wasGrounded != Grounded)
-            {
-                Debug.Log("2");
                 ChangeAnimationMode(RatAnimationMode.Default);
-            }
-            else
-            {
-                Debug.Log("3");
-            }
         }
         else
         {
@@ -87,6 +80,8 @@ public class RatAnimatorController : MonoBehaviour
             case RatAnimationMode.Falling:
                 break;
             case RatAnimationMode.Swimming:
+                Debug.Log($"AnimationMode: {AnimationMode}");
+                healthSystem.Drown();
                 break;
             case RatAnimationMode.Repairing:
                 break;
@@ -104,12 +99,9 @@ public class RatAnimatorController : MonoBehaviour
     {
         if(mode == AnimationMode) { return; }
         int toInteger = (int)mode;
-        AnimationMode = mode;
+        
         animator.SetInteger("animationMode", toInteger);
-        if (mode == RatAnimationMode.Swimming)
-        {
-            // Start the drowned timer
-        }
+        AnimationMode = mode;
     }
     public void GoRepairThisPlace(Vector3 pos)
     {
@@ -138,7 +130,7 @@ public class RatAnimatorController : MonoBehaviour
     }
     bool isSwimming()
     {
-        return false;
+        return true;
     }
 
     void OnDrawGizmos()
