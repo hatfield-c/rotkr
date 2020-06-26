@@ -44,9 +44,9 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     {
         if (currentSequence != null)
             return;
-        Debug.Log("passed return");
         Sequence sequence = DOTween.Sequence();
-        sequence.InsertCallback(DrowningPeriod, () => {
+        sequence.InsertCallback(DrowningPeriod, () =>
+        {
             TakeDamage(DrowningDamage);
             Drown();
             currentSequence = null;
