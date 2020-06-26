@@ -13,27 +13,41 @@ public class HunkManager
     protected List<Hunk> hunkList;
 
     public void Init(List<HunkData> hunkData){
-
         this.hunkBlueprint.parent = null;
+        
         if(hunkData != null){
-            this.hunkList = this.loadHunkData(hunkData);
+            this.hunkList = this.buildFromData(hunkData);
         } else {
-            this.hunkList = this.createHunks();
+            this.hunkList = this.build();
         }
     }
 
-    protected List<Hunk> loadHunkData(List<HunkData> hunkData){
-        return null;
+    protected List<Hunk> buildFromData(List<HunkData> hunkData){
+
+        foreach(HunkData data in hunkData){
+            if(data.deleted == true){
+                GameObject hunkObject = this.hunkBlueprint.GetChild(data.hunkId).gameObject;
+                Object.Destroy(hunkObject);
+            }
+        }
+
+        return this.build();
     }
 
-    protected List<Hunk> createHunks(){
+    protected List<Hunk> build(){
         List<Hunk> hunks = new List<Hunk>();
         
         foreach(Transform hunkTransform in this.hunkBlueprint){
             GameObject hunkObject = hunkTransform.gameObject;
+            Hunk hunk = hunkObject.GetComponent<Hunk>();
 
-            if(hunkObject.GetComponent<Rigidbody>() == null){
-                Rigidbody hunkBody = hunkObject.AddComponent<Rigidbody>();
+            Rigidbody hunkBody = hunkObject.GetComponent<Rigidbody>();
+            if(hunkBody == null){
+                hunkBody = hunkObject.AddComponent<Rigidbody>();
+                hunk.overrideRigidbody = true;
+            }
+
+            if(hunk.overrideRigidbody == true){
                 hunkBody.mass = this.rigidBodyData.mass;
                 hunkBody.useGravity = this.rigidBodyData.useGravity;
                 hunkBody.drag = this.rigidBodyData.drag;
@@ -41,7 +55,15 @@ public class HunkManager
             }
 
             FixedJoint hunkJoint = hunkObject.AddComponent<FixedJoint>();
-            hunkJoint.connectedBody = this.jointData.origin.GetComponent<Rigidbody>();
+            hunk.joint = hunkJoint;
+
+            if(hunk.predecessor != null){
+                hunkJoint.connectedBody = hunk.predecessor.GetComponent<Rigidbody>();
+                hunk.predecessor.GetComponent<Hunk>().childJoint = hunkJoint;
+            } else {
+                hunkJoint.connectedBody = this.jointData.origin.GetComponent<Rigidbody>();
+            }
+
             hunkJoint.breakForce = this.jointData.breakForce;
             hunkJoint.breakTorque = this.jointData.breakTorque;
             hunkJoint.enableCollision = this.jointData.jointCollision;
