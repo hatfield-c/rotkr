@@ -817,7 +817,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5118081667995044403}
   ratCollider: {fileID: 5574384546613106899}
-  healthSystem: {fileID: 0}
+  healthSystem: {fileID: 670333835}
   AnimationMode: 5
   LayerMask:
     serializedVersion: 2
@@ -870,6 +870,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  DrowningPeriod: 1
+  DrowningDamage: 10
 --- !u!1 &3912437432889186349
 GameObject:
   m_ObjectHideFlags: 0
