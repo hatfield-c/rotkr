@@ -2,9 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody))]
 public class BuoyancyManager : MonoBehaviour {
+    #region proposed changes for rat health
+    public Action UnderWater;
+    #endregion
+
+
     public Transform waterLevel;
     public Transform[] floatPoints;
     public FloatDeadzone deadzone;
@@ -24,11 +30,12 @@ public class BuoyancyManager : MonoBehaviour {
 
         if(abovewaterPoints.Count < 1){
             this.Rigidbody.useGravity = false;
+            UnderWater?.Invoke();
         } else {
             this.Rigidbody.useGravity = true;
         }
 
-        if(underwaterPoints.Count == 0){
+        if (underwaterPoints.Count == 0){
             return;
         }
 
@@ -38,7 +45,6 @@ public class BuoyancyManager : MonoBehaviour {
 
             this.Rigidbody.AddForceAtPosition(force * Vector3.up, this.floatPoints[i].position);
         }
-
     }
 
     public List<int> aboveWaterIndexes(Transform[] floatPoints, float targetY){

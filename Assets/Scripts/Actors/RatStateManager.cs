@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class RatAnimatorController : MonoBehaviour
+public class RatStateManager : MonoBehaviour
 {
     #region enums
     public enum RatAnimationMode
@@ -21,7 +21,7 @@ public class RatAnimatorController : MonoBehaviour
     [SerializeField] Animator animator = null;
     [SerializeField] CapsuleCollider ratCollider = null;
     [SerializeField] RatHealthSystem healthSystem = null;
-    [SerializeField] GameObject floatPoint = null;
+    [SerializeField] BuoyancyManager buoyancyManager = null;
     public RatAnimationMode AnimationMode;
     #endregion
 
@@ -35,7 +35,6 @@ public class RatAnimatorController : MonoBehaviour
     public float maxDistance = 10f;
     #endregion
 
-
     #region blackboard variables
     RaycastHit hit;
     Vector3 position;
@@ -48,11 +47,13 @@ public class RatAnimatorController : MonoBehaviour
     {
         healthSystem.Death += OnDeath;
         healthSystem.Life += OnLife;
+        buoyancyManager.UnderWater += OnUnderWater;
     }
     void OnDisable()
     {
         healthSystem.Death -= OnDeath;
         healthSystem.Life -= OnLife;
+        buoyancyManager.UnderWater -= OnUnderWater;
     }
     void OnDeath()
     {
@@ -63,6 +64,11 @@ public class RatAnimatorController : MonoBehaviour
     {
         IsAlive = healthSystem.IsAlive();
     }
+    void OnUnderWater()
+    {
+        healthSystem.Drown();
+        Swimming = true;
+    }
     #endregion
 
     #region logic
@@ -72,30 +78,31 @@ public class RatAnimatorController : MonoBehaviour
         IsAlive = healthSystem.IsAlive();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         bool wasGrounded = Grounded;
         Grounded = isGrounded();
-        Swimming = isSwimming();
+        //Swimming = isSwimming();
         if (IsAlive)
         {
-            if (Grounded)
+            if(Swimming)
             {
-                //Don't interrupt a task if you were already grounded
-                if (wasGrounded != Grounded)
-                    ChangeAnimationMode(RatAnimationMode.Default);
+                ChangeAnimationMode(RatAnimationMode.Swimming);
             }
             else
             {
-                if (Swimming)
+                if (Grounded)
                 {
-                    ChangeAnimationMode(RatAnimationMode.Swimming);
+                    //Don't interrupt a task if you were already grounded
+                    if (wasGrounded != Grounded)
+                        ChangeAnimationMode(RatAnimationMode.Default);
                 }
                 else
                 {
                     ChangeAnimationMode(RatAnimationMode.Falling);
                 }
             }
+            
         }
         else
         {
@@ -126,11 +133,14 @@ public class RatAnimatorController : MonoBehaviour
     #region public
     public void ChangeAnimationMode(RatAnimationMode mode)
     {
-        if(mode == AnimationMode) { return; }
+        if(mode != RatAnimationMode.Swimming){
+            Swimming = false;
+        }
         int toInteger = (int)mode;
         
         animator.SetInteger("animationMode", toInteger);
         AnimationMode = mode;
+
     }
     public void GoRepairThisPlace(Vector3 pos)
     {
@@ -157,10 +167,10 @@ public class RatAnimatorController : MonoBehaviour
             maxDistance);
         return isHit;
     }
-    bool isSwimming()
-    {
-        return true;
-    }
+    //bool isSwimming()
+    //{
+    //    return true;
+    //}
     void OnDrawGizmos()
     {
         if (isHit)

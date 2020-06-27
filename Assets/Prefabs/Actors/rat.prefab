@@ -758,10 +758,10 @@ GameObject:
   - component: {fileID: 179476476498943684}
   - component: {fileID: 5118081667995044403}
   - component: {fileID: 5118081667995044404}
+  - component: {fileID: 670333835}
+  - component: {fileID: 647821887}
   - component: {fileID: 5574384546613106899}
   - component: {fileID: 6663050917383319255}
-  - component: {fileID: 670333835}
-  - component: {fileID: 1842253802}
   m_Layer: 15
   m_Name: rat
   m_TagString: Untagged
@@ -821,6 +821,7 @@ MonoBehaviour:
   ratCollider: {fileID: 5574384546613106899}
   healthSystem: {fileID: 670333835}
   floatPoint: {fileID: 6196145625324993800}
+  buoyancyManager: {fileID: 647821887}
   AnimationMode: 5
   LayerMask:
     serializedVersion: 2
@@ -831,6 +832,45 @@ MonoBehaviour:
   IsAlive: 0
   feetOffset: 2
   maxDistance: 10
+--- !u!114 &670333835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757964989757189335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21bb4c0f72ecae4b8b2723e7e60af47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  MaxHealth: 100
+  DrowningPeriod: 1
+  DrowningDamage: 5
+--- !u!114 &647821887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3757964989757189335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a848716aca0e04b8e107f051f4b1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterLevel: {fileID: 0}
+  floatPoints:
+  - {fileID: 4094791739234291096}
+  deadzone:
+    max: 1
+    min: -1
+  parameters:
+    force: 9.8
+    forceRatio: 1
+    forceBias: 1
+    threshold: 0
 --- !u!136 &5574384546613106899
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -861,40 +901,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &670333835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3757964989757189335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21bb4c0f72ecae4b8b2723e7e60af47, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 100
-  MaxHealth: 0
-  DrowningPeriod: 1
-  DrowningDamage: 10
---- !u!114 &1842253802
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3757964989757189335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8558df1a101c7f40993dbf32677ab68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AirDrag: 1
-  WaterDrag: 10
-  AffectDirection: 1
-  AttachToSurface: 1
-  FloatPoints:
-  - {fileID: 4094791739234291096}
 --- !u!1 &3912437432889186349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1388,7 +1394,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6196145625324993800}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 11, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 179476476498943684}
