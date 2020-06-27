@@ -29,6 +29,7 @@ public class RatAnimatorController : MonoBehaviour
     public float SteerValue = 0.5f;
     public bool Grounded = false;
     public bool Swimming = false;
+    public bool IsAlive = false;
     public float feetOffset = 0f;
     public float maxDistance = 10f;
     #endregion
@@ -41,12 +42,33 @@ public class RatAnimatorController : MonoBehaviour
     bool isHit;
     #endregion
 
-
+    #region handlers
+    void OnEnable()
+    {
+        healthSystem.Death += OnDeath;
+        healthSystem.Life += OnLife;
+    }
+    void OnDisable()
+    {
+        healthSystem.Death -= OnDeath;
+        healthSystem.Life -= OnLife;
+    }
+    void OnDeath()
+    {
+        IsAlive = healthSystem.IsAlive();
+        ChangeAnimationMode(RatAnimationMode.Drowned);
+    }
+    void OnLife()
+    {
+        IsAlive = healthSystem.IsAlive();
+    }
+    #endregion
 
     #region logic
+
     void Start()
     {
-        //ChangeAnimationMode(RatAnimationMode.Default);
+        IsAlive = healthSystem.IsAlive();
     }
 
     private void FixedUpdate()
@@ -54,24 +76,31 @@ public class RatAnimatorController : MonoBehaviour
         bool wasGrounded = Grounded;
         Grounded = isGrounded();
         Swimming = isSwimming();
-
-        if (Grounded)
+        if (IsAlive)
         {
-            //Don't interrupt a task if you were already grounded
-            if (wasGrounded != Grounded)
-                ChangeAnimationMode(RatAnimationMode.Default);
-        }
-        else
-        {
-            if (Swimming)
+            if (Grounded)
             {
-                ChangeAnimationMode(RatAnimationMode.Swimming);
+                //Don't interrupt a task if you were already grounded
+                if (wasGrounded != Grounded)
+                    ChangeAnimationMode(RatAnimationMode.Default);
             }
             else
             {
-                ChangeAnimationMode(RatAnimationMode.Falling);
+                if (Swimming)
+                {
+                    ChangeAnimationMode(RatAnimationMode.Swimming);
+                }
+                else
+                {
+                    ChangeAnimationMode(RatAnimationMode.Falling);
+                }
             }
         }
+        else
+        {
+            ChangeAnimationMode(RatAnimationMode.Drowned);
+        }
+        
     }
     void Update()
     {
@@ -80,7 +109,6 @@ public class RatAnimatorController : MonoBehaviour
             case RatAnimationMode.Falling:
                 break;
             case RatAnimationMode.Swimming:
-                Debug.Log($"AnimationMode: {AnimationMode}");
                 healthSystem.Drown();
                 break;
             case RatAnimationMode.Repairing:
@@ -132,7 +160,6 @@ public class RatAnimatorController : MonoBehaviour
     {
         return true;
     }
-
     void OnDrawGizmos()
     {
         if (isHit)
