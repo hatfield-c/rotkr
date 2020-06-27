@@ -350,7 +350,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110767920}
-  m_LocalRotation: {x: -0.096373335, y: 0.0030385347, z: 0.00029420474, w: 0.9953406}
+  m_LocalRotation: {x: -0.096373335, y: 0.003038535, z: 0.00029420457, w: 0.9953406}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1504,8 +1504,8 @@ GameObject:
   - component: {fileID: 7589817684636043899}
   - component: {fileID: 8539047575037818204}
   - component: {fileID: 4271463973893668852}
-  - component: {fileID: 641489466341985397}
   - component: {fileID: 3610885462050231089}
+  - component: {fileID: 2894900889011502428}
   m_Layer: 0
   m_Name: waso_moli
   m_TagString: Player
@@ -1620,27 +1620,6 @@ MonoBehaviour:
   BackKey: 115
   LeftKey: 97
   RightKey: 100
---- !u!114 &641489466341985397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7589817684636043897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8558df1a101c7f40993dbf32677ab68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AirDrag: 3
-  WaterDrag: 1
-  AffectDirection: 1
-  AttachToSurface: 1
-  FloatPoints:
-  - {fileID: 3956103523295493959}
-  - {fileID: 5543358355148871933}
-  - {fileID: 8312776584652461486}
-  - {fileID: 320075852782273489}
 --- !u!114 &3610885462050231089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1668,6 +1647,32 @@ MonoBehaviour:
       drag: 0
       mass: 1
       useGravity: 0
+--- !u!114 &2894900889011502428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589817684636043897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a848716aca0e04b8e107f051f4b1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterLevel: {fileID: 0}
+  floatPoints:
+  - {fileID: 3956103523295493959}
+  - {fileID: 5543358355148871933}
+  - {fileID: 8312776584652461486}
+  - {fileID: 320075852782273489}
+  deadzone:
+    max: 1
+    min: -1
+  parameters:
+    force: 9.8
+    forceRatio: 1
+    forceBias: 1
+    threshold: 0
 --- !u!1 &8473714971500122931
 GameObject:
   m_ObjectHideFlags: 0
