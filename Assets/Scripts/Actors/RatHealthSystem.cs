@@ -26,6 +26,8 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     #region logic
     void Start()
     {
+        //TODO: Modify when this thing is initialized later
+        Life?.Invoke();
     }
     void Update()
     {

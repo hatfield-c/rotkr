@@ -21,6 +21,7 @@ public class RatAnimatorController : MonoBehaviour
     [SerializeField] Animator animator = null;
     [SerializeField] CapsuleCollider ratCollider = null;
     [SerializeField] RatHealthSystem healthSystem = null;
+    [SerializeField] GameObject floatPoint = null;
     public RatAnimationMode AnimationMode;
     #endregion
 
