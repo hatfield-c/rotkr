@@ -1,54 +1,44 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuoyancyManager {
-    protected Rigidbody shipBody;
-    protected Transform waterLine;
-    protected FloatDeadzone deadzone;
-    protected BuoyancyParameters parameters; 
-    protected BuoyantForce buoyantForce;
+[RequireComponent(typeof(Rigidbody))]
+public class BuoyancyManager : MonoBehaviour {
+    public Transform waterLevel;
+    public Transform[] floatPoints;
+    public FloatDeadzone deadzone;
+    public BuoyancyParameters parameters;
 
-    public BuoyancyManager(
-        Rigidbody shipBody, 
-        Transform waterLine, 
-        FloatDeadzone deadzone, 
-        BuoyancyParameters buoyancyParameters
-    ){
-        this.shipBody = shipBody;
-        this.waterLine = waterLine;
-        this.deadzone = deadzone;
-        this.parameters = buoyancyParameters;
-        this.buoyantForce = new BuoyantForce();
+    protected Rigidbody Rigidbody;
+
+    void Start(){
+        this.Rigidbody = GetComponent<Rigidbody>();
     }
 
-    public BuoyantForce update(Transform[] floatPoints){
-        float equil = this.waterLine.position.y;
+    void FixedUpdate(){
+        float equil = this.waterLevel.position.y;
 
         List<int> abovewaterPoints = this.aboveWaterIndexes(floatPoints, equil);
         List<int> underwaterPoints = this.underWaterIndexes(floatPoints, equil);
 
         if(abovewaterPoints.Count < 1){
-            this.shipBody.useGravity = false;
+            this.Rigidbody.useGravity = false;
         } else {
-            this.shipBody.useGravity = true;
+            this.Rigidbody.useGravity = true;
         }
 
         if(underwaterPoints.Count == 0){
-            this.buoyantForce.Null();
-
-            return this.buoyantForce;
+            return;
         }
 
-        this.buoyantForce.setPosition(0, 0, 0);
-        foreach(int pointIndex in underwaterPoints){
-            this.buoyantForce.position += floatPoints[pointIndex].position / underwaterPoints.Count;
+        foreach(int i in underwaterPoints){
+            float depth = equil - this.floatPoints[i].position.y;
+            float force = this.parameters.calculate(depth);
+
+            this.Rigidbody.AddForceAtPosition(force * Vector3.up, this.floatPoints[i].position);
         }
 
-        float depth = equil - this.buoyantForce.position.y;
-        this.buoyantForce.setForce(this.parameters.calculate(depth)); 
-
-        return this.buoyantForce;
     }
 
     public List<int> aboveWaterIndexes(Transform[] floatPoints, float targetY){
