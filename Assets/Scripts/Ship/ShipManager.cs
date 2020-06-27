@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractHealthManager : MonoBehaviour
-{
+public class ShipManager : MonoBehaviour {
+    
     public HunkManager hunkManager;
 
-    public void Start(){
+    void Start()
+    {
         this.hunkManager.Init(null);
     }
 
+    void Update(){
+        
+    }
 }
