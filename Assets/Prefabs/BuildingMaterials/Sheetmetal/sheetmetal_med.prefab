@@ -42,8 +42,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.2126694, y: 12.071444, z: 13.771608}
-  m_Center: {x: -0.26966476, y: -0.013598442, z: -0.007786751}
+  m_Size: {x: 0.11950809, y: 2.0721195, z: 2.4716747}
+  m_Center: {x: -0.06678012, y: 0.002985835, z: 0.010675073}
 --- !u!1 &309967431792126509
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,7 +55,6 @@ GameObject:
   - component: {fileID: 309967431792126545}
   - component: {fileID: 309967431792126510}
   - component: {fileID: 309967431792126511}
-  - component: {fileID: 309967431792126508}
   - component: {fileID: -957234224492588641}
   m_Layer: 0
   m_Name: sheetmetal_med
@@ -126,19 +125,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &309967431792126508
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 309967431792126509}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2126694, y: 12.071444, z: 13.771608}
-  m_Center: {x: -0.26966476, y: -0.013598442, z: -0.007786751}
 --- !u!54 &-957234224492588641
 Rigidbody:
   m_ObjectHideFlags: 0

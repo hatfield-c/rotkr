@@ -94,7 +94,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe1b0197dc082247a142dc2681337e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  overrideRigidbody: 1
   predecessor: {fileID: 0}
+  joint: {fileID: 0}
+  childJoint: {fileID: 0}
 --- !u!54 &-2065072521141447205
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,7 +139,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8200090805562941708}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -4.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8200090805962547507}
@@ -152,10 +155,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 3.620301
-  m_Height: 9.2305
+  m_Radius: 0.64
+  m_Height: 1.9240465
   m_Direction: 1
-  m_Center: {x: 0, y: 4.61525, z: 0}
+  m_Center: {x: 0, y: 4.79551, z: 0}
 --- !u!1 &8200090805962547504
 GameObject:
   m_ObjectHideFlags: 0
