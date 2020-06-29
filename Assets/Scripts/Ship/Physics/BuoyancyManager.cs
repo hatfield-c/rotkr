@@ -43,6 +43,10 @@ public class BuoyancyManager : MonoBehaviour {
             float depth = equil - this.floatPoints[i].position.y;
             float force = this.parameters.calculate(depth);
 
+
+            if(depth > 1.4 && depth <1.6){
+                Debug.Log($"f({depth}) = {force}");
+            }
             this.Rigidbody.AddForceAtPosition(force * Vector3.up, this.floatPoints[i].position);
         }
     }
