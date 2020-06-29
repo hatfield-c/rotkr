@@ -74,12 +74,12 @@ PrefabInstance:
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 75
+      value: 25.800003
       objectReference: {fileID: 0}
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 513.841
+      value: 177.6
       objectReference: {fileID: 0}
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
@@ -155,7 +155,7 @@ PrefabInstance:
     - target: {fileID: 6168887425719732443, guid: 90417a221cfb3a143b948e1baf71fcf9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 75
+      value: 25.800003
       objectReference: {fileID: 0}
     - target: {fileID: 6168887425719732443, guid: 90417a221cfb3a143b948e1baf71fcf9,
         type: 3}
@@ -236,12 +236,12 @@ PrefabInstance:
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 75
+      value: 25.800003
       objectReference: {fileID: 0}
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -509.4
+      value: -177.6
       objectReference: {fileID: 0}
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
@@ -317,7 +317,7 @@ PrefabInstance:
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 75
+      value: 25.800003
       objectReference: {fileID: 0}
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
@@ -398,7 +398,7 @@ PrefabInstance:
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -220
+      value: -84.7
       objectReference: {fileID: 0}
     - target: {fileID: 9062096254261070911, guid: d2be8e42d28756542bd00f02a3f0fad1,
         type: 3}
