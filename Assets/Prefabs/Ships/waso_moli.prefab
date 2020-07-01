@@ -1612,8 +1612,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motor: {fileID: 1896474503664640791}
   steerPower: 700
-  power: 10
-  maxSpeed: 400
+  power: 50
+  maxSpeed: 500
   drag: 0
   Rigidbody: {fileID: 8539047575037818204}
   ForwardKey: 119
@@ -1666,12 +1666,15 @@ MonoBehaviour:
   - {fileID: 8312776584652461486}
   - {fileID: 320075852782273489}
   deadzone:
-    max: 0.5
-    min: -0.5
+    max: 0.25
+    min: -0.2
   parameters:
-    force: 3600
-    damping: 0
-    maxDepth: 1
+    force: 9.8
+    forceRatio: 1.4
+    forceBias: 1.2
+    threshold: -3
+    torqueDamping: 0.95
+    maxDepth: 1.4
 --- !u!1 &8473714971500122931
 GameObject:
   m_ObjectHideFlags: 0
