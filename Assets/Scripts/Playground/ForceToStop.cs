@@ -14,18 +14,23 @@ public class ForceToStop : MonoBehaviour
         this.rb = this.GetComponent<Rigidbody>();
         this.rb.velocity = new Vector3(0, 0, 10);
         this.vel = this.rb.velocity;
-
         //this.rb.AddForce(new Vector3(0, 0, -10f), ForceMode.Force);
     }
 
     void FixedUpdate()
     {
-        if(this.rb.velocity.z > 0){
+        float velDesired = 5f;
+
+        if(this.rb.velocity.z > velDesired){
             Debug.Log(this.vel);
             this.vel = this.rb.velocity;
-            this.rb.AddForce(new Vector3(0, 0, -2.5f), ForceMode.Force);
+            Debug.Log("flag");
+
+            this.rb.AddForce(new Vector3(0, 0, -5), ForceMode.Impulse);
+
             this.timer += Time.deltaTime;
         } else {
+            Debug.Log(this.rb.velocity.z);
             Debug.Log(this.timer);
         }
     }
