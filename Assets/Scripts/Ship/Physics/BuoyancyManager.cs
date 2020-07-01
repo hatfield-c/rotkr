@@ -17,9 +17,13 @@ public class BuoyancyManager : MonoBehaviour {
     public BuoyancyParameters parameters;
 
     protected Rigidbody Rigidbody;
+    protected float hammerVelocity;
 
     void Start(){
         this.Rigidbody = GetComponent<Rigidbody>();
+
+        float buoyancyAccel = this.parameters.force / this.Rigidbody.mass;
+        this.hammerVelocity = Mathf.Sqrt(2 * this.parameters.maxDepth * buoyancyAccel);
     }
 
     void FixedUpdate(){
@@ -59,11 +63,14 @@ public class BuoyancyManager : MonoBehaviour {
             }
         }*/
 
-        if(this.Rigidbody.velocity.y < 0 && this.transform.position.y < equil - this.deadzone.min - this.parameters.maxDepth){
-            this.Rigidbody.velocity = new Vector3(
-                this.Rigidbody.velocity.x,
-                0, 
-                this.Rigidbody.velocity.z
+        if(
+            this.Rigidbody.velocity.y < 0 && 
+            this.transform.position.y < equil - this.deadzone.min - this.parameters.maxDepth &&
+            this.Rigidbody.velocity.y < -this.hammerVelocity
+        ){
+            this.Rigidbody.AddForce(
+                this.Rigidbody.mass * (-this.Rigidbody.velocity.y - this.hammerVelocity) * Vector3.up, 
+                ForceMode.Impulse
             );
         }
 

@@ -7,10 +7,11 @@ public class BuoyancyParameters
 {
     public float force = 9.8f;
     public float damping = 0.0f;
+    public float threshold = 0.0f;
     public float maxDepth = 1.0f;
 
     public float buoyantForce(float depth){
-        return this.force * Mathf.Exp(depth * this.damping);
+        return this.force * Mathf.Exp(this.damping * (depth - this.threshold));
     }
 
     public float hammerForce(float stopDistance, float velocity, float mass){
