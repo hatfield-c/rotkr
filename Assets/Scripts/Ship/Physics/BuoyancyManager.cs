@@ -31,6 +31,7 @@ public class BuoyancyManager : MonoBehaviour {
 
         List<int> abovewaterPoints = this.aboveWaterIndexes(floatPoints, equil);
         List<int> underwaterPoints = this.underWaterIndexes(floatPoints, equil);
+        List<int> deadPoints = this.deadIndexes(floatPoints, equil);
 
         if(abovewaterPoints.Count < 1){
             this.Rigidbody.useGravity = false;
@@ -42,26 +43,6 @@ public class BuoyancyManager : MonoBehaviour {
         if (underwaterPoints.Count == 0){
             return;
         }
-
-        /*float centerDepth = equil - this.transform.position.y;
-        if(centerDepth > 0 && this.Rigidbody.velocity.y < 0){
-            float stopDistance = this.parameters.stopDistance(
-                centerDepth,
-                this.Rigidbody.velocity.y,
-                this.Rigidbody.mass
-            );
-
-            if(stopDistance + this.transform.position.y > this.parameters.maxDepth){
-                float force = this.parameters.hammerForce(
-                    this.parameters.maxDepth - this.transform.position.y,
-                    this.Rigidbody.velocity.y,
-                    this.Rigidbody.mass
-                );
-                Debug.Log(force);
-                this.Rigidbody.AddForce(force * Vector3.up);
-                return;
-            }
-        }*/
 
         if(
             this.Rigidbody.velocity.y < 0 && 
@@ -79,6 +60,14 @@ public class BuoyancyManager : MonoBehaviour {
             float force = this.parameters.buoyantForce(depth);
 
             this.Rigidbody.AddForceAtPosition(force * Vector3.up, this.floatPoints[i].position);
+        }
+
+        if(deadPoints.Count == (int)((3 / 4) * this.floatPoints.Length)){
+            this.Rigidbody.angularVelocity = new Vector3(
+                this.Rigidbody.angularVelocity.x * this.parameters.torqueDamping,
+                this.Rigidbody.angularVelocity.y,
+                this.Rigidbody.angularVelocity.z * this.parameters.torqueDamping
+            );
         }
     }
 
@@ -104,5 +93,20 @@ public class BuoyancyManager : MonoBehaviour {
         }
 
         return underwaterPoints;
+    }
+
+    public List<int> deadIndexes(Transform[] floatPoints, float targetY){
+        List<int> deadPoints = new List<int>();
+
+        for(int i = 0; i < floatPoints.Length; i++){
+            if(
+                floatPoints[i].position.y > targetY + this.deadzone.min &&
+                floatPoints[i].position.y < targetY + this.deadzone.max
+            ){
+                deadPoints.Add(i);
+            }
+        }
+
+        return deadPoints;
     }
 }
