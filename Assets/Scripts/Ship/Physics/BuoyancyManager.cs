@@ -39,14 +39,38 @@ public class BuoyancyManager : MonoBehaviour {
             return;
         }
 
+        /*float centerDepth = equil - this.transform.position.y;
+        if(centerDepth > 0 && this.Rigidbody.velocity.y < 0){
+            float stopDistance = this.parameters.stopDistance(
+                centerDepth,
+                this.Rigidbody.velocity.y,
+                this.Rigidbody.mass
+            );
+
+            if(stopDistance + this.transform.position.y > this.parameters.maxDepth){
+                float force = this.parameters.hammerForce(
+                    this.parameters.maxDepth - this.transform.position.y,
+                    this.Rigidbody.velocity.y,
+                    this.Rigidbody.mass
+                );
+                Debug.Log(force);
+                this.Rigidbody.AddForce(force * Vector3.up);
+                return;
+            }
+        }*/
+
+        if(this.Rigidbody.velocity.y < 0 && this.transform.position.y < equil - this.deadzone.min - this.parameters.maxDepth){
+            this.Rigidbody.velocity = new Vector3(
+                this.Rigidbody.velocity.x,
+                0, 
+                this.Rigidbody.velocity.z
+            );
+        }
+
         foreach(int i in underwaterPoints){
             float depth = equil - this.floatPoints[i].position.y;
-            float force = this.parameters.calculate(depth);
+            float force = this.parameters.buoyantForce(depth);
 
-
-            if(depth > 1.4 && depth <1.6){
-                Debug.Log($"f({depth}) = {force}");
-            }
             this.Rigidbody.AddForceAtPosition(force * Vector3.up, this.floatPoints[i].position);
         }
     }

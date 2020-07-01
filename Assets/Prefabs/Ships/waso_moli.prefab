@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219012908}
-  m_LocalRotation: {x: -0.03226265, y: -0.0057888827, z: 0.0015137612, w: 0.99946153}
+  m_LocalRotation: {x: 0.021953942, y: -0.030180529, z: 0.011105769, w: 0.99924165}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -350,7 +350,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110767920}
-  m_LocalRotation: {x: -0.032265272, y: -0.005774179, z: 0.001969314, w: 0.9994607}
+  m_LocalRotation: {x: 0.021939682, y: -0.030188432, z: 0.01157761, w: 0.99923635}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -424,7 +424,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281046598}
-  m_LocalRotation: {x: -0.032264214, y: -0.005780076, z: 0.001780303, w: 0.99946105}
+  m_LocalRotation: {x: 0.021658406, y: -0.030200442, z: 0.011377758, w: 0.99924445}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -500,7 +500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1347265120}
   m_LocalRotation: {x: 0.16924441, y: 0.030632174, z: 0.000000044703484, w: 0.98509794}
-  m_LocalPosition: {x: -1.3064612, y: 7.2182646, z: -25.496681}
+  m_LocalPosition: {x: 0, y: 7.335542, z: -25.496677}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1281046600}
@@ -1330,7 +1330,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5352754131776159652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -7.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7589817684636043893}
@@ -1670,9 +1670,8 @@ MonoBehaviour:
     min: -0.5
   parameters:
     force: 3600
-    forceRatio: 1
-    forceBias: 0.25
-    threshold: 0
+    damping: 0
+    maxDepth: 1
 --- !u!1 &8473714971500122931
 GameObject:
   m_ObjectHideFlags: 0
