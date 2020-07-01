@@ -6,12 +6,15 @@ using UnityEngine;
 public class BuoyancyParameters
 {
     public float force = 9.8f;
-    public float damping = 0.0f;
+    public float forceRatio = 1f;
+    public float forceBias = 0.0f;
     public float threshold = 0.0f;
+
+    public float torqueDamping = 1.0f;
     public float maxDepth = 1.0f;
 
     public float buoyantForce(float depth){
-        return this.force * Mathf.Exp(this.damping * (depth - this.threshold));
+        return this.force * (forceRatio / (Mathf.Exp( (forceRatio - (depth - threshold)) * forceBias)));
     }
 
     public float hammerForce(float stopDistance, float velocity, float mass){
