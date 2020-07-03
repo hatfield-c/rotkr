@@ -22,8 +22,6 @@ public class Hunk : MonoBehaviour
     }
 
     void OnJointBreak(float breakForce){
-        this.transform.parent = null;
-        
         Rigidbody hunkBody = this.gameObject.GetComponent<Rigidbody>();
         if(hunkBody != null){
             hunkBody.useGravity = true;

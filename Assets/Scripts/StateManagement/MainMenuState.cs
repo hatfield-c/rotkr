@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MainMenuState : AGameState
 {
-    public enum GameEntryPoint { NewGame, Continue};
+    public enum GameEntryPoint { NewGame, Continue };
     GameEntryPoint chosenGameEntryPoint = GameEntryPoint.NewGame;
     public MainMenuState()
     {
