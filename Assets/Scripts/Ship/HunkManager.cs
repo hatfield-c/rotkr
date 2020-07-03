@@ -6,14 +6,14 @@ using UnityEngine;
 public class HunkManager
 {
     
-    public Transform hunkBlueprint;
+    public Transform hunkGroup;
     public HunkJointData jointData;
     public HunkRigidbodyData rigidBodyData;
 
     protected List<Hunk> hunkList;
 
     public void Init(List<HunkData> hunkData){
-        this.hunkBlueprint.parent = null;
+        this.hunkGroup.parent = null;
         
         if(hunkData != null){
             this.hunkList = this.buildFromData(hunkData);
@@ -26,7 +26,9 @@ public class HunkManager
 
         foreach(HunkData data in hunkData){
             if(data.deleted == true){
-                GameObject hunkObject = this.hunkBlueprint.GetChild(data.hunkId).gameObject;
+                GameObject hunkObject = this.hunkGroup.GetChild(data.hunkId).gameObject;
+
+                //TODO: Disable this object instead, keep it for pooling and recreation/repairing
                 Object.Destroy(hunkObject);
             }
         }
@@ -37,7 +39,7 @@ public class HunkManager
     protected List<Hunk> build(){
         List<Hunk> hunks = new List<Hunk>();
         
-        foreach(Transform hunkTransform in this.hunkBlueprint){
+        foreach(Transform hunkTransform in this.hunkGroup){
             GameObject hunkObject = hunkTransform.gameObject;
             Hunk hunk = hunkObject.GetComponent<Hunk>();
 
