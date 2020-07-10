@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     #region references
+    [SerializeField] MainMenuUI MainMenuUI;
     MainMenuState mainMenuState;
     IGameState currentState;
     #endregion
@@ -14,7 +15,7 @@ public class GameManager : Singleton<GameManager>
     #endregion
     void Start()
     {
-        mainMenuState = new MainMenuState();
+        mainMenuState = new MainMenuState(MainMenuUI);
         mainMenuState.ExecuteComplete = () =>
         {
             switch (mainMenuState.ChosenGameEntryPoint())
@@ -26,6 +27,10 @@ public class GameManager : Singleton<GameManager>
                     break;
             }
         };
+        mainMenuState.CancelComplete = () =>
+        {
+            Application.Quit();
+        };
         ChangeState(mainMenuState);
         currentState.Execute();
     }
@@ -36,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     }
     void ChangeState(IGameState state)
     {
+        Debug.Log($"<color=red>Changed from {currentState} to {state}.</color>");
         currentState = state;
     }
     void LoadWye(TypeOfWye chosenWyeType = TypeOfWye.None)
@@ -50,7 +56,6 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-
             wye = new WyeState(new WyeData { WyeType = chosenWyeType });
         }
         
