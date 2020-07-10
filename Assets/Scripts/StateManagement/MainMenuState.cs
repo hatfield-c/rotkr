@@ -5,11 +5,27 @@ using UnityEngine;
 
 public class MainMenuState : AGameState
 {
+    #region references
+    MainMenuUI MainMenuUI;
+    #endregion
+
+    #region state variables
     public enum GameEntryPoint { NewGame, Continue };
     GameEntryPoint chosenGameEntryPoint = GameEntryPoint.NewGame;
-    public MainMenuState()
-    {
+    #endregion
 
+    public MainMenuState(MainMenuUI ui)
+    {
+        MainMenuUI = ui;
+        ui.BTN_NewGame.onClick.AddListener(() => 
+        {
+            chosenGameEntryPoint = GameEntryPoint.NewGame;
+            ExecuteComplete?.Invoke();
+        });
+        ui.BTN_Quit.onClick.AddListener(() => 
+        {
+            CancelComplete?.Invoke();
+        });
     }
 
     #region references
@@ -24,7 +40,6 @@ public class MainMenuState : AGameState
     #region public functions
     public override void Execute()
     {
-        ExecuteComplete?.Invoke();
     }
     public override void Cancel()
     {

@@ -23,7 +23,8 @@ public class WyeState : AGameState
 
     public override void Execute()
     {
-        ExecuteComplete?.Invoke();
+        Debug.Log($"Execute called for {Data.WyeType} wye.");
+        //ExecuteComplete?.Invoke();
     }
     public override void Cancel()
     {
