@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 /// <summary>
 /// Defines how the PLAYER ship will move
 /// </summary>
@@ -11,35 +12,45 @@ using UnityEngine;
 public class PlayerShipMovement : AShipMovement
 {
 
-    [HeaderAttribute("Player Input Keys")]
-    public KeyCode ForwardKey = KeyCode.W;
-    public KeyCode BackKey = KeyCode.S;
-    public KeyCode LeftKey = KeyCode.A;
-    public KeyCode RightKey = KeyCode.D;
+    InputMaster controls;
+    Vector2 shipDirection = Vector2.zero;
+    new void Awake()
+    {
+        base.Awake();
+        controls = new InputMaster();
+        controls.Player.Movement.performed += context => Move(context.ReadValue<Vector2>());
+    }
+
+    void OnEnable()
+    {
+        controls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.Disable();
+    }
 
     void Start()
     {
         
     }
+    void Move(Vector2 inputDirection)
+    {
+        Debug.Log("Player wants to move: " + inputDirection);
+        shipDirection = inputDirection;
+    }
 
-    // TODO: Change the Movement Input to read from axis instead of keys
     void FixedUpdate()
     {
         Vector3 forceDirection = transform.forward;
         float steer = 0f;
-        if (Input.GetKey(LeftKey))
-            steer = 1;
-        if (Input.GetKey(RightKey))
-            steer = -1;
+        steer = -1 * shipDirection.x;
 
         Rigidbody.AddForceAtPosition(steer * transform.right * steerPower, motor.position);
 
         Vector3 forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
 
-        if (Input.GetKey(ForwardKey))
-            PhysicsHelper.ApplyForceToReachVelocity(Rigidbody, forward * maxSpeed, power);
-        if (Input.GetKey(BackKey))
-            PhysicsHelper.ApplyForceToReachVelocity(Rigidbody, forward * -maxSpeed, power);
-
+        PhysicsHelper.ApplyForceToReachVelocity(Rigidbody, forward * maxSpeed * shipDirection.y, power);
     }
 }
