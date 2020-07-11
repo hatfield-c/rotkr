@@ -37,7 +37,7 @@ public class PlayerShipMovement : AShipMovement
     }
     void Move(Vector2 inputDirection)
     {
-        Debug.Log("Player wants to move: " + inputDirection);
+        //Debug.Log("Player wants to move: " + inputDirection);
         shipDirection = inputDirection;
     }
 
