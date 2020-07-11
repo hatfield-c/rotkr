@@ -2,17 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class MainMenuState : AGameState
 {
-    #region references
-    MainMenuUI MainMenuUI;
-    #endregion
-
     #region state variables
     public enum GameEntryPoint { NewGame, Continue };
     GameEntryPoint chosenGameEntryPoint = GameEntryPoint.NewGame;
     #endregion
+
+    #region references
+    MainMenuUI MainMenuUI;
+    #endregion
+
+    #region handlers
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Update references
+    }
+    #endregion
+
 
     public MainMenuState(MainMenuUI ui)
     {
@@ -40,6 +56,10 @@ public class MainMenuState : AGameState
     #region public functions
     public override void Execute()
     {
+        if (SceneManager.GetActiveScene().name == "Master")
+            return;
+
+        SceneManager.LoadScene("Master");
     }
     public override void Cancel()
     {
