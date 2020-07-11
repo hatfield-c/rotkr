@@ -19,6 +19,8 @@ public class BuoyancyManager : MonoBehaviour {
     protected Rigidbody Rigidbody;
     protected float hammerVelocity;
 
+    private Vector3 frictionForceBuffer;
+
     void Start(){
         this.floatzone.Init(this.waterLevel);
         this.Rigidbody = this.GetComponent<Rigidbody>();
@@ -52,10 +54,8 @@ public class BuoyancyManager : MonoBehaviour {
             this.applyBuoyancy(this.floatPoints[i], depth);    
         }
 
-        Vector3 objectCenter = this.transform.TransformPoint(this.Rigidbody.centerOfMass);
-        float stableForce = this.floatzone.stableForce(this.Rigidbody.velocity.y, objectCenter.y);
-        this.Rigidbody.AddForce(stableForce * Vector3.up, ForceMode.Acceleration);
 
+        this.applyStableForce();
         this.dampenBobbing(stablePoints);
         this.applyWaterFriction();
     }
@@ -79,19 +79,24 @@ public class BuoyancyManager : MonoBehaviour {
         }
     }
 
-    public void applyWaterFriction(){
-        Vector3 velocity = this.Rigidbody.velocity;
-        float frictionForce = this.friction.frictionForce(velocity.magnitude);
-
-        velocity.Normalize();
-
-        Vector3 force = new Vector3(
-            -velocity.x * frictionForce,
-            0,
-            -velocity.z * frictionForce
+    public void applyStableForce(){
+        float stableForce = this.floatzone.stableForce(
+            this.Rigidbody.velocity.y, 
+            this.transform.TransformPoint(this.Rigidbody.centerOfMass).y
         );
+        this.Rigidbody.AddForce(stableForce * Vector3.up, ForceMode.Acceleration);
+    }
+
+    public void applyWaterFriction(){
+        float frictionForce = this.friction.frictionForce(
+            this.Rigidbody.velocity.magnitude
+        );
+
+        this.frictionForceBuffer.x = -this.Rigidbody.velocity.normalized.x * frictionForce;
+        this.frictionForceBuffer.y = 0;
+        this.frictionForceBuffer.z = -this.Rigidbody.velocity.normalized.z * frictionForce;
         
-        this.Rigidbody.AddForce(force);
+        this.Rigidbody.AddForce(this.frictionForceBuffer);
     }
 
     public void dampenBobbing(List<int> stablePoints){
