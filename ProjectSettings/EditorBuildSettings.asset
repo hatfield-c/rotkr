@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Master.unity
+    guid: 6d60367b02e61744bb0851ffd23fb31a
+  - enabled: 1
+    path: Assets/Scenes/Wyes/CollectionChamber.unity
+    guid: 967b2d837d7d6be41bc8690b7079548f
+  - enabled: 1
+    path: Assets/Scenes/Wyes/Spillway.unity
+    guid: d0a050888654382459f686a06acd8b53
   m_configObjects: {}
