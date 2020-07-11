@@ -1592,7 +1592,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1000
   m_Drag: 0.05
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.6
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1611,7 +1611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motor: {fileID: 1896474503664640791}
-  steerPower: 700
+  steerPower: 40000
   power: 50
   maxSpeed: 500
   drag: 0
@@ -1655,15 +1655,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81a848716aca0e04b8e107f051f4b1a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterLevel: {fileID: 2486281390903155866}
+  waterLevel: {fileID: 0}
   floatPoints:
   - {fileID: 3956103523295493959}
   - {fileID: 5543358355148871933}
   - {fileID: 8312776584652461486}
   - {fileID: 320075852782273489}
-  deadzone:
-    max: 0.25
-    min: -0.2
+  floatzone:
+    floatMax: 0.8
+    floatMin: -0.2
+    deadMax: 0.1
+    deadMin: -0.15
   parameters:
     force: 9.8
     forceRatio: 1.4
@@ -1671,6 +1673,9 @@ MonoBehaviour:
     threshold: -3
     torqueDamping: 0.95
     maxDepth: 1.4
+  friction:
+    maxForce: 15000
+    rate: 5
 --- !u!1 &8473714971500122931
 GameObject:
   m_ObjectHideFlags: 0

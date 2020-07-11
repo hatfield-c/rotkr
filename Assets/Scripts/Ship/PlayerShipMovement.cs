@@ -45,9 +45,10 @@ public class PlayerShipMovement : AShipMovement
     {
         Vector3 forceDirection = transform.forward;
         float steer = 0f;
-        steer = -1 * shipDirection.x;
+        steer = 1 * shipDirection.x;
 
-        Rigidbody.AddForceAtPosition(steer * transform.right * steerPower, motor.position);
+        //Rigidbody.AddForceAtPosition(steer * transform.right * steerPower, motor.position);
+        Rigidbody.AddTorque(steer * this.transform.up * this.steerPower);
 
         Vector3 forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
 
