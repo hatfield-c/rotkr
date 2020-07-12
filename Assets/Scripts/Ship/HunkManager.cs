@@ -9,6 +9,7 @@ public class HunkManager
     public Transform hunkGroup;
     public HunkJointData jointData;
     public HunkRigidbodyData rigidBodyData;
+    public float hunkDespawnTime = 7f;
 
     protected List<Hunk> hunkList;
 
@@ -27,9 +28,8 @@ public class HunkManager
         foreach(HunkData data in hunkData){
             if(data.deleted == true){
                 GameObject hunkObject = this.hunkGroup.GetChild(data.hunkId).gameObject;
-
-                //TODO: Disable this object instead, keep it for pooling and recreation/repairing
-                Object.Destroy(hunkObject);
+                Hunk hunk = hunkObject.GetComponent<Hunk>();
+                hunk.despawn();
             }
         }
 
@@ -42,6 +42,7 @@ public class HunkManager
         foreach(Transform hunkTransform in this.hunkGroup){
             GameObject hunkObject = hunkTransform.gameObject;
             Hunk hunk = hunkObject.GetComponent<Hunk>();
+            hunk.despawnTime = this.hunkDespawnTime;
 
             Rigidbody hunkBody = hunkObject.GetComponent<Rigidbody>();
             if(hunkBody == null){
