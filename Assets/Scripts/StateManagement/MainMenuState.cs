@@ -59,7 +59,7 @@ public class MainMenuState : AGameState
         if (SceneManager.GetActiveScene().name == "Master")
             return;
 
-        SceneManager.LoadScene("Master");
+        //SceneManager.LoadScene("Master");
     }
     public override void Cancel()
     {

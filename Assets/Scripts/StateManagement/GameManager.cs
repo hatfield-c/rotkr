@@ -5,17 +5,23 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
     #region state variables
     int wyesCompleted = 0;
     #endregion
 
     #region references
-    [SerializeField] MainMenuUI MainMenuUI = null;
+    [SerializeField] GameObject playerPrefab;
+    [SerializeField] MainMenuUI mainMenuUI = null;
     MainMenuState mainMenuState;
     IGameState currentState;
 
-    // Singleton references
-    public LevelLoader levelLoader;
+    InputRunner inputRunner;
+
+    // wye references
+    LevelLoader levelLoader;
+    GameObject player;
+    PlayerShipMovement playerShipMovement;
     #endregion
 
     #region handlers
@@ -31,12 +37,22 @@ public class GameManager : MonoBehaviour
     {
         // update references
         levelLoader = GameObject.FindObjectOfType<LevelLoader>();
+        playerShipMovement = GameObject.FindObjectOfType<PlayerShipMovement>();
+        if(playerShipMovement != null)
+        {
+            player = playerShipMovement.gameObject;
+            inputRunner.UpdateReferences(playerShipMovement);
+        }
+
+        // now that the scene is loaded, execute our current state
+        currentState.Execute();
     }
     #endregion
 
     #region logic
     void Awake()
     {
+        // Singleton
         if (Instance == null)
         {
             Instance = this;
@@ -45,13 +61,13 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-        }        
-    }
+        }
 
+        // General setup
+        inputRunner = new InputRunner();
 
-    void Start()
-    {
-        mainMenuState = new MainMenuState(MainMenuUI);
+        // Setup our initial state
+        mainMenuState = new MainMenuState(mainMenuUI);
         mainMenuState.ExecuteComplete = () =>
         {
             switch (mainMenuState.ChosenGameEntryPoint())
@@ -68,7 +84,12 @@ public class GameManager : MonoBehaviour
             Application.Quit();
         };
         ChangeState(mainMenuState);
-        currentState.Execute();
+    }
+
+
+    void Start()
+    {
+
     }
 
     void Update() { }
@@ -83,12 +104,13 @@ public class GameManager : MonoBehaviour
     void LoadWye(TypeOfWye chosenWyeType = TypeOfWye.None)
     {
         WyeState wye;
+        
         if (chosenWyeType == TypeOfWye.None)
         {
-            TypeOfWye randomWyeType = TypeOfWye.Spillway;
+            chosenWyeType = TypeOfWye.Spillway;
             if (Random.Range(0f, 1f) > 0.5f)
-                randomWyeType = TypeOfWye.CollectionChamber;
-            wye = new WyeState(new WyeData { WyeType = randomWyeType });
+                chosenWyeType = TypeOfWye.CollectionChamber;
+            wye = new WyeState(new WyeData { WyeType = chosenWyeType });
         }
         else
         {
@@ -101,7 +123,8 @@ public class GameManager : MonoBehaviour
             LoadWye();
         };
         ChangeState(wye);
-        currentState.Execute();
+        levelLoader.QueueLevel(chosenWyeType);
+        levelLoader.LoadQueuedLevel();
     }
     #endregion
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using UnityEditor.Experimental.GraphView;
@@ -11,34 +12,11 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerShipMovement : AShipMovement
 {
-
-    InputMaster controls;
     Vector2 shipDirection = Vector2.zero;
-    new void Awake()
-    {
-        base.Awake();
-        controls = new InputMaster();
-        controls.Player.Movement.performed += context => Move(context.ReadValue<Vector2>());
-    }
 
-    void OnEnable()
-    {
-        controls.Enable();
-    }
+    #region logic
 
-    void OnDisable()
-    {
-        controls.Disable();
-    }
-
-    void Start()
-    {
-        
-    }
-    void Move(Vector2 inputDirection)
-    {
-        shipDirection = inputDirection;
-    }
+    void Start(){}
 
     void FixedUpdate()
     {
@@ -51,4 +29,15 @@ public class PlayerShipMovement : AShipMovement
         Vector3 forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
         PhysicsHelper.ApplyForceToReachVelocity(Rigidbody, forward * maxSpeed * shipDirection.y, power);
     }
+    #endregion
+
+    #region public functions
+    public void UpdateShipDirection(Vector2 inputDirection)
+    {
+        shipDirection = inputDirection;
+    }
+    #endregion
+
+    #region private functions
+    #endregion
 }

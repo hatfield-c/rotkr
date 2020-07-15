@@ -4,28 +4,30 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
-    Scene queuedScene;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    int queuedSceneIndex;
 
     public void LoadQueuedLevel()
     {
-        SceneManager.LoadScene(queuedScene.buildIndex);
+        SceneManager.LoadScene(queuedSceneIndex);
     }
     public void QueueLevel(int index)
     {
-        queuedScene = SceneManager.GetSceneByBuildIndex(index);
+        queuedSceneIndex = index;
     }
-    public void QueueLevel(string scene)
+    public void QueueLevel(TypeOfWye wyeType)
     {
-        queuedScene = SceneManager.GetSceneByName(scene);
+        switch (wyeType)
+        {
+            case TypeOfWye.None:
+                break;
+            case TypeOfWye.CollectionChamber:
+                queuedSceneIndex = 1;
+                break;
+            case TypeOfWye.Spillway:
+                queuedSceneIndex = 2;
+                break;
+            default:
+                break;
+        }
     }
 }

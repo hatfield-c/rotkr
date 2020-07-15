@@ -9,21 +9,17 @@ public class WyeState : AGameState
     public WyeState(WyeData data)
     {
         Data = data;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
-
+    ~WyeState()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
     #region references
     public WyeData Data;
     #endregion
 
     #region handlers
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Update references
@@ -46,7 +42,7 @@ public class WyeState : AGameState
             case TypeOfWye.None:
                 break;
             default:
-                SceneManager.LoadScene(Data.WyeType.ToString());
+                //SceneManager.LoadScene(Data.WyeType.ToString());
                 break;
         }
         //ExecuteComplete?.Invoke();
