@@ -10,15 +10,17 @@ public class Hunk : MonoBehaviour
     public FixedJoint joint;
     public FixedJoint childJoint = null;
 
-    // Start is called before the first frame update
-    void Start() {
+    protected KatinTimer despawnTimer;
+    public float despawnTime;
 
+    
+    void Start() {
+        this.despawnTimer = new KatinTimer();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        this.despawnTimer.update();        
     }
 
     void OnJointBreak(float breakForce){
@@ -30,6 +32,12 @@ public class Hunk : MonoBehaviour
         if(this.childJoint != null){
             this.childJoint.breakForce = 0;
         }
+
+        this.despawnTimer.Init(this.despawnTime, this.despawn);
+    }
+
+    public void despawn(){
+        this.gameObject.SetActive(false);
     }
 
 }
