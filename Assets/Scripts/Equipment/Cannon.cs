@@ -15,6 +15,17 @@ public class Cannon : MonoBehaviour, IEquipment
     protected bool loaded = true;
     protected KatinTimer fuseTimer;
     protected KatinTimer reloadTimer = new KatinTimer();
+    protected InputMaster controls = null;
+
+    void OnEnable() {
+        if(controls != null)
+            controls.Player.Shoot.performed += context => this.lightFuse();
+    }
+
+    void OnDisable() {
+        if (controls != null)
+            controls.Player.Shoot.performed -= context => this.lightFuse();
+    }
 
     void Start() {
         this.fuseTimer = new KatinTimer();
@@ -61,6 +72,7 @@ public class Cannon : MonoBehaviour, IEquipment
     }
 
     public void registerInput(InputMaster controls){
+        this.controls = controls;
         controls.Player.Shoot.performed += context => this.lightFuse();
     }
 }

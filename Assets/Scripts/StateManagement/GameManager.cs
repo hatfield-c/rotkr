@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     // wye references
     LevelLoader levelLoader;
-    GameObject player;
+    ShipManager ship;
     PlayerShipMovement playerShipMovement;
     #endregion
 
@@ -40,8 +40,11 @@ public class GameManager : MonoBehaviour
         playerShipMovement = GameObject.FindObjectOfType<PlayerShipMovement>();
         if(playerShipMovement != null)
         {
-            player = playerShipMovement.gameObject;
-            inputRunner.UpdateReferences(playerShipMovement);
+            ship = playerShipMovement.GetComponent<ShipManager>();
+        }
+        else
+        {
+            ship = null;
         }
 
         // now that the scene is loaded, execute our current state
@@ -110,11 +113,11 @@ public class GameManager : MonoBehaviour
             chosenWyeType = TypeOfWye.Spillway;
             if (Random.Range(0f, 1f) > 0.5f)
                 chosenWyeType = TypeOfWye.CollectionChamber;
-            wye = new WyeState(new WyeData { WyeType = chosenWyeType });
+            wye = new WyeState(new WyeData { WyeType = chosenWyeType }, playerPrefab, inputRunner.controls);
         }
         else
         {
-            wye = new WyeState(new WyeData { WyeType = chosenWyeType });
+            wye = new WyeState(new WyeData { WyeType = chosenWyeType }, playerPrefab, inputRunner.controls);
         }
         
         wye.ExecuteComplete = () => 

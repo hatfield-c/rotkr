@@ -6,35 +6,27 @@ using UnityEngine;
 
 public class InputRunner
 {
+    public static InputRunner Instance { get; private set; }
     public InputRunner()
     {
+        // Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            return;
+        }
         controls = new InputMaster();
-        controls.Player.Movement.performed += context => OnPlayerMovement(context.ReadValue<Vector2>());
         controls.Enable();
     }
     ~InputRunner()
     {
-        controls.Player.Movement.performed -= context => OnPlayerMovement(context.ReadValue<Vector2>());
         controls.Disable();
     }
 
     #region references
-    InputMaster controls;
-    PlayerShipMovement playerShipMovement;
-    #endregion
-
-    #region handlers
-    void OnPlayerMovement(Vector2 inputDirection)
-    {
-        if(playerShipMovement != null)
-            playerShipMovement.UpdateShipDirection(inputDirection);
-    }
-    #endregion
-
-    #region public functions
-    public void UpdateReferences(PlayerShipMovement playerShip)
-    {
-        playerShipMovement = playerShip;
-    }
+    public InputMaster controls;
     #endregion
 }

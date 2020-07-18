@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public enum TypeOfWye { None, CollectionChamber, Spillway };
 public class WyeState : AGameState
 {
-    public WyeState(WyeData data)
+    public WyeState(WyeData data, GameObject playerPrefab, InputMaster controls)
     {
         Data = data;
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -15,6 +15,7 @@ public class WyeState : AGameState
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
     #region references
     public WyeData Data;
     #endregion
