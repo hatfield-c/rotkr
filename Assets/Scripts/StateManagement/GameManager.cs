@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         };
         ChangeState(wye);
         levelLoader.QueueLevel(chosenWyeType);
-        levelLoader.LoadQueuedLevel();
+        levelLoader.Transition();
     }
     #endregion
 }

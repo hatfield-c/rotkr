@@ -263,3 +263,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc7598d01e951d44eb0f663a30e27cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transition: {fileID: 5280617308625768881}

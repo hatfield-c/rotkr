@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+
 public enum TypeOfWye { None, CollectionChamber, Spillway };
 public class WyeState : AGameState
 {
