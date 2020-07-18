@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+
 public class LevelLoader : MonoBehaviour
 {
     int queuedSceneIndex;
 
-    public void LoadQueuedLevel()
+    public Animator transition;
+    public float transitionDelay = .05f;
+    public void Transition()
     {
-        SceneManager.LoadScene(queuedSceneIndex);
+        transition.SetTrigger("Start");
     }
     public void QueueLevel(int index)
     {
@@ -29,5 +33,10 @@ public class LevelLoader : MonoBehaviour
             default:
                 break;
         }
+    }
+    public void LoadQueuedLevel()
+    {
+        Sequence sequence = DOTween.Sequence();
+        sequence.InsertCallback(transitionDelay, () => { SceneManager.LoadScene(queuedSceneIndex); });
     }
 }
