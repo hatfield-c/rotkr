@@ -10,7 +10,7 @@ public class BuoyancyManager : MonoBehaviour {
     public Action UnderWater;
     #endregion
 
-    public Transform waterLevel;
+    public WaterCalculator waterLevel;
     public Transform[] floatPoints;
     public FloatDeadzone floatzone;
     public BuoyancyParameters parameters;
@@ -33,11 +33,15 @@ public class BuoyancyManager : MonoBehaviour {
         if (waterLevel == null)
             return;
 
-        float equil = this.waterLevel.position.y;
+        float targetCenter = this.waterLevel.calculateHeight(
+            this.transform.TransformPoint(this.Rigidbody.centerOfMass).x,
+            this.transform.TransformPoint(this.Rigidbody.centerOfMass).z
+        );
+        float[] targets = this.getFloatTargets(this.floatPoints);
 
-        List<int> abovewaterPoints = this.aboveWaterIndexes(floatPoints, equil);
-        List<int> underwaterPoints = this.underWaterIndexes(floatPoints, equil);
-        List<int> stablePoints = this.stableIndexes(floatPoints, equil);
+        List<int> abovewaterPoints = this.aboveWaterIndexes(this.floatPoints, targets);
+        List<int> underwaterPoints = this.underWaterIndexes(this.floatPoints, targets);
+        List<int> stablePoints = this.stableIndexes(this.floatPoints, targets);
 
         if(abovewaterPoints.Count < 1){
             this.Rigidbody.useGravity = false;
@@ -50,21 +54,20 @@ public class BuoyancyManager : MonoBehaviour {
             return;
         }
 
-        this.applyHammerForce(equil);
+        this.applyHammerForce(targetCenter);
 
         foreach(int i in underwaterPoints){
-            float depth = equil - this.floatPoints[i].position.y;
+            float depth = targets[i] - this.floatPoints[i].position.y;
             this.applyBuoyancy(this.floatPoints[i], depth);    
         }
 
 
-        this.applyStableForce();
+        this.applyStableForce(targetCenter);
         this.dampenBobbing(stablePoints);
         this.applyWaterFriction();
     }
     public void Init(GameObject waterPlane) {
-        this.waterLevel = waterPlane.transform;
-        this.floatzone.Init(this.waterLevel);
+        this.waterLevel = waterPlane.GetComponent<WaterCalculator>();
     }
 
     protected void applyBuoyancy(Transform floatPoint, float depth){
@@ -73,10 +76,10 @@ public class BuoyancyManager : MonoBehaviour {
         this.Rigidbody.AddForceAtPosition(force * Vector3.up, floatPoint.position);
     }
 
-    protected void applyHammerForce(float equil){
+    protected void applyHammerForce(float targetCenter){
         if(
             this.Rigidbody.velocity.y < 0 && 
-            this.transform.position.y < equil + this.floatzone.floatMin - this.parameters.maxDepth &&
+            this.transform.position.y < targetCenter + this.floatzone.floatMin - this.parameters.maxDepth &&
             this.Rigidbody.velocity.y < -this.hammerVelocity
         ){
             this.Rigidbody.AddForce(
@@ -86,10 +89,12 @@ public class BuoyancyManager : MonoBehaviour {
         }
     }
 
-    protected void applyStableForce(){
+    protected void applyStableForce(float targetCenter){
+
         float stableForce = this.floatzone.stableForce(
             this.Rigidbody.velocity.y, 
-            this.transform.TransformPoint(this.Rigidbody.centerOfMass).y
+            this.transform.TransformPoint(this.Rigidbody.centerOfMass).y,
+            targetCenter
         );
         this.Rigidbody.AddForce(stableForce * Vector3.up, ForceMode.Acceleration);
     }
@@ -116,11 +121,24 @@ public class BuoyancyManager : MonoBehaviour {
         }
     }
 
-    protected List<int> aboveWaterIndexes(Transform[] floatPoints, float targetY){
+    protected float[] getFloatTargets(Transform[] floatPoints){
+        float[] targets = new float[floatPoints.Length];
+
+        for(int i = 0; i < floatPoints.Length; i++){
+            targets[i] = this.waterLevel.calculateHeight(
+                floatPoints[i].position.x,
+                floatPoints[i].position.z
+            );
+        }
+
+        return targets;
+    }
+
+    protected List<int> aboveWaterIndexes(Transform[] floatPoints, float[] targets){
         List<int> abovewaterPoints = new List<int>();
 
         for(int i = 0; i < floatPoints.Length; i++){
-            if(this.floatzone.isAboveWater(floatPoints[i].position.y)){
+            if(this.floatzone.isAboveWater(floatPoints[i].position.y, targets[i])){
                 abovewaterPoints.Add(i);
             }
         }
@@ -128,11 +146,11 @@ public class BuoyancyManager : MonoBehaviour {
         return abovewaterPoints;
     }
 
-    protected List<int> underWaterIndexes(Transform[] floatPoints, float targetY){
+    protected List<int> underWaterIndexes(Transform[] floatPoints, float[] targets){
         List<int> underwaterPoints = new List<int>();
 
         for(int i = 0; i < floatPoints.Length; i++){
-            if(this.floatzone.isUnderWater(floatPoints[i].position.y)){
+            if(this.floatzone.isUnderWater(floatPoints[i].position.y, targets[i])){
                 underwaterPoints.Add(i);
             }
         }
@@ -140,11 +158,11 @@ public class BuoyancyManager : MonoBehaviour {
         return underwaterPoints;
     }
 
-    protected List<int> stableIndexes(Transform[] floatPoints, float targetY){
+    protected List<int> stableIndexes(Transform[] floatPoints, float[] targets){
         List<int> stablePoints = new List<int>();
 
         for(int i = 0; i < floatPoints.Length; i++){
-            if(this.floatzone.isInFloatZone(floatPoints[i].position.y)){
+            if(this.floatzone.isInFloatZone(floatPoints[i].position.y, targets[i])){
                 stablePoints.Add(i);
             }
         }

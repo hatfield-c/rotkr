@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5172531226051025341}
   - component: {fileID: 5172531226051025340}
   - component: {fileID: 5172531226051025339}
+  - component: {fileID: 5485420126667064100}
   m_Layer: 0
   m_Name: CollectionChamberWater
   m_TagString: Untagged
@@ -79,3 +80,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5485420126667064100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5172531226051025337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ddc07e5af101d4ab999415f563dc64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

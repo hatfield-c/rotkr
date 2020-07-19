@@ -9,15 +9,9 @@ public class FloatDeadzone {
     public float deadMax = 0.25f;
     public float deadMin = -0.25f;
 
-    protected Transform waterLevel;
+    public float stableForce(float velocityY, float yPos, float target){
 
-    public void Init(Transform waterLevel){
-        this.waterLevel = waterLevel;
-    }
-
-    public float stableForce(float velocityY, float yPos){
-
-        if(!this.isInFloatZone(yPos)){
+        if(!this.isInFloatZone(yPos, target)){
             return 0;
         }
 
@@ -29,19 +23,19 @@ public class FloatDeadzone {
         }
 
         float force = -Physics.gravity.y;
-        return force * dir * this.distanceMultiplier(yPos);
+        return force * dir * this.distanceMultiplier(yPos, target);
     }
 
-    public float distanceMultiplier(float yPos){
-        float relativePos = yPos - this.getWaterLevel();
+    public float distanceMultiplier(float yPos, float target){
+        float relativePos = yPos - target;
 
-        if(this.isUpperFloat(yPos)){
+        if(this.isUpperFloat(yPos, target)){
             float scaledPos = (relativePos - this.deadMax) / Mathf.Abs(this.floatMax - this.deadMax);
 
             return scaledPos;
         }
 
-        if(this.isLowerFloat(yPos)){
+        if(this.isLowerFloat(yPos, target)){
             float scaledPos = (this.deadMin - relativePos) / Mathf.Abs(this.deadMin - this.floatMin);
 
             return scaledPos;
@@ -50,71 +44,67 @@ public class FloatDeadzone {
         return 0;
     }
 
-    public bool isUnderWater(float yPos){
-        if(yPos < this.floatMin + this.getWaterLevel()){
+    public bool isUnderWater(float yPos, float target){
+        if(yPos < this.floatMin + target){
             return true;
         }
 
         return false;
     }
 
-    public bool isAboveWater(float yPos){
-        if(yPos > this.floatMax + this.getWaterLevel()){
+    public bool isAboveWater(float yPos, float target){
+        if(yPos > this.floatMax + target){
             return true;
         }
 
         return false;
     }
 
-    public bool isAboveDead(float yPos){
-        if(yPos > this.deadMax + this.getWaterLevel()){
+    public bool isAboveDead(float yPos, float target){
+        if(yPos > this.deadMax + target){
             return true;
         }
 
         return false;
     }
 
-    public bool isUnderDead(float yPos){
-        if(yPos < this.deadMin + this.getWaterLevel()){
+    public bool isUnderDead(float yPos, float target){
+        if(yPos < this.deadMin + target){
             return true;
         }
 
         return false;
     }
 
-    public bool isInFloatZone(float yPos){
-        if(yPos < this.floatMax + this.getWaterLevel() && yPos > this.floatMin + this.getWaterLevel()){
+    public bool isInFloatZone(float yPos, float target){
+        if(yPos < this.floatMax + target && yPos > this.floatMin + target){
             return true;
         }
 
         return false;
     }
 
-    public bool isInDeadZone(float yPos){
-        if(yPos < this.deadMax + this.getWaterLevel() && yPos > this.deadMin + this.getWaterLevel()){
+    public bool isInDeadZone(float yPos, float target){
+        if(yPos < this.deadMax + target && yPos > this.deadMin + target){
             return true;
         }
 
         return false;
     }
 
-    public bool isUpperFloat(float yPos){
-        if(this.isAboveDead(yPos) && this.isInFloatZone(yPos)){
+    public bool isUpperFloat(float yPos, float target){
+        if(this.isAboveDead(yPos, target) && this.isInFloatZone(yPos, target)){
             return true;
         }
 
         return false;
     }
 
-    public bool isLowerFloat(float yPos){
-        if(this.isUnderDead(yPos) && this.isInFloatZone(yPos)){
+    public bool isLowerFloat(float yPos, float target){
+        if(this.isUnderDead(yPos, target) && this.isInFloatZone(yPos, target)){
             return true;
         }
 
         return false;
-    }
-
-    public float getWaterLevel(){
-        return this.waterLevel.position.y;
     }
 }
