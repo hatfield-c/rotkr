@@ -11,6 +11,8 @@ public class WyeState : AGameState
     public WyeState(WyeData data, GameObject playerPrefab, InputMaster controls)
     {
         Data = data;
+        this.playerPrefab = playerPrefab;
+        this.controls = controls;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     ~WyeState()
@@ -20,12 +22,19 @@ public class WyeState : AGameState
 
     #region references
     public WyeData Data;
+    WyeStateReferences refs;
+    InputMaster controls;
+
+    GameObject playerPrefab;
+    GameObject player;
+    ShipManager ship;
     #endregion
 
     #region handlers
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Update references
+        refs = GameObject.FindObjectOfType<WyeStateReferences>();
     }
     #endregion
 
@@ -37,16 +46,23 @@ public class WyeState : AGameState
     public override void Execute()
     {
         Debug.Log($"Execute called for {Data.WyeType} wye.");
-        if (Data == null)
-            return;
-        // Load the actual scene you are
-        switch (Data.WyeType)
+        // Spawn the player
+        if (playerPrefab != null)
         {
-            case TypeOfWye.None:
-                break;
-            default:
-                //SceneManager.LoadScene(Data.WyeType.ToString());
-                break;
+            // Choose a random spawn point to spawn the player
+            int spawnIndex = UnityEngine.Random.Range(0, refs.SpawnPoints.Count);
+
+            player = GameObject.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation) as GameObject;
+            ship = player.GetComponent<ShipManager>();
+            ship.Init(controls, refs.WaterPlane);
+        }
+        else
+            Debug.LogError($"Tried to spawn the player but there is no prefab");
+
+        // Subscribe to End Gate events
+        foreach(EndGate gate in refs.EndGates)
+        {
+            gate.PlayerEnteredTheEnd += () => { ExecuteComplete?.Invoke(); };
         }
         //ExecuteComplete?.Invoke();
     }

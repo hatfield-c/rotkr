@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] MainMenuUI mainMenuUI = null;
     MainMenuState mainMenuState;
     IGameState currentState;
+    Sequence currentSequence;
 
     InputRunner inputRunner;
 
@@ -38,7 +41,7 @@ public class GameManager : MonoBehaviour
         // update references
         levelLoader = GameObject.FindObjectOfType<LevelLoader>();
         playerShipMovement = GameObject.FindObjectOfType<PlayerShipMovement>();
-        if(playerShipMovement != null)
+        if (playerShipMovement != null)
         {
             ship = playerShipMovement.GetComponent<ShipManager>();
         }
@@ -48,7 +51,14 @@ public class GameManager : MonoBehaviour
         }
 
         // now that the scene is loaded, execute our current state
-        currentState.Execute();
+        //currentSequence.Kill();
+        Sequence sequence = DOTween.Sequence();
+        sequence.InsertCallback(.15f, () => { currentState.Execute(); });
+        //sequence.SetAutoKill(false);
+        //sequence.Pause();
+        //currentSequence = sequence;
+        //currentSequence.Play();
+        
     }
     #endregion
 
@@ -107,7 +117,6 @@ public class GameManager : MonoBehaviour
     void LoadWye(TypeOfWye chosenWyeType = TypeOfWye.None)
     {
         WyeState wye;
-        
         if (chosenWyeType == TypeOfWye.None)
         {
             chosenWyeType = TypeOfWye.Spillway;
