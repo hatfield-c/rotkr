@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WaterCalculator : MonoBehaviour
 {
+    public float maxTimeValue = 100000;
+
     protected Material waterMat;
     protected Texture2D noiseTexture;
 
@@ -49,7 +51,7 @@ public class WaterCalculator : MonoBehaviour
     }
 
     public float calculateHeight(float xPos, float zPos){
-        float time = Time.time;
+        float time = Mathf.Repeat(Time.time, this.maxTimeValue);
 
         float xCoord = -xPos - this.originX;
         float zCoord = -zPos - this.originZ;
