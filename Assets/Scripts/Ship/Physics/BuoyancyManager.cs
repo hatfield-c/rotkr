@@ -22,7 +22,6 @@ public class BuoyancyManager : MonoBehaviour {
     private Vector3 frictionForceBuffer;
 
     void Start(){
-        this.floatzone.Init(this.waterLevel);
         this.Rigidbody = this.GetComponent<Rigidbody>();
 
         float buoyancyAccel = this.parameters.force / this.Rigidbody.mass;
@@ -30,6 +29,10 @@ public class BuoyancyManager : MonoBehaviour {
     }
 
     void FixedUpdate(){
+        // TODO: PERHAPS REFACTOR THIS LATER??? Dependency injection riddle with this.waterLevel
+        if (waterLevel == null)
+            return;
+
         float equil = this.waterLevel.position.y;
 
         List<int> abovewaterPoints = this.aboveWaterIndexes(floatPoints, equil);
@@ -59,14 +62,18 @@ public class BuoyancyManager : MonoBehaviour {
         this.dampenBobbing(stablePoints);
         this.applyWaterFriction();
     }
+    public void Init(GameObject waterPlane) {
+        this.waterLevel = waterPlane.transform;
+        this.floatzone.Init(this.waterLevel);
+    }
 
-    public void applyBuoyancy(Transform floatPoint, float depth){
+    protected void applyBuoyancy(Transform floatPoint, float depth){
         float force = this.parameters.buoyantForce(depth);
 
         this.Rigidbody.AddForceAtPosition(force * Vector3.up, floatPoint.position);
     }
 
-    public void applyHammerForce(float equil){
+    protected void applyHammerForce(float equil){
         if(
             this.Rigidbody.velocity.y < 0 && 
             this.transform.position.y < equil + this.floatzone.floatMin - this.parameters.maxDepth &&
@@ -79,7 +86,7 @@ public class BuoyancyManager : MonoBehaviour {
         }
     }
 
-    public void applyStableForce(){
+    protected void applyStableForce(){
         float stableForce = this.floatzone.stableForce(
             this.Rigidbody.velocity.y, 
             this.transform.TransformPoint(this.Rigidbody.centerOfMass).y
@@ -87,7 +94,7 @@ public class BuoyancyManager : MonoBehaviour {
         this.Rigidbody.AddForce(stableForce * Vector3.up, ForceMode.Acceleration);
     }
 
-    public void applyWaterFriction(){
+    protected void applyWaterFriction(){
         float frictionForce = this.friction.frictionForce(
             this.Rigidbody.velocity.magnitude
         );
@@ -99,7 +106,7 @@ public class BuoyancyManager : MonoBehaviour {
         this.Rigidbody.AddForce(this.frictionForceBuffer);
     }
 
-    public void dampenBobbing(List<int> stablePoints){
+    protected void dampenBobbing(List<int> stablePoints){
         if(stablePoints.Count == (int)((3 / 4) * this.floatPoints.Length)){
             this.Rigidbody.angularVelocity = new Vector3(
                 this.Rigidbody.angularVelocity.x * this.parameters.torqueDamping,
@@ -109,7 +116,7 @@ public class BuoyancyManager : MonoBehaviour {
         }
     }
 
-    public List<int> aboveWaterIndexes(Transform[] floatPoints, float targetY){
+    protected List<int> aboveWaterIndexes(Transform[] floatPoints, float targetY){
         List<int> abovewaterPoints = new List<int>();
 
         for(int i = 0; i < floatPoints.Length; i++){
@@ -121,7 +128,7 @@ public class BuoyancyManager : MonoBehaviour {
         return abovewaterPoints;
     }
 
-    public List<int> underWaterIndexes(Transform[] floatPoints, float targetY){
+    protected List<int> underWaterIndexes(Transform[] floatPoints, float targetY){
         List<int> underwaterPoints = new List<int>();
 
         for(int i = 0; i < floatPoints.Length; i++){
@@ -133,7 +140,7 @@ public class BuoyancyManager : MonoBehaviour {
         return underwaterPoints;
     }
 
-    public List<int> stableIndexes(Transform[] floatPoints, float targetY){
+    protected List<int> stableIndexes(Transform[] floatPoints, float targetY){
         List<int> stablePoints = new List<int>();
 
         for(int i = 0; i < floatPoints.Length; i++){
@@ -145,7 +152,7 @@ public class BuoyancyManager : MonoBehaviour {
         return stablePoints;
     }
 
-    public String floatPointsDepths(){
+    protected String floatPointsDepths(){
         String str = "";
         for(int i = 0; i < this.floatPoints.Length; i++){
             str += this.floatPoints[i].position.y.ToString() + ", ";

@@ -7,6 +7,7 @@ public class ShipManager : MonoBehaviour {
     public HunkManager hunkManager;
     public EquipmentManager equipmentManager;
     public PlayerShipMovement playerShipMovement;
+    public BuoyancyManager buoyancyManager;
 
     protected InputMaster controls;
 
@@ -30,11 +31,12 @@ public class ShipManager : MonoBehaviour {
     {        
     }
 
-    public void Init(InputMaster _controls)
+    public void Init(InputMaster controls, GameObject waterPlane)
     {
-        controls = _controls;
-        equipmentManager.Init(_controls);
-        playerShipMovement.Init(_controls);
+        this.controls = controls;
+        equipmentManager.Init(controls);
+        playerShipMovement.Init(controls);
+        buoyancyManager.Init(waterPlane);
         hunkManager.Init(null);
     }
 }
