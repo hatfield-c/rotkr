@@ -51,16 +51,25 @@ public class WaterCalculator : MonoBehaviour
     }
 
     public float calculateHeight(float xPos, float zPos){
+
         float time = Mathf.Repeat(Time.time, this.maxTimeValue);
 
-        float xCoord = -xPos - this.originX;
-        float zCoord = -zPos - this.originZ;
+        float xCoord = xPos - this.originX;
+        float zCoord = zPos - this.originZ;
 
         float pixelX = xCoord * this.pixelWidthRatio;
         float pixelZ = zCoord * this.pixelHeightRatio;
 
-        int pixelXMod = (int)Mathf.Round((pixelX / this.zoomLevel) + (time * this.scrollSpeed * this.noiseTexture.width));
-        int pixelZMod = (int)Mathf.Round((pixelZ / this.zoomLevel) + (time * this.scrollSpeed * this.noiseTexture.height));
+        int pixelXMod = (int)Mathf.Floor((pixelX / this.zoomLevel) + (time * this.scrollSpeed * this.noiseTexture.width));
+        int pixelZMod = (int)Mathf.Floor((pixelZ / this.zoomLevel) + (time * this.scrollSpeed * this.noiseTexture.height));
+
+        Debug.Log(
+            pixelXMod.ToString() + ", " + pixelZMod.ToString() + "\n" +
+            pixelX.ToString() + ", " + pixelZ.ToString() + "\n" +
+            this.noiseTexture.width.ToString() + ", " + this.noiseTexture.height.ToString() + "\n" +
+            xCoord.ToString() + ", " + zCoord.ToString() + "\n" +
+            this.originX.ToString() + ", " + this.originZ.ToString()
+        );
 
         float n = this.noiseTexture.GetPixel(pixelXMod, pixelZMod).r;
         n = (n * this.vertScale) - this.vertOffset;
