@@ -51,14 +51,14 @@ public class GameManager : MonoBehaviour
         }
 
         // now that the scene is loaded, execute our current state
-        //currentSequence.Kill();
+        currentSequence.Kill();
         Sequence sequence = DOTween.Sequence();
         sequence.InsertCallback(.15f, () => { currentState.Execute(); });
-        //sequence.SetAutoKill(false);
-        //sequence.Pause();
-        //currentSequence = sequence;
-        //currentSequence.Play();
-        
+        sequence.SetAutoKill(false);
+        sequence.Pause();
+        currentSequence = sequence;
+        currentSequence.Play();
+
     }
     #endregion
 
