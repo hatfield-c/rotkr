@@ -132,10 +132,22 @@ public class GameManager : MonoBehaviour
         wye.ExecuteComplete = () => 
         {
             wyesCompleted += 1;
-            LoadWye();
+            LoadWyeSelect();
         };
         ChangeState(wye);
         levelLoader.QueueLevel(chosenWyeType);
+        levelLoader.Transition();
+    }
+    void LoadWyeSelect()
+    {
+        WyeSelectState wyeSelect;
+        wyeSelect = new WyeSelectState(0, 0, 0);
+        wyeSelect.ExecuteComplete = () =>
+        {
+            LoadWye(wyeSelect.ChosenWye().WyeType);
+        };
+        ChangeState(wyeSelect);
+        levelLoader.QueueLevel(3);
         levelLoader.Transition();
     }
     #endregion

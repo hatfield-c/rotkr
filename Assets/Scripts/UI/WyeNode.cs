@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 public class WyeNode : MonoBehaviour
@@ -10,11 +11,13 @@ public class WyeNode : MonoBehaviour
 
     #region references
     [SerializeField] Toggle toggle = null;
+    [SerializeField] TextMeshProUGUI label = null;
     #endregion
 
     public void Init(WyeData data)
     {
         this.data = data;
+        label.text = data.WyeType.ToString();
     }
 
     #region handlers

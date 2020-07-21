@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class WyeNodeGroupManager : MonoBehaviour
 {
     #region references
     [SerializeField] ToggleGroup wyeNodeToggleGroup = null;
+    [SerializeField] GameObject wyeNodePrefab = null;
+    [SerializeField] Transform tempNodeHolder = null;
     Toggle currentSelectedToggle { get { return wyeNodeToggleGroup.ActiveToggles().FirstOrDefault(); } }
     WyeNode currentSelectedWyeNode;
     List<WyeNode> wyeNodes = new List<WyeNode>();
@@ -16,22 +19,35 @@ public class WyeNodeGroupManager : MonoBehaviour
     void Start()
     {
         //SelectToggle(1);
-        Init();
+        //Init(new List<WyeData>() { new WyeData { WyeType = TypeOfWye.CollectionChamber }, new WyeData { WyeType = TypeOfWye.Spillway } });
     }
 
     #region public functions
-    public void Init()
+    public void Init(List<WyeData> datum)
     {
         // TODO: spawn in the wye nodes as your children
+        foreach(WyeData data in datum)
+        {
+            GameObject GO = Instantiate(wyeNodePrefab, tempNodeHolder);
+            WyeNode node = GO.GetComponent<WyeNode>();
+            node.Init(data);
+            node.GetComponent<Toggle>().group = wyeNodeToggleGroup;
+        }
 
         // Store the toggles
-        wyeNodes = this.GetComponentsInChildren<WyeNode>().ToList<WyeNode>();
+        wyeNodes = GetComponentsInChildren<WyeNode>().ToList();
+
+        
 
         // subscribe to when they're toggled on
         foreach(WyeNode node in wyeNodes)
         {
             node.WyeNodeSelected += nodeSelected;
         }
+
+        // Allow switch off to false to prevent weird edge case
+        Sequence sequence = DOTween.Sequence();
+        sequence.InsertCallback(.1f, () => wyeNodeToggleGroup.allowSwitchOff = false);
     }
 
     public void SelectToggle(int id)

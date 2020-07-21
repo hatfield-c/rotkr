@@ -2,21 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WyeSelectState : AGameState
 {
     public WyeSelectState(int numberOfNodes, int branchRange, int numberOfSections)
     {
         //generateNodes(numberOfNodes, branchRange, numberOfSections);
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    ~WyeSelectState()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     #region variables
 
     #endregion
 
     #region references
+    WyeSelectStateReferences refs;
+    WyeData chosenWye;
     #endregion
 
     #region handlers
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        refs = GameObject.FindObjectOfType<WyeSelectStateReferences>();
+    }
     #endregion
 
     #region logic
@@ -25,11 +37,23 @@ public class WyeSelectState : AGameState
     #region public functions
     public override void Execute()
     {
-        ExecuteComplete?.Invoke();
+        // Setup
+        refs.wyeNodeGroupManager.Init(new List<WyeData>() { new WyeData { WyeType = TypeOfWye.CollectionChamber }, new WyeData { WyeType = TypeOfWye.Spillway } });
+        refs.BTN_Go.onClick.AddListener(() =>
+        {
+            chosenWye = refs.wyeNodeGroupManager.GetSelectedWyeData();
+            refs.BTN_Go.onClick.RemoveAllListeners();
+            ExecuteComplete?.Invoke();
+        });
     }
     public override void Cancel()
     {
         CancelComplete?.Invoke();
+    }
+
+    public WyeData ChosenWye()
+    {
+        return chosenWye;
     }
     #endregion
 
