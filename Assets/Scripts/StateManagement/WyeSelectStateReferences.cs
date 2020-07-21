@@ -5,5 +5,6 @@ using UnityEngine.UI;
 
 public class WyeSelectStateReferences : MonoBehaviour
 {
-    public WyeNode wyeNodeToggle;
+    public WyeNodeGroupManager wyeNodeGroupManager;
+    public Button BTN_Go;
 }

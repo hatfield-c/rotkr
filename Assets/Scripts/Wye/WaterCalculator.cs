@@ -63,13 +63,13 @@ public class WaterCalculator : MonoBehaviour
         int pixelXMod = (int)Mathf.Floor((pixelX / this.zoomLevel) + (time * this.scrollSpeed * this.noiseTexture.width));
         int pixelZMod = (int)Mathf.Floor((pixelZ / this.zoomLevel) + (time * this.scrollSpeed * this.noiseTexture.height));
 
-        Debug.Log(
-            pixelXMod.ToString() + ", " + pixelZMod.ToString() + "\n" +
-            pixelX.ToString() + ", " + pixelZ.ToString() + "\n" +
-            this.noiseTexture.width.ToString() + ", " + this.noiseTexture.height.ToString() + "\n" +
-            xCoord.ToString() + ", " + zCoord.ToString() + "\n" +
-            this.originX.ToString() + ", " + this.originZ.ToString()
-        );
+        //Debug.Log(
+        //    pixelXMod.ToString() + ", " + pixelZMod.ToString() + "\n" +
+        //    pixelX.ToString() + ", " + pixelZ.ToString() + "\n" +
+        //    this.noiseTexture.width.ToString() + ", " + this.noiseTexture.height.ToString() + "\n" +
+        //    xCoord.ToString() + ", " + zCoord.ToString() + "\n" +
+        //    this.originX.ToString() + ", " + this.originZ.ToString()
+        //);
 
         float n = this.noiseTexture.GetPixel(pixelXMod, pixelZMod).r;
         n = (n * this.vertScale) - this.vertOffset;

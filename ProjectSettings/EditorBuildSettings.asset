@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Wyes/Spillway.unity
     guid: d0a050888654382459f686a06acd8b53
+  - enabled: 1
+    path: Assets/Scenes/WyeSelect.unity
+    guid: 1ef293909ffda034086a087bf5027943
   m_configObjects: {}
