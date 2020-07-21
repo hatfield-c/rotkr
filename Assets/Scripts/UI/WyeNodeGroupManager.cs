@@ -10,7 +10,8 @@ public class WyeNodeGroupManager : MonoBehaviour
     #region references
     [SerializeField] ToggleGroup wyeNodeToggleGroup = null;
     [SerializeField] GameObject wyeNodePrefab = null;
-    [SerializeField] Transform tempNodeHolder = null;
+    [SerializeField] GameObject layerSectionPrefab = null;
+    [SerializeField] Transform sectionHolder = null;
     Toggle currentSelectedToggle { get { return wyeNodeToggleGroup.ActiveToggles().FirstOrDefault(); } }
     WyeNode currentSelectedWyeNode;
     List<WyeNode> wyeNodes = new List<WyeNode>();
@@ -23,27 +24,29 @@ public class WyeNodeGroupManager : MonoBehaviour
     }
 
     #region public functions
-    public void Init(List<WyeData> datum)
+    public void Init(List<List<WyeData>> sectionDatum)
     {
-        // TODO: spawn in the wye nodes as your children
-        foreach(WyeData data in datum)
+        foreach(List<WyeData> sectionData in sectionDatum)
         {
-            GameObject GO = Instantiate(wyeNodePrefab, tempNodeHolder);
-            WyeNode node = GO.GetComponent<WyeNode>();
-            node.Init(data);
-            node.GetComponent<Toggle>().group = wyeNodeToggleGroup;
+            // Create each section
+            GameObject section = Instantiate(layerSectionPrefab, sectionHolder);
+            foreach(WyeData data in sectionData)
+            {
+                // Create each node and attach it to the section
+                GameObject GO = Instantiate(wyeNodePrefab, section.transform);
+                WyeNode node = GO.GetComponent<WyeNode>();
+                node.Init(data);
+                node.GetComponent<Toggle>().group = wyeNodeToggleGroup;
+            }
+
         }
 
         // Store the toggles
         wyeNodes = GetComponentsInChildren<WyeNode>().ToList();
 
-        
-
         // subscribe to when they're toggled on
         foreach(WyeNode node in wyeNodes)
-        {
             node.WyeNodeSelected += nodeSelected;
-        }
 
         // Allow switch off to false to prevent weird edge case
         Sequence sequence = DOTween.Sequence();

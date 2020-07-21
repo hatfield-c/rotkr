@@ -141,7 +141,7 @@ public class GameManager : MonoBehaviour
     void LoadWyeSelect()
     {
         WyeSelectState wyeSelect;
-        wyeSelect = new WyeSelectState(0, 0, 0);
+        wyeSelect = new WyeSelectState(6, 3);
         wyeSelect.ExecuteComplete = () =>
         {
             LoadWye(wyeSelect.ChosenWye().WyeType);

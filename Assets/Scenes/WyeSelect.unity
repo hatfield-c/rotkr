@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -628,7 +628,9 @@ MonoBehaviour:
   wyeNodeToggleGroup: {fileID: 1645331776}
   wyeNodePrefab: {fileID: 3319144672883848319, guid: 06410dc89ec62ea48a5f517acb2a5d2d,
     type: 3}
-  tempNodeHolder: {fileID: 2131807748}
+  layerSectionPrefab: {fileID: 4348906878110043991, guid: ce7a66904d8d047459de16be7a0f33e2,
+    type: 3}
+  sectionHolder: {fileID: 2131807748}
 --- !u!114 &1645331776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1102,7 +1104,7 @@ GameObject:
   - component: {fileID: 2131807750}
   - component: {fileID: 2131807749}
   m_Layer: 5
-  m_Name: TempNodeHolder
+  m_Name: SectionHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1125,7 +1127,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1400, y: 440}
+  m_SizeDelta: {x: 1920, y: 440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2131807749
 MonoBehaviour:

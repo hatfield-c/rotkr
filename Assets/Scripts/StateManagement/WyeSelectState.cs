@@ -4,19 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// TODO: rename this state to layer map state
 public class WyeSelectState : AGameState
 {
-    public WyeSelectState(int numberOfNodes, int branchRange, int numberOfSections)
+    // Create a new random LayerMap with the WyeSelectState
+    public WyeSelectState(int numberOfSections, int branchRange)
     {
-        //generateNodes(numberOfNodes, branchRange, numberOfSections);
+        this.numberOfSections = numberOfSections;
+        this.branchRange = branchRange;
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    public WyeSelectState(LayerMapData data)
+    {
+        List<List<WyeData>> layerMapStructure;
     }
     ~WyeSelectState()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     #region variables
-
+    int numberOfSections;
+    int branchRange;
     #endregion
 
     #region references
@@ -38,7 +46,14 @@ public class WyeSelectState : AGameState
     public override void Execute()
     {
         // Setup
-        refs.wyeNodeGroupManager.Init(new List<WyeData>() { new WyeData { WyeType = TypeOfWye.CollectionChamber }, new WyeData { WyeType = TypeOfWye.Spillway } });
+        //refs.wyeNodeGroupManager.Init(new List<WyeData>() { new WyeData { WyeType = TypeOfWye.CollectionChamber }, new WyeData { WyeType = TypeOfWye.Spillway } });
+        List<List<WyeData>> sectionDatum = generateNodes(numberOfSections, branchRange);
+        if(sectionDatum == null)
+        {
+            Debug.LogError("Not enough sections");
+            return;
+        }
+        refs.wyeNodeGroupManager.Init(sectionDatum);
         refs.BTN_Go.onClick.AddListener(() =>
         {
             chosenWye = refs.wyeNodeGroupManager.GetSelectedWyeData();
@@ -58,41 +73,47 @@ public class WyeSelectState : AGameState
     #endregion
 
     #region private functions
-    void generateNodes(int numberOfNodes, int branchRange, int numberOfSections)
+    List<List<WyeData>> generateNodes(int numberOfSections, int branchRange)
     {
         if(numberOfSections < 2)
         {
             Debug.LogError("Not enough Sections for this WyeSelectState, exiting");
-            return;
+            return null;
         }
-        List<WyeData> data = generateWyeData(numberOfNodes);
 
-        List<List<WyeData>> branchData = new List<List<WyeData>>();
+        List<List<WyeData>> sectionData = new List<List<WyeData>>();
+        
         for(int i = 0; i < numberOfSections; i++)
         {
-            // If this is the first node in the map, make 1 node no branches
-            if(i == 0)
+            // If this is the first or last section in the map, make 1 node no branches
+            if(i == 0 || i == numberOfSections - 1)
             {
-                //branchData[0].Add();
+                List<WyeData> newSoloSection = new List<WyeData>();
+                newSoloSection.Add(getRandomWyeData());
+                sectionData.Add(newSoloSection);
+                continue;
             }
-            // If this is the last node in the map, make 1 node no branches
-            else if(i == numberOfSections - 1)
-            {
+            
+            // Otherwise create some nodes for this section, given it is valid with the remaining nodes
+            int randomSectionNodeNumber = UnityEngine.Random.Range(1, (branchRange + 1));
 
-            }
+            List<WyeData> newSection = new List<WyeData>();
+            for (int j = 0; j < randomSectionNodeNumber; j++)
+                newSection.Add(getRandomWyeData());
+            sectionData.Add(newSection);
         }
+
+        return sectionData;
     }
-    List<WyeData> generateWyeData(int numberOfNodes)
+    WyeData getRandomWyeData()
     {
-        List<WyeData> data = new List<WyeData>();
-        for(int i = 0; i < numberOfNodes; i++)
-        {
-            TypeOfWye type = TypeOfWye.CollectionChamber;
-            if (UnityEngine.Random.Range(0, 1f) > .5f)
-                type = TypeOfWye.Spillway;
-            data.Add(new WyeData { WyeType = type });
-        }
-        return data;
+        TypeOfWye type = TypeOfWye.CollectionChamber;
+        if (UnityEngine.Random.Range(0, 1f) > .5f)
+            type = TypeOfWye.Spillway;
+        return new WyeData { WyeType = type };
     }
     #endregion
 }
+
+// TODO: move this to external file
+public class LayerMapData { }
