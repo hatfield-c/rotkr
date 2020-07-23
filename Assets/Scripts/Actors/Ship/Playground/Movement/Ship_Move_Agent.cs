@@ -5,14 +5,14 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 
-public class ShipAgent : Agent
+public class Ship_Move_Agent : Agent
 {
-    public ShipArea shipArea;
+    public Ship_Move_Area shipArea;
     public ActorShipMovement moveControl;
     public ActorShipManager shipManager;
 
     protected ActorEquipment equipment;
-    private ShipAcademy shipAcademy;
+    
 
     protected InputMaster controls;
     protected InputRunner controlRun;
@@ -63,13 +63,20 @@ public class ShipAgent : Agent
     }
 
     public override void OnEpisodeBegin(){
-        Debug.Log("New Episode!");
         this.shipArea.ResetArea();
         this.lastShot = 0f;
     }
 
     public override void CollectObservations(VectorSensor sensor){
         sensor.AddObservation(this.lastShot);
+
+        // Observations
+        // target pos x
+        // target pos y
+        // target pos z
+        // target vel x
+        // target vel y
+        // target vel z
     }
 
     public override void Heuristic(float[] actionsOut){

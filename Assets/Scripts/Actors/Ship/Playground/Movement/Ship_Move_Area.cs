@@ -4,11 +4,13 @@ using UnityEngine;
 using Unity.MLAgents;
 using TMPro;
 
-public class ShipArea : MonoBehaviour {
-    public ShipAgent shipAgent;
+public class Ship_Move_Area : MonoBehaviour {
+    public Ship_Move_Agent shipAgent;
     public TextMeshPro rewardText;
 
-    public ShipTarget target;
+    public Ship_Move_Target target;
+
+    protected float dir = 1f;
 
     void Start(){
 
