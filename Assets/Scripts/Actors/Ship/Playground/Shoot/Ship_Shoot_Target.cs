@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShipTarget : MonoBehaviour {
+public class Ship_Shoot_Target : MonoBehaviour {
     
     public bool isHit = false;
 
