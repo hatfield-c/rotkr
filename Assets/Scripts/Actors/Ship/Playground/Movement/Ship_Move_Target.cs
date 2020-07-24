@@ -6,10 +6,10 @@ public class Ship_Move_Target : MonoBehaviour {
     
     public bool isHit = false;
 
-    Transform transform;
+    Transform trans;
 
     void Start(){
-        this.transform = this.GetComponent<Transform>();
+        this.trans = this.GetComponent<Transform>();
     }
 
     void OnTriggerStay(Collider other){
