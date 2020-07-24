@@ -20,7 +20,7 @@ public class Ship_Move_Agent : Agent
     protected Rigidbody rb;
     protected Vector3 startPosition;
     protected Vector3 startRotation;
-    protected Transform transform;
+    protected Transform trans;
 
     protected float accel;
     protected float turnRate;
@@ -30,9 +30,9 @@ public class Ship_Move_Agent : Agent
         base.Initialize();
 
         this.rb = this.GetComponent<Rigidbody>();
-        this.transform = this.GetComponent<Transform>();
-        this.startPosition = this.transform.position;
-        this.startRotation = this.transform.eulerAngles;
+        this.trans = this.GetComponent<Transform>();
+        this.startPosition = this.trans.position;
+        this.startRotation = this.trans.eulerAngles;
 
         this.equipment = this.shipManager.equipmentManager;
 
@@ -51,8 +51,6 @@ public class Ship_Move_Agent : Agent
         if(this.shipArea.target.isHit){
             Debug.Log("hit!");
             this.AddReward(1f / 5000f);
-
-            //this.EndEpisode();
         }
 
     }
@@ -69,11 +67,10 @@ public class Ship_Move_Agent : Agent
         this.moveControl.ControlShip(accel, turn);
 
         float dist = Vector3.Distance(
-            this.transform.position,
+            this.trans.position,
             this.shipArea.target.getTransform().position
         );
 
-        //this.AddReward(-1f / 5000f);
         this.AddReward(
             -( dist / (1000f * 10000f))
         );
@@ -82,74 +79,35 @@ public class Ship_Move_Agent : Agent
     public override void OnEpisodeBegin(){
         this.shipArea.ResetArea();
         this.rb.velocity = Vector3.zero;
-        this.transform.position = this.startPosition;
-        this.transform.eulerAngles = this.startRotation;
-        //this.lastShot = 0f;
+        this.trans.position = this.startPosition;
+        this.trans.eulerAngles = this.startRotation;
     }
 
     public override void CollectObservations(VectorSensor sensor){
-        Vector3 targetPos = (this.shipArea.target.getTransform().position - this.shipArea.transform.position) / 1000f;
-        Vector3 targetVel = this.shipArea.getRb().velocity / this.shipArea.maxSpeed;
-
-        Vector3 selfPos = (this.transform.position - this.shipArea.transform.position) / 1000f;
         Vector3 selfVel = this.rb.velocity;
-        Vector3 selfRot = this.transform.rotation.eulerAngles / 360f;
+        Vector3 difference = this.shipArea.target.getTransform().position - this.trans.position;
+        float angle = Vector3.Angle(this.trans.forward, difference);
 
         float distance = Vector3.Distance(
-            this.transform.position,
+            this.trans.position,
             this.shipArea.target.getTransform().position
         ) / 1000f;
 
-        //sensor.AddObservation(targetPos.x);
-        //sensor.AddObservation(targetPos.y);
-        //sensor.AddObservation(targetPos.z);
-        //sensor.AddObservation(targetVel.x);
-        //sensor.AddObservation(targetVel.y);
-        //sensor.AddObservation(targetVel.z);
-
-        //sensor.AddObservation(selfPos.x);
-        //sensor.AddObservation(selfPos.y);
-        //sensor.AddObservation(selfPos.z);
-        sensor.AddObservation(this.transform.forward.x);
-        sensor.AddObservation(this.transform.forward.y);
-        sensor.AddObservation(this.transform.forward.z);
+        sensor.AddObservation(this.trans.forward.x);
+        sensor.AddObservation(this.trans.forward.y);
+        sensor.AddObservation(this.trans.forward.z);
 
         sensor.AddObservation(selfVel.magnitude / 500f);
         sensor.AddObservation(selfVel.normalized.x);
         sensor.AddObservation(selfVel.normalized.y);
         sensor.AddObservation(selfVel.normalized.z);
 
-        //sensor.AddObservation(selfRot.x);
-        //sensor.AddObservation(selfRot.y);
-        //sensor.AddObservation(selfRot.z);
         sensor.AddObservation(distance);
-
-        Vector3 difference = this.shipArea.target.getTransform().position - this.transform.position;
-        float angle = Vector3.Angle(this.transform.forward, difference);
 
         sensor.AddObservation(difference.x / 1000);
         sensor.AddObservation(difference.y / 1000);
         sensor.AddObservation(difference.z / 1000);
         sensor.AddObservation(angle);
-        
-        // Observations
-        // target pos x
-        // target pos y
-        // target pos z
-        // target vel x
-        // target vel y
-        // target vel z
-        // self pos x
-        // self pos y
-        // self pos z
-        // self vel x
-        // self vel y
-        // self vel z
-        // self rotation x
-        // self rotation y
-        // self rotation z
-        // distance between two entities
-        // angle between front of ship and the target
     }
 
     public override void Heuristic(float[] actionsOut){
@@ -158,7 +116,6 @@ public class Ship_Move_Agent : Agent
     }
 
     public void HeuristicMovement(Vector2 inputDirection){
-        //this.moveControl.ControlShip(inputDirection.y, inputDirection.x);
         this.accel = inputDirection.y;
         this.turnRate = inputDirection.x;
     }

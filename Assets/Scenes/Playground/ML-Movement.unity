@@ -758,6 +758,21 @@ PrefabInstance:
       propertyPath: m_BrainParameters.NumStackedVectorObservations
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 42361185443027561, guid: 12bf498628b36404b8659c270b75ba4a,
+        type: 3}
+      propertyPath: m_BehaviorType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 42361185443027561, guid: 12bf498628b36404b8659c270b75ba4a,
+        type: 3}
+      propertyPath: m_UseChildSensors
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 42361185443027561, guid: 12bf498628b36404b8659c270b75ba4a,
+        type: 3}
+      propertyPath: m_InferenceDevice
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 921488107070605783, guid: 12bf498628b36404b8659c270b75ba4a,
         type: 3}
       propertyPath: m_DetectableTags.Array.size
