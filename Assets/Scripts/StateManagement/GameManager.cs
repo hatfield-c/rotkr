@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    #region state variables
-    int wyesCompleted = 0;
+    #region variables
+    public int LayerCount = 3;
+    public int LayerSectionCount = 6;
+    public int LayerBranchRange = 3;
     #endregion
 
     #region references
     [SerializeField] GameObject playerPrefab;
     [SerializeField] MainMenuUI mainMenuUI = null;
-    MainMenuState mainMenuState;
     IGameState currentState;
     Sequence currentSequence;
+    GameProgressionData progression;
 
     InputRunner inputRunner;
 
@@ -80,13 +83,20 @@ public class GameManager : MonoBehaviour
         inputRunner = new InputRunner();
 
         // Setup our initial state
-        mainMenuState = new MainMenuState(mainMenuUI);
+        MainMenuState mainMenuState = new MainMenuState(mainMenuUI);
         mainMenuState.ExecuteComplete = () =>
         {
             switch (mainMenuState.ChosenGameEntryPoint())
             {
                 case MainMenuState.GameEntryPoint.NewGame:
-                    LoadWye();
+                    // Create new game
+                    progression = new GameProgressionData(LayerCount, LayerSectionCount, LayerBranchRange);
+
+                    // Grab the first wye created from our game progression path and load that wye as the first level in New Game
+                    LayerMapData layer = progression.LayerMapDatum[progression.CurrentLayerIndex];
+                    LayerSectionData section = layer.LayerSectionDatum[layer.CurrentSectionIndex];
+                    WyeData wye = section.WyeDatum[0];
+                    LoadWye(wye.WyeType);
                     break;
                 case MainMenuState.GameEntryPoint.Continue:
                     break;
@@ -114,30 +124,27 @@ public class GameManager : MonoBehaviour
     {
         WyeState wye;
         if (chosenWyeType == TypeOfWye.None)
-        {
-            chosenWyeType = TypeOfWye.Spillway;
-            if (Random.Range(0f, 1f) > 0.5f)
-                chosenWyeType = TypeOfWye.CollectionChamber;
-            wye = new WyeState(new WyeData { WyeType = chosenWyeType }, playerPrefab, inputRunner.controls);
-        }
+            wye = new WyeState(new WyeData(true), playerPrefab, inputRunner.controls);
         else
-        {
-            wye = new WyeState(new WyeData { WyeType = chosenWyeType }, playerPrefab, inputRunner.controls);
-        }
+            wye = new WyeState(new WyeData(chosenWyeType), playerPrefab, inputRunner.controls);
         
         wye.ExecuteComplete = () => 
         {
-            wyesCompleted += 1;
-            LoadLayerMap();
+            LoadLayerMap(progression.LayerMapDatum[progression.CurrentLayerIndex]);
         };
         ChangeState(wye);
         levelLoader.QueueLevel(chosenWyeType);
         levelLoader.Transition();
     }
-    void LoadLayerMap()
+
+    void LoadLayerMap(LayerMapData data = null)
     {
         LayerMapState layerMap;
-        layerMap = new LayerMapState(6, 3);
+        if (data != null)
+            layerMap = new LayerMapState(data);
+        else
+            layerMap = new LayerMapState(new LayerMapData(LayerSectionCount, LayerBranchRange));
+        
         layerMap.ExecuteComplete = () =>
         {
             LoadWye(layerMap.ChosenWye().WyeType);
@@ -147,4 +154,26 @@ public class GameManager : MonoBehaviour
         levelLoader.Transition();
     }
     #endregion
+}
+
+public class GameProgressionData
+{
+    public GameProgressionData(int layerCount, int layerSectionCount, int layerBranchRange)
+    {
+        // record parameters
+        LayerCount = layerCount;
+        LayerSectionCount = layerSectionCount;
+        LayerBranchRange = layerBranchRange;
+
+        LayerMapDatum = new List<LayerMapData>();
+        
+        //Create the first LayerMap
+        LayerMapDatum.Add(new LayerMapData(LayerSectionCount, LayerBranchRange));
+    }
+
+    public int LayerCount;
+    public int LayerSectionCount;
+    public int LayerBranchRange;
+    public int CurrentLayerIndex;
+    public List<LayerMapData> LayerMapDatum;
 }
