@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WyeSelectStateReferences : MonoBehaviour
+public class LayerMapStateReferences : MonoBehaviour
 {
     public WyeNodeGroupManager wyeNodeGroupManager;
     public Button BTN_Go;
