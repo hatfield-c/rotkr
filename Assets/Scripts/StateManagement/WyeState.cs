@@ -73,7 +73,33 @@ public class WyeState : AGameState
     #endregion
 }
 
+
+/// <summary>
+/// Used to store and load data in <see cref="WyeState"/>.
+/// </summary>
 public class WyeData
 {
+    /// <summary>
+    /// Creates a new <see cref="WyeData"/> of type <paramref name="type"/>.
+    /// </summary>
+    /// <param name="type"></param>
+    public WyeData(TypeOfWye type)
+    {
+        WyeType = type;
+    }
+
+    /// <summary>
+    /// Creates a new <see cref="WyeData"/> with random attributes if <paramref name="createRandom"/> is true.
+    /// </summary>
+    /// <param name="createRandom"></param>
+    public WyeData(bool createRandom)
+    {
+        if (createRandom)
+        {
+            WyeType = TypeOfWye.CollectionChamber;
+            if (UnityEngine.Random.Range(0, 1f) > .5f)
+                WyeType = TypeOfWye.Spillway;
+        }
+    }
     public TypeOfWye WyeType;
 }
