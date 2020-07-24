@@ -50,7 +50,7 @@ public class Ship_Move_Agent : Agent
 
         if(this.shipArea.target.isHit){
             Debug.Log("hit!");
-            this.AddReward(1f / 10000f);
+            this.AddReward(1f / 5000f);
 
             //this.EndEpisode();
         }
@@ -68,12 +68,14 @@ public class Ship_Move_Agent : Agent
 
         this.moveControl.ControlShip(accel, turn);
 
-        //this.AddReward(-1f / 5000);
+        float dist = Vector3.Distance(
+            this.transform.position,
+            this.shipArea.target.getTransform().position
+        );
+
+        //this.AddReward(-1f / 5000f);
         this.AddReward(
-            -Vector3.Distance(
-                this.transform.position,
-                this.shipArea.target.getTransform().position
-            ) / (1000 * 10000)
+            -( dist / (1000f * 10000f))
         );
     }
 
@@ -90,7 +92,7 @@ public class Ship_Move_Agent : Agent
         Vector3 targetVel = this.shipArea.getRb().velocity / this.shipArea.maxSpeed;
 
         Vector3 selfPos = (this.transform.position - this.shipArea.transform.position) / 1000f;
-        Vector3 selfVel = this.rb.velocity / 500f;
+        Vector3 selfVel = this.rb.velocity;
         Vector3 selfRot = this.transform.rotation.eulerAngles / 360f;
 
         float distance = Vector3.Distance(
@@ -98,30 +100,38 @@ public class Ship_Move_Agent : Agent
             this.shipArea.target.getTransform().position
         ) / 1000f;
 
-        sensor.AddObservation(targetPos.x);
-        sensor.AddObservation(targetPos.y);
-        sensor.AddObservation(targetPos.z);
-        sensor.AddObservation(targetVel.x);
-        sensor.AddObservation(targetVel.y);
-        sensor.AddObservation(targetVel.z);
+        //sensor.AddObservation(targetPos.x);
+        //sensor.AddObservation(targetPos.y);
+        //sensor.AddObservation(targetPos.z);
+        //sensor.AddObservation(targetVel.x);
+        //sensor.AddObservation(targetVel.y);
+        //sensor.AddObservation(targetVel.z);
 
-        sensor.AddObservation(selfPos.x);
-        sensor.AddObservation(selfPos.y);
-        sensor.AddObservation(selfPos.z);
-        sensor.AddObservation(selfVel.x);
-        sensor.AddObservation(selfVel.y);
-        sensor.AddObservation(selfVel.z);
+        //sensor.AddObservation(selfPos.x);
+        //sensor.AddObservation(selfPos.y);
+        //sensor.AddObservation(selfPos.z);
+        sensor.AddObservation(this.transform.forward.x);
+        sensor.AddObservation(this.transform.forward.y);
+        sensor.AddObservation(this.transform.forward.z);
 
-        sensor.AddObservation(selfRot.x);
-        sensor.AddObservation(selfRot.y);
-        sensor.AddObservation(selfRot.z);
+        sensor.AddObservation(selfVel.magnitude / 500f);
+        sensor.AddObservation(selfVel.normalized.x);
+        sensor.AddObservation(selfVel.normalized.y);
+        sensor.AddObservation(selfVel.normalized.z);
+
+        //sensor.AddObservation(selfRot.x);
+        //sensor.AddObservation(selfRot.y);
+        //sensor.AddObservation(selfRot.z);
         sensor.AddObservation(distance);
 
         Vector3 difference = this.shipArea.target.getTransform().position - this.transform.position;
         float angle = Vector3.Angle(this.transform.forward, difference);
 
+        sensor.AddObservation(difference.x / 1000);
+        sensor.AddObservation(difference.y / 1000);
+        sensor.AddObservation(difference.z / 1000);
         sensor.AddObservation(angle);
-
+        
         // Observations
         // target pos x
         // target pos y
