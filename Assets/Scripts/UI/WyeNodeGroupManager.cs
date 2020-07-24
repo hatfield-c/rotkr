@@ -24,13 +24,13 @@ public class WyeNodeGroupManager : MonoBehaviour
     }
 
     #region public functions
-    public void Init(List<List<WyeData>> sectionDatum)
+    public void Init(LayerMapData layerData)
     {
-        foreach(List<WyeData> sectionData in sectionDatum)
+        foreach(LayerSectionData sectionData in layerData.LayerSectionDatum)
         {
             // Create each section
             GameObject section = Instantiate(layerSectionPrefab, sectionHolder);
-            foreach(WyeData data in sectionData)
+            foreach(WyeData data in sectionData.WyeDatum)
             {
                 // Create each node and attach it to the section
                 GameObject GO = Instantiate(wyeNodePrefab, section.transform);
@@ -39,6 +39,11 @@ public class WyeNodeGroupManager : MonoBehaviour
                 node.GetComponent<Toggle>().group = wyeNodeToggleGroup;
             }
 
+            // Modify the section if it was in the past
+            if (sectionData.WasChosen)
+            {
+                section.GetComponent<Image>().enabled = false;
+            }
         }
 
         // Store the toggles

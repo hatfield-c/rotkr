@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4611165891510093469}
   - component: {fileID: 4611165891510093458}
   m_Layer: 0
-  m_Name: WyeSelectStateReferences
+  m_Name: LayerMapStateReferences
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4611165891510093459}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90138f8b8d3a8b74fb5b03dcba391634, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b34c3b38c890064db85b29d74167e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   wyeNodeGroupManager: {fileID: 0}
