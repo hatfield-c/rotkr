@@ -4,38 +4,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// TODO: rename this state to layer map state
-public class WyeSelectState : AGameState
+public class LayerMapState : AGameState
 {
     // Create a new random LayerMap with the WyeSelectState
-    public WyeSelectState(int numberOfSections, int branchRange)
+    public LayerMapState(int numberOfSections, int branchRange)
     {
         this.numberOfSections = numberOfSections;
         this.branchRange = branchRange;
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    public WyeSelectState(LayerMapData data)
+    public LayerMapState(LayerMapData data)
     {
-        List<List<WyeData>> layerMapStructure;
     }
-    ~WyeSelectState()
+    ~LayerMapState()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
     #region variables
     int numberOfSections;
     int branchRange;
     #endregion
 
     #region references
-    WyeSelectStateReferences refs;
+    LayerMapStateReferences refs;
     WyeData chosenWye;
     #endregion
 
     #region handlers
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        refs = GameObject.FindObjectOfType<WyeSelectStateReferences>();
+        refs = GameObject.FindObjectOfType<LayerMapStateReferences>();
     }
     #endregion
 
