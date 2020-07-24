@@ -17,7 +17,12 @@ public class ActorShipMovement : AShipMovement
         float steer = 0f;
         steer = 1 * this.turnAngle;
 
-        Rigidbody.AddTorque(steer * this.transform.up * this.steerPower);
+        Vector3 calc = steer * this.transform.up * this.steerPower;
+        //Debug.Log($"turn: {this.turnAngle} , steer: {steer}, transform: {this.transform.up}, power: {this.steerPower}");
+        //Debug.Log($"calc: {calc}");
+        Rigidbody.AddTorque(calc);
+
+        //Debug.Log(this.turnAngle);
 
         Vector3 forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
         PhysicsHelper.ApplyForceToReachVelocity(
@@ -29,6 +34,8 @@ public class ActorShipMovement : AShipMovement
 
     public void ControlShip(float acceleration, float turnAngle)
     {
+        //Debug.Log($"calc: {calc}");
+
         this.acceleration = acceleration;
         this.turnAngle = turnAngle;
     }
