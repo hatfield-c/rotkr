@@ -99,13 +99,9 @@ public class GameManager : MonoBehaviour
         ChangeState(mainMenuState);
     }
 
+    void Start() {}
 
-    void Start()
-    {
-
-    }
-
-    void Update() { }
+    void Update() {}
     #endregion
 
     #region private functions
@@ -132,21 +128,21 @@ public class GameManager : MonoBehaviour
         wye.ExecuteComplete = () => 
         {
             wyesCompleted += 1;
-            LoadWyeSelect();
+            LoadLayerMap();
         };
         ChangeState(wye);
         levelLoader.QueueLevel(chosenWyeType);
         levelLoader.Transition();
     }
-    void LoadWyeSelect()
+    void LoadLayerMap()
     {
-        WyeSelectState wyeSelect;
-        wyeSelect = new WyeSelectState(6, 3);
-        wyeSelect.ExecuteComplete = () =>
+        LayerMapState layerMap;
+        layerMap = new LayerMapState(6, 3);
+        layerMap.ExecuteComplete = () =>
         {
-            LoadWye(wyeSelect.ChosenWye().WyeType);
+            LoadWye(layerMap.ChosenWye().WyeType);
         };
-        ChangeState(wyeSelect);
+        ChangeState(layerMap);
         levelLoader.QueueLevel(3);
         levelLoader.Transition();
     }
