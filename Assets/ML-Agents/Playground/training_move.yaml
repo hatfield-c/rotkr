@@ -1,5 +1,5 @@
 behaviors:
-  ShipPlay:
+  Ship_Move:
     trainer_type: ppo
     hyperparameters:
       batch_size: 64
