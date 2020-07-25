@@ -17,8 +17,12 @@ public class WyeState : AGameState
     }
     ~WyeState()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        UnsubscribeAll();
     }
+    #region variables
+    bool success;
+    #endregion
+
 
     #region references
     public WyeData Data;
@@ -62,13 +66,40 @@ public class WyeState : AGameState
         // Subscribe to End Gate events
         foreach(EndGate gate in refs.EndGates)
         {
-            gate.PlayerEnteredTheEnd += () => { ExecuteComplete?.Invoke(); };
+            gate.PlayerEnteredTheEnd += () =>
+            {
+                success = true;
+                UnsubscribeAll();
+                ExecuteComplete?.Invoke();
+            };
         }
+
+        // Subscribe to when the Wye is completely sunk (underwater)
+        refs.WyeSinker.WyeCompletelySunk += () =>
+        {
+            UnsubscribeAll();
+            ExecuteComplete?.Invoke();
+        };
         //ExecuteComplete?.Invoke();
     }
     public override void Cancel()
     {
         CancelComplete?.Invoke();
+    }
+
+    public bool GetSuccess()
+    {
+        return success;
+    }
+    #endregion
+
+    #region private functions
+    void UnsubscribeAll()
+    {
+        foreach(EndGate gate in refs.EndGates)
+            gate.PlayerEnteredTheEnd = null;
+        refs.WyeSinker.WyeCompletelySunk = null;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     #endregion
 }

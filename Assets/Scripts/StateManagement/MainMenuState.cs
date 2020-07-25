@@ -7,22 +7,13 @@ using DG.Tweening;
 
 public class MainMenuState : AGameState
 {
-    public MainMenuState(MainMenuUI ui)
+    public MainMenuState()
     {
-        MainMenuUI = ui;
-        ui.BTN_NewGame.onClick.AddListener(() =>
-        {
-            chosenGameEntryPoint = GameEntryPoint.NewGame;
-            ExecuteComplete?.Invoke();
-        });
-        ui.BTN_Quit.onClick.AddListener(() =>
-        {
-            CancelComplete?.Invoke();
-        });
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     ~MainMenuState()
     {
-
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     #region state variables
@@ -31,21 +22,26 @@ public class MainMenuState : AGameState
     #endregion
 
     #region references
-    MainMenuUI MainMenuUI;
+    MainMenuStateReferences refs;
     #endregion
 
     #region handlers
-    void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Update references
+        refs = GameObject.FindObjectOfType<MainMenuStateReferences>();
+
+        refs.BTN_NewGame.onClick.AddListener(() =>
+        {
+            chosenGameEntryPoint = GameEntryPoint.NewGame;
+            UnsubscribeAll();
+            ExecuteComplete?.Invoke();
+        });
+        refs.BTN_Quit.onClick.AddListener(() =>
+        {
+            UnsubscribeAll();
+            CancelComplete?.Invoke();
+        });
     }
     #endregion
 
@@ -55,6 +51,7 @@ public class MainMenuState : AGameState
     #region public functions
     public override void Execute()
     {
+        Debug.Log("Execute called for MainMenuState");
         if (SceneManager.GetActiveScene().name == "Master")
             return;
 
@@ -71,5 +68,11 @@ public class MainMenuState : AGameState
     #endregion
 
     #region private functions
+    void UnsubscribeAll()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        refs.BTN_NewGame.onClick.RemoveAllListeners();
+        refs.BTN_Quit.onClick.RemoveAllListeners();
+    }
     #endregion
 }
