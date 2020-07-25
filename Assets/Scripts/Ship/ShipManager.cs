@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ShipManager : MonoBehaviour {
     
-    public HunkManager HunkManager;
-    public EquipmentManager EquipmentManager;
-    public PlayerShipMovement PlayerShipMovement;
-    public BuoyancyManager BuoyancyManager;
+    [SerializeField] HunkManager hunkManager;
+    [SerializeField] EquipmentManager equipmentManager;
+    [SerializeField] PlayerShipMovement playerShipMovement;
+    [SerializeField] BuoyancyManager buoyancyManager;
 
     /// <summary>
     /// Check this true if using the player in a non-game State
@@ -31,9 +31,9 @@ public class ShipManager : MonoBehaviour {
     public void Init(InputMaster controls, GameObject waterPlane)
     {
         this.controls = controls;
-        EquipmentManager.Init(controls);
-        PlayerShipMovement.Init(controls);
-        BuoyancyManager.Init(waterPlane);
-        HunkManager.Init(null);
+        equipmentManager.Init(controls);
+        playerShipMovement.Init(controls);
+        buoyancyManager.Init(waterPlane);
+        hunkManager.Init(null);
     }
 }
