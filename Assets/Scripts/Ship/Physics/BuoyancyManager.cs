@@ -71,7 +71,15 @@ public class BuoyancyManager : MonoBehaviour {
     }
 
     protected void applyBuoyancy(Transform floatPoint, float depth){
+        if(this.Rigidbody.velocity.y > this.parameters.maxVelocity){
+            return;
+        }
+
         float force = this.parameters.buoyantForce(depth);
+
+        if(force > this.parameters.maxForce){
+            force = this.parameters.maxForce;
+        }
 
         this.Rigidbody.AddForceAtPosition(force * Vector3.up, floatPoint.position);
     }
