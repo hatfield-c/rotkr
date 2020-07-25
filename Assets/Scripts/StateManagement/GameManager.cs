@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
 
     #region references
     [SerializeField] GameObject playerPrefab;
-    [SerializeField] MainMenuUI mainMenuUI = null;
     IGameState currentState;
     Sequence currentSequence;
     GameProgressionData progression;
@@ -77,36 +76,14 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
 
         // General setup
         inputRunner = new InputRunner();
 
         // Setup our initial state
-        MainMenuState mainMenuState = new MainMenuState(mainMenuUI);
-        mainMenuState.ExecuteComplete = () =>
-        {
-            switch (mainMenuState.ChosenGameEntryPoint())
-            {
-                case MainMenuState.GameEntryPoint.NewGame:
-                    // Create new game
-                    progression = new GameProgressionData(LayerCount, LayerSectionCount, LayerBranchRange);
-
-                    // Grab the first wye created from our game progression path and load that wye as the first level in New Game
-                    LayerMapData layer = progression.LayerMapDatum[progression.CurrentLayerIndex];
-                    LayerSectionData section = layer.LayerSectionDatum[layer.CurrentSectionIndex];
-                    WyeData wye = section.WyeDatum[0];
-                    LoadWye(wye.WyeType);
-                    break;
-                case MainMenuState.GameEntryPoint.Continue:
-                    break;
-            }
-        };
-        mainMenuState.CancelComplete = () =>
-        {
-            Application.Quit();
-        };
-        ChangeState(mainMenuState);
+        LoadMainMenu(true);
     }
 
     void Start() {}
@@ -123,6 +100,7 @@ public class GameManager : MonoBehaviour
     void LoadWye(TypeOfWye chosenWyeType = TypeOfWye.None)
     {
         WyeState wye;
+
         if (chosenWyeType == TypeOfWye.None)
             wye = new WyeState(new WyeData(true), playerPrefab, inputRunner.controls);
         else
@@ -130,7 +108,10 @@ public class GameManager : MonoBehaviour
         
         wye.ExecuteComplete = () => 
         {
-            LoadLayerMap(progression.LayerMapDatum[progression.CurrentLayerIndex]);
+            if (wye.GetSuccess())
+                LoadLayerMap(progression.LayerMapDatum[progression.CurrentLayerIndex]);
+            else
+                LoadMainMenu();
         };
         ChangeState(wye);
         levelLoader.QueueLevel(chosenWyeType);
@@ -152,6 +133,40 @@ public class GameManager : MonoBehaviour
         ChangeState(layerMap);
         levelLoader.QueueLevel(3);
         levelLoader.Transition();
+    }
+
+    void LoadMainMenu(bool isFirstLoad = false)
+    {
+        MainMenuState mainMenuState = new MainMenuState();
+        mainMenuState.ExecuteComplete = () =>
+        {
+            switch (mainMenuState.ChosenGameEntryPoint())
+            {
+                case MainMenuState.GameEntryPoint.NewGame:
+                    // Create new game
+                    progression = new GameProgressionData(LayerCount, LayerSectionCount, LayerBranchRange);
+
+                    // Grab the first wye created from our game progression path and load that wye as the first level in New Game
+                    LayerMapData layer = progression.LayerMapDatum[progression.CurrentLayerIndex];
+                    LayerSectionData section = layer.LayerSectionDatum[layer.CurrentSectionIndex];
+                    WyeData wye = section.WyeDatum[0];
+                    Debug.Log($"loading wye type from new game: {wye.WyeType}");
+                    LoadWye(wye.WyeType);
+                    break;
+                case MainMenuState.GameEntryPoint.Continue:
+                    break;
+            }
+        };
+        mainMenuState.CancelComplete = () =>
+        {
+            Application.Quit();
+        };
+        ChangeState(mainMenuState);
+        if (!isFirstLoad)
+        {
+            levelLoader.QueueLevel(0);
+            levelLoader.Transition();
+        }
     }
     #endregion
 }
