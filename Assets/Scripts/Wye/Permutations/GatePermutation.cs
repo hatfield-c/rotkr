@@ -18,19 +18,19 @@ public class GatePermutation : MonoBehaviour, IPermutable
     }
 
     protected GameObject permuteGates(List<PermutationLayer> layer){
-        GameObject root = new GameObject("Exit Gates");
+        GameObject root = this.gameObject;
 
         int numGate = this.GatePositions.Count;
-        int closedNum = Random.Range(numGate - this.MaxGates, numGate - this.MinGates);
+        int closedNum = Random.Range(numGate - this.MaxGates, numGate - this.MinGates + 1);
 
         int[] closedGates = this.chooseClosedGates(closedNum, numGate);
         for(int i = 0; i < numGate; i++){
             if(this.indexInArray(closedGates, i)){
-                GameObject closedPrefab = this.GatePositions[i].prefab.transform.Find("exit_gate_closed").gameObject;
-                GameObject closedGate = Instantiate(closedPrefab, closedPrefab.transform.position, closedPrefab.transform.rotation, root.transform);
+                GameObject extraGate = this.GatePositions[i].prefab.transform.Find("exit_gate").gameObject;
+                Destroy(extraGate);
             } else {
-                GameObject openPrefab = this.GatePositions[i].prefab.transform.Find("exit_gate").gameObject;
-                GameObject openGate = Instantiate(openPrefab, openPrefab.transform.position, openPrefab.transform.rotation, root.transform);
+                GameObject extraGate = this.GatePositions[i].prefab.transform.Find("exit_gate_closed").gameObject;
+                Destroy(extraGate);
             }
         }
 
