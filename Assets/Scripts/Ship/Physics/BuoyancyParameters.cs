@@ -12,6 +12,8 @@ public class BuoyancyParameters
 
     public float torqueDamping = 1.0f;
     public float maxDepth = 1.0f;
+    public float maxForce = 10000f;
+    public float maxVelocity = 20f;
 
     public float buoyantForce(float depth){
         return this.force * (forceRatio / (Mathf.Exp( (forceRatio - (depth - threshold)) * forceBias)));
