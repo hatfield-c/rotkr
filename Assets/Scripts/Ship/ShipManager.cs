@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class ShipManager : MonoBehaviour {
     
-    public HunkManager hunkManager;
-    public EquipmentManager equipmentManager;
-    public PlayerShipMovement playerShipMovement;
-    public BuoyancyManager buoyancyManager;
+    public HunkManager HunkManager;
+    public EquipmentManager EquipmentManager;
+    public PlayerShipMovement PlayerShipMovement;
+    public BuoyancyManager BuoyancyManager;
 
+    /// <summary>
+    /// Check this true if using the player in a non-game State
+    /// </summary>
+    public bool Debug;
     protected InputMaster controls;
 
     void Start()
     {
-        if (InputRunner.Instance != null)
+        if (Debug)
         {
-            // Search for singleton instance of InputRunner
-            controls = InputRunner.Instance.controls;
-        }
-        else
-        {
-            // If it doesn't exist THEN make a new one. This will make it to where you can test the player and movement in any scene without all the back end architecture.
             InputRunner runner = new InputRunner();
-            if (runner != null)
-                controls = runner.controls;
+            Init(runner.controls, FindObjectOfType<WaterCalculator>().gameObject);
         }
     }
 
@@ -34,9 +31,9 @@ public class ShipManager : MonoBehaviour {
     public void Init(InputMaster controls, GameObject waterPlane)
     {
         this.controls = controls;
-        equipmentManager.Init(controls);
-        playerShipMovement.Init(controls);
-        buoyancyManager.Init(waterPlane);
-        hunkManager.Init(null);
+        EquipmentManager.Init(controls);
+        PlayerShipMovement.Init(controls);
+        BuoyancyManager.Init(waterPlane);
+        HunkManager.Init(null);
     }
 }
