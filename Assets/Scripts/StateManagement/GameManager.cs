@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System;
+using UnityEditorInternal;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region references
-    [SerializeField] GameObject playerPrefab;
+    [SerializeField] GameObject playerPrefab = null;
     IGameState currentState;
     Sequence currentSequence;
     GameProgressionData progression;
@@ -97,24 +98,23 @@ public class GameManager : MonoBehaviour
         Debug.Log($"<color=red>Changed from {currentState} to {state}.</color>");
         currentState = state;
     }
-    void LoadWye(TypeOfWye chosenWyeType = TypeOfWye.None)
+    void LoadWye(WyeData data)
     {
         WyeState wye;
-
-        if (chosenWyeType == TypeOfWye.None)
-            wye = new WyeState(new WyeData(true), playerPrefab, inputRunner.controls);
-        else
-            wye = new WyeState(new WyeData(chosenWyeType), playerPrefab, inputRunner.controls);
+        wye = new WyeState(data, playerPrefab, inputRunner.controls);
         
         wye.ExecuteComplete = () => 
         {
             if (wye.GetSuccess())
+            {
+                progression.CompleteSection(wye.Data);
                 LoadLayerMap(progression.LayerMapDatum[progression.CurrentLayerIndex]);
+            }
             else
                 LoadMainMenu();
         };
         ChangeState(wye);
-        levelLoader.QueueLevel(chosenWyeType);
+        levelLoader.QueueLevel(data.WyeType);
         levelLoader.Transition();
     }
 
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
         
         layerMap.ExecuteComplete = () =>
         {
-            LoadWye(layerMap.ChosenWye().WyeType);
+            LoadWye(layerMap.ChosenWye());
         };
         ChangeState(layerMap);
         levelLoader.QueueLevel(3);
@@ -150,8 +150,7 @@ public class GameManager : MonoBehaviour
                     LayerMapData layer = progression.LayerMapDatum[progression.CurrentLayerIndex];
                     LayerSectionData section = layer.LayerSectionDatum[layer.CurrentSectionIndex];
                     WyeData wye = section.WyeDatum[0];
-                    Debug.Log($"loading wye type from new game: {wye.WyeType}");
-                    LoadWye(wye.WyeType);
+                    LoadWye(wye);
                     break;
                 case MainMenuState.GameEntryPoint.Continue:
                     break;
@@ -191,4 +190,47 @@ public class GameProgressionData
     public int LayerBranchRange;
     public int CurrentLayerIndex;
     public List<LayerMapData> LayerMapDatum;
+
+    public void CompleteSection(WyeData wyeData)
+    {
+        Debug.Log($"<color=green>{wyeData.ID}</color>");
+        LayerMapData layer = LayerMapDatum[CurrentLayerIndex];
+
+        // Update Section Data class
+        LayerSectionData section = layer.LayerSectionDatum[layer.CurrentSectionIndex];
+        for(int i = 0; i < section.WyeDatum.Count; i++)
+        {
+            
+            if (section.WyeDatum[i].ID == wyeData.ID)
+            {
+                Debug.Log($"call that node: {i}");
+                section.ChooseNode(i);
+                break;
+            }
+            else
+            {
+                Debug.Log($"<color=orange>Completed wye with ID: {wyeData.ID}, doesn't match section node with ID {section.WyeDatum[i].ID}</color>");
+            }
+        }
+
+        // Update Layer Data class
+        layer.CurrentSectionIndex++;
+
+        if(layer.CurrentSectionIndex >= layer.SectionCount)
+            CompleteLayer(layer);
+    }
+
+    void CompleteLayer(LayerMapData layer)
+    {
+        layer.CurrentSectionIndex = layer.SectionCount;
+        layer.Completed = true;
+        CurrentLayerIndex++;
+        LayerMapDatum.Add(new LayerMapData(LayerSectionCount, LayerBranchRange));
+
+        if(CurrentLayerIndex >= LayerCount)
+        {
+            CurrentLayerIndex = LayerCount;
+            Debug.LogError("GAME IS COMPLETE. WRITE THIS FUNCTIONALITY");
+        }
+    }
 }

@@ -17,7 +17,7 @@ public class WyeNode : MonoBehaviour
     public void Init(WyeData data)
     {
         this.data = data;
-        label.text = data.WyeType.ToString();
+        label.text = data.WyeType.ToString() + $" ID: {data.ID}";
     }
 
     #region handlers
@@ -38,6 +38,23 @@ public class WyeNode : MonoBehaviour
     public WyeData GetData()
     {
         return data;
+    }
+    
+    public void DisplayHistory(bool wasChosen)
+    {
+        // Change how this node is displayed
+        if (wasChosen)
+        {
+            label.text = "[" + label.text + "]";
+        }
+        else
+        {
+            label.text = "-" + label.text + "-";
+        }
+    }
+    public void ToggleInteractable(bool toggle)
+    {
+        this.toggle.interactable = toggle;
     }
     #endregion
 }

@@ -20,4 +20,10 @@ public class LayerSectionData
     public bool WasChosen;
     public int ChosenNodeIndex;
     public List<WyeData> WyeDatum;
+
+    public void ChooseNode(int chosenNodeIndex = 0)
+    {
+        WasChosen = true;
+        ChosenNodeIndex = chosenNodeIndex;
+    }
 }
