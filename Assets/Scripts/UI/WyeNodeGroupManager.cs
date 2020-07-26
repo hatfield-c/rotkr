@@ -28,22 +28,10 @@ public class WyeNodeGroupManager : MonoBehaviour
     {
         foreach(LayerSectionData sectionData in layerData.LayerSectionDatum)
         {
-            // Create each section
+            // Create each section and pass the data it needs
             GameObject section = Instantiate(layerSectionPrefab, sectionHolder);
-            foreach(WyeData data in sectionData.WyeDatum)
-            {
-                // Create each node and attach it to the section
-                GameObject GO = Instantiate(wyeNodePrefab, section.transform);
-                WyeNode node = GO.GetComponent<WyeNode>();
-                node.Init(data);
-                node.GetComponent<Toggle>().group = wyeNodeToggleGroup;
-            }
-
-            // Modify the section if it was in the past
-            if (sectionData.WasChosen)
-            {
-                section.GetComponent<Image>().enabled = false;
-            }
+            bool isCurrentSection = section.transform.GetSiblingIndex() == layerData.CurrentSectionIndex;
+            section.GetComponent<LayerSection>().Init(sectionData, wyeNodePrefab, wyeNodeToggleGroup, isCurrentSection);
         }
 
         // Store the toggles
@@ -74,7 +62,6 @@ public class WyeNodeGroupManager : MonoBehaviour
     void nodeSelected(WyeNode node)
     {
         currentSelectedWyeNode = node;
-        Debug.Log($"node selected: {node.name}");
     }
     #endregion
 }

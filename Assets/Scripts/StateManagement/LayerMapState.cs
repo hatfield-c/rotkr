@@ -45,19 +45,17 @@ public class LayerMapState : AGameState
         {
             chosenWye = refs.wyeNodeGroupManager.GetSelectedWyeData();
 
+            // TODO: REFACTOR THIS
             // Update the data classes
-            LayerSectionData section = data.LayerSectionDatum[data.CurrentSectionIndex];
-            section.WasChosen = true;
-            for(int i = 0; i < section.WyeDatum.Count; i++)
-                if (section.WyeDatum[i] == chosenWye)
-                    section.ChosenNodeIndex = i;
-
-            data.CurrentSectionIndex++;
-            if(data.CurrentSectionIndex >= data.SectionCount)
-            {
-                data.CurrentSectionIndex = data.SectionCount - 1;
-                data.Completed = true;
-            }
+            //LayerSectionData section = data.LayerSectionDatum[data.CurrentSectionIndex];
+            //for(int i = 0; i < section.WyeDatum.Count; i++)
+            //{
+            //    if (section.WyeDatum[i] == chosenWye)
+            //    {
+            //        section.ChooseNode(i);
+            //        break;
+            //    }
+            //}
 
             refs.BTN_Go.onClick.RemoveAllListeners();
             ExecuteComplete?.Invoke();

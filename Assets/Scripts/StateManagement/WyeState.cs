@@ -116,6 +116,7 @@ public class WyeData
     /// <param name="type"></param>
     public WyeData(TypeOfWye type)
     {
+        AssignID();
         WyeType = type;
     }
 
@@ -125,6 +126,7 @@ public class WyeData
     /// <param name="createRandom"></param>
     public WyeData(bool createRandom)
     {
+        AssignID();
         if (createRandom)
         {
             WyeType = TypeOfWye.CollectionChamber;
@@ -132,5 +134,20 @@ public class WyeData
                 WyeType = TypeOfWye.Spillway;
         }
     }
+
+    void AssignID()
+    {
+        if(IDs == null)
+        {
+            IDs = new List<int>();
+            Debug.Log("<color=cyan>Creating new ID list</color>");
+        }
+            
+        ID = IDs.Count;
+        IDs.Add(ID);
+        Debug.Log($"<color=cyan>Assigning ID: {ID}. IDs.Count is now: {IDs.Count}</color>");
+    }
     public TypeOfWye WyeType;
+    public int ID;
+    public static List<int> IDs;
 }

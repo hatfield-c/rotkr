@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ShipManager : MonoBehaviour {
     
-    [SerializeField] HunkManager hunkManager;
-    [SerializeField] EquipmentManager equipmentManager;
-    [SerializeField] PlayerShipMovement playerShipMovement;
-    [SerializeField] BuoyancyManager buoyancyManager;
+    [SerializeField] HunkManager hunkManager = null;
+    [SerializeField] EquipmentManager equipmentManager = null;
+    [SerializeField] PlayerShipMovement playerShipMovement = null;
+    [SerializeField] BuoyancyManager buoyancyManager = null;
 
     /// <summary>
     /// Check this true if using the player in a non-game State
