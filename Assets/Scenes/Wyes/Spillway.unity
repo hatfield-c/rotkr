@@ -324,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sinkAmount: 524
   sinkTolerance: 1
-  sinkTime: 20
+  sinkTime: 360
 --- !u!4 &212139286 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1795416402295105205, guid: d193ef72ee35f3c429197aacafb54306,
