@@ -51,7 +51,7 @@ public class MainMenuState : AGameState
     #region public functions
     public override void Execute()
     {
-        Debug.Log("Execute called for MainMenuState");
+        Debug.Log("<color=orange>Execute called for MainMenuState</color>");
         if (SceneManager.GetActiveScene().name == "Master")
             return;
 

@@ -39,23 +39,12 @@ public class LayerMapState : AGameState
     #region public functions
     public override void Execute()
     {
+        Debug.Log("<color=orange>Execute called for LayerMapState</color>");
         // Setup
         refs.wyeNodeGroupManager.Init(data);
         refs.BTN_Go.onClick.AddListener(() =>
         {
             chosenWye = refs.wyeNodeGroupManager.GetSelectedWyeData();
-
-            // TODO: REFACTOR THIS
-            // Update the data classes
-            //LayerSectionData section = data.LayerSectionDatum[data.CurrentSectionIndex];
-            //for(int i = 0; i < section.WyeDatum.Count; i++)
-            //{
-            //    if (section.WyeDatum[i] == chosenWye)
-            //    {
-            //        section.ChooseNode(i);
-            //        break;
-            //    }
-            //}
 
             refs.BTN_Go.onClick.RemoveAllListeners();
             ExecuteComplete?.Invoke();

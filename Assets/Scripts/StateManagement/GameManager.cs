@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
     #region private functions
     void ChangeState(IGameState state)
     {
-        Debug.Log($"<color=red>Changed from {currentState} to {state}.</color>");
+        Debug.Log($"<color=orange>Changed from {currentState} to {state}.</color>");
         currentState = state;
     }
     void LoadWye(WyeData data)
@@ -193,7 +193,6 @@ public class GameProgressionData
 
     public void CompleteSection(WyeData wyeData)
     {
-        Debug.Log($"<color=green>{wyeData.ID}</color>");
         LayerMapData layer = LayerMapDatum[CurrentLayerIndex];
 
         // Update Section Data class
@@ -203,13 +202,8 @@ public class GameProgressionData
             
             if (section.WyeDatum[i].ID == wyeData.ID)
             {
-                Debug.Log($"call that node: {i}");
                 section.ChooseNode(i);
                 break;
-            }
-            else
-            {
-                Debug.Log($"<color=orange>Completed wye with ID: {wyeData.ID}, doesn't match section node with ID {section.WyeDatum[i].ID}</color>");
             }
         }
 

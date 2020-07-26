@@ -49,7 +49,7 @@ public class WyeState : AGameState
     #region public functions
     public override void Execute()
     {
-        Debug.Log($"Execute called for {Data.WyeType} wye.");
+        Debug.Log($"<color=orange>Execute called for {Data.WyeType} wye.</color>");
         // Spawn the player
         if (playerPrefab != null)
         {
@@ -138,14 +138,10 @@ public class WyeData
     void AssignID()
     {
         if(IDs == null)
-        {
             IDs = new List<int>();
-            Debug.Log("<color=cyan>Creating new ID list</color>");
-        }
             
         ID = IDs.Count;
         IDs.Add(ID);
-        Debug.Log($"<color=cyan>Assigning ID: {ID}. IDs.Count is now: {IDs.Count}</color>");
     }
     public TypeOfWye WyeType;
     public int ID;
