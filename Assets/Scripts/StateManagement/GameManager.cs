@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using DG.Tweening;
 using System;
 using UnityEditorInternal;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -107,8 +108,12 @@ public class GameManager : MonoBehaviour
         {
             if (wye.GetSuccess())
             {
-                progression.CompleteSection(wye.Data);
-                LoadLayerMap(progression.LayerMapDatum[progression.CurrentLayerIndex]);
+                if (progression.CompleteSection(wye.Data))
+                {
+                    LoadVictory();
+                }
+                else
+                    LoadLayerMap(progression.LayerMapDatum[progression.CurrentLayerIndex]);
             }
             else
                 LoadMainMenu();
@@ -167,6 +172,17 @@ public class GameManager : MonoBehaviour
             levelLoader.Transition();
         }
     }
+    void LoadVictory()
+    {
+        VictoryState victory = new VictoryState(inputRunner.controls);
+        victory.ExecuteComplete = () =>
+        {
+            LoadMainMenu();
+        };
+        ChangeState(victory);
+        levelLoader.QueueLevel(4);
+        levelLoader.Transition();
+    }
     #endregion
 }
 
@@ -191,15 +207,19 @@ public class GameProgressionData
     public int CurrentLayerIndex;
     public List<LayerMapData> LayerMapDatum;
 
-    public void CompleteSection(WyeData wyeData)
+    /// <summary>
+    /// Updates the <see cref="GameProgressionData"/> after completing a section.
+    /// </summary>
+    /// <param name="wyeData"></param>
+    /// <returns>true if the next section is the last section in the game, false otherwise</returns>
+    public bool CompleteSection(WyeData wyeData)
     {
         LayerMapData layer = LayerMapDatum[CurrentLayerIndex];
 
         // Update Section Data class
         LayerSectionData section = layer.LayerSectionDatum[layer.CurrentSectionIndex];
         for(int i = 0; i < section.WyeDatum.Count; i++)
-        {
-            
+        {   
             if (section.WyeDatum[i].ID == wyeData.ID)
             {
                 section.ChooseNode(i);
@@ -212,6 +232,11 @@ public class GameProgressionData
 
         if(layer.CurrentSectionIndex >= layer.SectionCount)
             CompleteLayer(layer);
+
+        if (CurrentLayerIndex >= LayerCount - 1 && layer.CurrentSectionIndex >= LayerSectionCount)
+            return true;
+        else
+            return false;
     }
 
     void CompleteLayer(LayerMapData layer)
@@ -219,12 +244,14 @@ public class GameProgressionData
         layer.CurrentSectionIndex = layer.SectionCount;
         layer.Completed = true;
         CurrentLayerIndex++;
-        LayerMapDatum.Add(new LayerMapData(LayerSectionCount, LayerBranchRange));
 
         if(CurrentLayerIndex >= LayerCount)
         {
             CurrentLayerIndex = LayerCount;
-            Debug.LogError("GAME IS COMPLETE. WRITE THIS FUNCTIONALITY");
+        }
+        else
+        {
+            LayerMapDatum.Add(new LayerMapData(LayerSectionCount, LayerBranchRange));
         }
     }
 }

@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LayerMap.unity
     guid: 1ef293909ffda034086a087bf5027943
+  - enabled: 1
+    path: Assets/Scenes/Victory.unity
+    guid: cc8e0c862011a604496aac71ab32dbb7
   m_configObjects: {}
