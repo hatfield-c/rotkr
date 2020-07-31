@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
@@ -38,7 +36,7 @@ public class WyeState : AGameState
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Update references
-        refs = GameObject.FindObjectOfType<WyeStateReferences>();
+        refs = Object.FindObjectOfType<WyeStateReferences>();
     }
     #endregion
 
@@ -54,9 +52,9 @@ public class WyeState : AGameState
         if (playerPrefab != null)
         {
             // Choose a random spawn point to spawn the player
-            int spawnIndex = UnityEngine.Random.Range(0, refs.SpawnPoints.Count);
+            int spawnIndex = Random.Range(0, refs.SpawnPoints.Count);
 
-            player = GameObject.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation) as GameObject;
+            player = Object.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation);
             ship = player.GetComponent<ShipManager>();
             ship.Init(controls, refs.WaterPlane);
         }
@@ -80,10 +78,10 @@ public class WyeState : AGameState
             UnsubscribeAll();
             ExecuteComplete?.Invoke();
         };
-        //ExecuteComplete?.Invoke();
     }
     public override void Cancel()
     {
+        UnsubscribeAll();
         CancelComplete?.Invoke();
     }
 
@@ -130,7 +128,7 @@ public class WyeData
         if (createRandom)
         {
             WyeType = TypeOfWye.CollectionChamber;
-            if (UnityEngine.Random.Range(0, 1f) > .5f)
+            if (Random.Range(0, 1f) > .5f)
                 WyeType = TypeOfWye.Spillway;
         }
     }

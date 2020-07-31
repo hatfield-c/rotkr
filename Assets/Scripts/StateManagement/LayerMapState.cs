@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LayerMapState : AGameState
@@ -29,7 +26,7 @@ public class LayerMapState : AGameState
     #region handlers
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        refs = GameObject.FindObjectOfType<LayerMapStateReferences>();
+        refs = Object.FindObjectOfType<LayerMapStateReferences>();
     }
     #endregion
 
