@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 
 public enum TypeOfWye { None, CollectionChamber, Spillway };
 public class WyeState : AGameState
@@ -17,8 +16,11 @@ public class WyeState : AGameState
     {
         UnsubscribeAll();
     }
+
+    enum WyeSubState { None, MidWye, Repairing};
     #region variables
     bool success;
+    WyeSubState substate = WyeSubState.None;
     #endregion
 
 
@@ -48,6 +50,8 @@ public class WyeState : AGameState
     public override void Execute()
     {
         Debug.Log($"<color=orange>Execute called for {Data.WyeType} wye.</color>");
+
+        ChangeSubState(WyeSubState.MidWye);
         // Spawn the player
         if (playerPrefab != null)
         {
@@ -68,7 +72,7 @@ public class WyeState : AGameState
             {
                 success = true;
                 UnsubscribeAll();
-                ExecuteComplete?.Invoke();
+                ChangeSubState(WyeSubState.Repairing);
             };
         }
 
@@ -98,6 +102,23 @@ public class WyeState : AGameState
             gate.PlayerEnteredTheEnd = null;
         refs.WyeSinker.WyeCompletelySunk = null;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void ChangeSubState(WyeSubState state)
+    {
+        substate = state;
+        switch (state)
+        {
+            case WyeSubState.None:
+                break;
+            case WyeSubState.MidWye:
+                break;
+            case WyeSubState.Repairing:
+                // Bring up repair menu and on click listener
+                refs.RepairMenu.Init(() => { ExecuteComplete?.Invoke(); });
+                refs.RepairMenu.Show();
+                break;
+        }
     }
     #endregion
 }
