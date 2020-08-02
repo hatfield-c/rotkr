@@ -19,10 +19,10 @@ public class RatStateManager : MonoBehaviour
 
     #region references
     [SerializeField] Animator animator = null;
-    [SerializeField] CapsuleCollider ratCollider = null;
     [SerializeField] RatHealthSystem healthSystem = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
     public RatAnimationMode AnimationMode;
+    public RatMovement ratMovement;
     #endregion
 
     #region state variables
@@ -32,14 +32,6 @@ public class RatStateManager : MonoBehaviour
     public bool Swimming = false;
     public bool IsAlive = false;
     public float feetOffset = 0f;
-    public float maxDistance = 10f;
-    #endregion
-
-    #region blackboard variables
-    RaycastHit hit;
-    Vector3 position;
-    Vector3 direction;
-    bool isHit;
     #endregion
 
     #region handlers
@@ -81,7 +73,7 @@ public class RatStateManager : MonoBehaviour
     void FixedUpdate()
     {
         bool wasGrounded = Grounded;
-        Grounded = isGrounded();
+        this.updateGrounded();
         //Swimming = isSwimming();
         if (IsAlive)
         {
@@ -158,33 +150,14 @@ public class RatStateManager : MonoBehaviour
     {
         animator.SetFloat("steerValue", value);
     }
-    bool isGrounded()
+    
+    void updateGrounded()
     {        
-        position = transform.TransformPoint(ratCollider.center);
-        direction = -transform.up;
-
-        isHit = Physics.SphereCast(position, ratCollider.radius, direction, out hit,
-            maxDistance);
-        return isHit;
+        this.Grounded = this.ratMovement.IsGrounded();
     }
     //bool isSwimming()
     //{
     //    return true;
     //}
-    void OnDrawGizmos()
-    {
-        if (isHit)
-        {
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawRay(position, direction * hit.distance);
-            Gizmos.DrawWireSphere(position + direction * hit.distance, ratCollider.radius);
-        }
-        else
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawRay(position, direction * maxDistance);
-        }
-    }
     #endregion
 }
