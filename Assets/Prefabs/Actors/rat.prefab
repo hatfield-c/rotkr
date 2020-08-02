@@ -350,6 +350,7 @@ GameObject:
   - component: {fileID: 152611073}
   - component: {fileID: 5652029553789277350}
   - component: {fileID: 3459839313841820526}
+  - component: {fileID: 6242749848898380927}
   - component: {fileID: 152611072}
   - component: {fileID: 5867579568298927403}
   m_Layer: 0
@@ -408,10 +409,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 152611074}
-  ratCollider: {fileID: 152611072}
   healthSystem: {fileID: 5652029553789277350}
   buoyancyManager: {fileID: 3459839313841820526}
   AnimationMode: 0
+  ratMovement: {fileID: 6242749848898380927}
   LayerMask:
     serializedVersion: 2
     m_Bits: 32768
@@ -420,7 +421,6 @@ MonoBehaviour:
   Swimming: 0
   IsAlive: 0
   feetOffset: 2
-  maxDistance: 10
 --- !u!114 &5652029553789277350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,14 +452,43 @@ MonoBehaviour:
   waterLevel: {fileID: 0}
   floatPoints:
   - {fileID: 5434750042913443327}
-  deadzone:
-    max: 0.25
-    min: -0.25
+  floatzone:
+    floatMax: 1
+    floatMin: -1
+    deadMax: 0.25
+    deadMin: -0.25
   parameters:
     force: 1
     forceRatio: 1
     forceBias: 1
     threshold: 0
+    torqueDamping: 1
+    maxDepth: 1
+    maxForce: 10000
+    maxVelocity: 20
+  friction:
+    maxForce: 10
+    rate: 1
+--- !u!114 &6242749848898380927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5434750042928678336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3acfe79316a95f4eb4da204f47bc8fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 1.3
+  breakForce: 1000
+  reattachVelocity: 0.05
+  ratBody: {fileID: 5867579568298927403}
+  ratCollider: {fileID: 152611072}
+  assignedShip: {fileID: 0}
+  deckTag: ship_deck
+  grounded: 0
 --- !u!136 &152611072
 CapsuleCollider:
   m_ObjectHideFlags: 0
