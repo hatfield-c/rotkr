@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class HunkData {
-    public int hunkId;
-    public bool deleted;
+﻿public class HunkData {
+    public int HunkID;
+    public bool Deleted;
 
     public HunkData(int hunkId, bool deleted){
-        this.hunkId = hunkId;
-        this.deleted = deleted;
+        this.HunkID = hunkId;
+        this.Deleted = deleted;
     }
 }

@@ -13,24 +13,22 @@ public class HunkManager
 
     protected List<Hunk> hunkList;
 
-    public void Init(List<HunkData> hunkData){
+    public void Init(List<HunkData> hunkDatum){
         this.hunkGroup.parent = null;
         
-        if(hunkData != null){
-            this.hunkList = this.buildFromData(hunkData);
+        if(hunkDatum != null){
+            this.hunkList = this.buildFromData(hunkDatum);
         } else {
             this.hunkList = this.build();
         }
     }
 
-    protected List<Hunk> buildFromData(List<HunkData> hunkData){
+    protected List<Hunk> buildFromData(List<HunkData> hunkDatum){
 
-        foreach(HunkData data in hunkData){
-            if(data.deleted == true){
-                GameObject hunkObject = this.hunkGroup.GetChild(data.hunkId).gameObject;
-                Hunk hunk = hunkObject.GetComponent<Hunk>();
-                hunk.despawn();
-            }
+        foreach(HunkData data in hunkDatum){
+            GameObject hunkObject = this.hunkGroup.GetChild(data.HunkID).gameObject;
+            Hunk hunk = hunkObject.GetComponent<Hunk>();
+            hunk.Init(data);
         }
 
         return this.build();
