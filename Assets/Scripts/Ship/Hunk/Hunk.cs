@@ -1,9 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hunk : MonoBehaviour
 {
+    HunkData data;
+
     public bool overrideRigidbody = true;
     public GameObject predecessor;
     
@@ -13,13 +14,11 @@ public class Hunk : MonoBehaviour
     protected KatinTimer despawnTimer;
     public float despawnTime;
 
-    
     void Start() {
         this.despawnTimer = new KatinTimer();
     }
 
-    void Update()
-    {
+    void Update() {
         this.despawnTimer.update();        
     }
 
@@ -33,11 +32,18 @@ public class Hunk : MonoBehaviour
             this.childJoint.breakForce = 0;
         }
 
-        this.despawnTimer.Init(this.despawnTime, this.despawn);
+        this.despawnTimer.Init(this.despawnTime, this.Despawn);
     }
 
-    public void despawn(){
+    public void Init(HunkData data)
+    {
+        this.data = data;
+
+        if (data.Deleted)
+            this.Despawn();
+    }
+
+    public void Despawn(){
         this.gameObject.SetActive(false);
     }
-
 }
