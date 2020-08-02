@@ -2,8 +2,8 @@
     public int HunkID;
     public bool Deleted;
 
-    public HunkData(int hunkId, bool deleted){
-        this.HunkID = hunkId;
+    public HunkData(int hunkID, bool deleted){
+        this.HunkID = hunkID;
         this.Deleted = deleted;
     }
 }

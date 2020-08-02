@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
         // General setup
         inputRunner = new InputRunner();
+        DOTween.SetTweensCapacity(200, 125);
 
         // Setup our initial state
         LoadMainMenu(true);
@@ -98,7 +99,7 @@ public class GameManager : MonoBehaviour
     void LoadWye(WyeData data)
     {
         WyeState wye;
-        wye = new WyeState(data, playerPrefab, inputRunner.controls);
+        wye = new WyeState(data, progression.ShipData, playerPrefab, inputRunner.controls);
         
         wye.ExecuteComplete = () => 
         {
@@ -186,15 +187,18 @@ public class GameProgressionData
 {
     public GameProgressionData(int layerCount, int layerSectionCount, int layerBranchRange)
     {
-        // record parameters
+        // Record parameters.
         LayerCount = layerCount;
         LayerSectionCount = layerSectionCount;
         LayerBranchRange = layerBranchRange;
 
         LayerMapDatum = new List<LayerMapData>();
         
-        //Create the first LayerMap
+        // Create the first LayerMap.
         LayerMapDatum.Add(new LayerMapData(LayerSectionCount, LayerBranchRange));
+
+        // Create the player's ShipData.
+        ShipData = new ShipData();
     }
 
     public int LayerCount;
@@ -202,6 +206,7 @@ public class GameProgressionData
     public int LayerBranchRange;
     public int CurrentLayerIndex;
     public List<LayerMapData> LayerMapDatum;
+    public ShipData ShipData;
 
     /// <summary>
     /// Updates the <see cref="GameProgressionData"/> after completing a section.

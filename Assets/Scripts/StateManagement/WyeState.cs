@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 public enum TypeOfWye { None, CollectionChamber, Spillway };
 public class WyeState : AGameState
 {
-    public WyeState(WyeData data, GameObject playerPrefab, InputMaster controls)
+    public WyeState(WyeData data, ShipData shipData, GameObject playerPrefab, InputMaster controls)
     {
         Data = data;
+        this.shipData = shipData;
         this.playerPrefab = playerPrefab;
         this.controls = controls;
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -31,7 +32,10 @@ public class WyeState : AGameState
 
     GameObject playerPrefab;
     GameObject player;
+    ShipData shipData;
     ShipManager ship;
+
+    List<HunkData> hunkDatum;
     #endregion
 
     #region handlers
@@ -60,7 +64,7 @@ public class WyeState : AGameState
 
             player = Object.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation);
             ship = player.GetComponent<ShipManager>();
-            ship.Init(controls, refs.WaterPlane);
+            ship.Init(shipData, controls, refs.WaterPlane);
         }
         else
             Debug.LogError($"Tried to spawn the player but there is no prefab");
@@ -115,10 +119,13 @@ public class WyeState : AGameState
                 break;
             case WyeSubState.Repairing:
                 // Bring up repair menu and on click listener
-                refs.RepairMenu.Init(() => { ExecuteComplete?.Invoke(); });
+                refs.RepairMenu.Init(() => { EndWye(); });
                 refs.RepairMenu.Show();
                 break;
         }
+    }
+    void EndWye() {
+        ExecuteComplete?.Invoke();
     }
     #endregion
 }

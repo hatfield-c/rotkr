@@ -9,6 +9,8 @@ public class ShipManager : MonoBehaviour {
     [SerializeField] PlayerShipMovement playerShipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
 
+    ShipData data;
+
     /// <summary>
     /// Check this true if using the player in a non-game State
     /// </summary>
@@ -20,20 +22,32 @@ public class ShipManager : MonoBehaviour {
         if (Debug)
         {
             InputRunner runner = new InputRunner();
-            Init(runner.controls, FindObjectOfType<WaterCalculator>().gameObject);
+            Init(new ShipData(),runner.controls, FindObjectOfType<WaterCalculator>().gameObject);
         }
     }
 
-    void Update()
-    {        
-    }
+    void Update() { }
 
-    public void Init(InputMaster controls, GameObject waterPlane)
+    public void Init(ShipData data, InputMaster controls, GameObject waterPlane)
     {
+        this.data = data;
         this.controls = controls;
         equipmentManager.Init(controls);
         playerShipMovement.Init(controls);
         buoyancyManager.Init(waterPlane);
-        hunkManager.Init(null);
+        hunkManager.Init(data.HunkDatum);
     }
+    public ShipData GetData()
+    {
+        return data;
+    }
+}
+
+public class ShipData
+{
+    public ShipData()
+    {
+        HunkDatum = new List<HunkData>();
+    }
+    public List<HunkData> HunkDatum = null;
 }

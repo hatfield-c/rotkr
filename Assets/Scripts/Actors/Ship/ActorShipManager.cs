@@ -13,7 +13,6 @@ public class ActorShipManager : MonoBehaviour {
 
     void Start() {
         this.equipmentManager.Init();
-        hunkManager.Init(null);
+        hunkManager.Init(new List<HunkData>());
     }
-
 }
