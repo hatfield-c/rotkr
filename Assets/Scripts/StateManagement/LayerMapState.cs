@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LayerMapState : AGameState
 {
@@ -39,13 +41,15 @@ public class LayerMapState : AGameState
         Debug.Log("<color=orange>Execute called for LayerMapState</color>");
         // Setup
         refs.wyeNodeGroupManager.Init(data);
+        refs.wyeNodeGroupManager.NodeSelected = OnNodeSelected;
+
         refs.BTN_Go.onClick.AddListener(() =>
         {
             chosenWye = refs.wyeNodeGroupManager.GetSelectedWyeData();
-
             refs.BTN_Go.onClick.RemoveAllListeners();
             ExecuteComplete?.Invoke();
         });
+        refs.BTN_Go.interactable = false;
     }
     public override void Cancel()
     {
@@ -55,6 +59,13 @@ public class LayerMapState : AGameState
     public WyeData ChosenWye()
     {
         return chosenWye;
+    }
+    #endregion
+
+    #region private functions
+    void OnNodeSelected(WyeNode node)
+    {
+        refs.BTN_Go.interactable = true;
     }
     #endregion
 }

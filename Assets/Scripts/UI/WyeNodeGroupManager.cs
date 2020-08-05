@@ -4,9 +4,12 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class WyeNodeGroupManager : MonoBehaviour
 {
+    public Action<WyeNode> NodeSelected;
+
     #region references
     [SerializeField] ToggleGroup wyeNodeToggleGroup = null;
     [SerializeField] GameObject wyeNodePrefab = null;
@@ -28,20 +31,20 @@ public class WyeNodeGroupManager : MonoBehaviour
     {
         foreach(LayerSectionData sectionData in layerData.LayerSectionDatum)
         {
-            // Create each section and pass the data it needs
+            // Create each section and pass the data it needs.
             GameObject section = Instantiate(layerSectionPrefab, sectionHolder);
             bool isCurrentSection = section.transform.GetSiblingIndex() == layerData.CurrentSectionIndex;
             section.GetComponent<LayerSection>().Init(sectionData, wyeNodePrefab, wyeNodeToggleGroup, isCurrentSection);
         }
 
-        // Store the toggles
+        // Store the toggles.
         wyeNodes = GetComponentsInChildren<WyeNode>().ToList();
 
-        // subscribe to when they're toggled on
+        // Subscribe to when they're toggled on.
         foreach(WyeNode node in wyeNodes)
             node.WyeNodeSelected += nodeSelected;
 
-        // Allow switch off to false to prevent weird edge case
+        // Allow switch off to false to prevent weird edge case.
         Sequence sequence = DOTween.Sequence();
         sequence.InsertCallback(.1f, () => wyeNodeToggleGroup.allowSwitchOff = false);
     }
@@ -62,6 +65,7 @@ public class WyeNodeGroupManager : MonoBehaviour
     void nodeSelected(WyeNode node)
     {
         currentSelectedWyeNode = node;
+        NodeSelected?.Invoke(node);
     }
     #endregion
 }
