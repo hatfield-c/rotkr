@@ -31,24 +31,24 @@ public class RatMovement : MonoBehaviour
     #region private function
     void Start(){
         this.shipBody = this.assignedShip.gameObject.GetComponent<Rigidbody>();
-        this.attachToDeck(this.assignedShip);
+        this.AttachToShip(this.assignedShip);
     }
 
     void FixedUpdate()
     {
-        this.updateGroundState();
+        this.UpdateGroundState();
 
         if(this.deckUnderfoot != null && this.transform.parent == null){
             if(
                 Mathf.Abs(this.ratBody.velocity.magnitude - this.shipBody.velocity.magnitude) > 0 &&
                 Mathf.Abs(this.ratBody.velocity.magnitude - this.shipBody.velocity.magnitude) <= this.reattachVelocity
             ){
-                this.attachToDeck(this.deckUnderfoot.transform);
+                this.AttachToShip(this.deckUnderfoot.transform);
             }
         }
     }
 
-    protected void updateGroundState(){
+    protected void UpdateGroundState(){
         this.position = transform.TransformPoint(ratCollider.center);
         this.direction = -transform.up;
 
@@ -72,19 +72,35 @@ public class RatMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision){
         float force = collision.impulse.magnitude / Time.fixedDeltaTime;
 
-        if(this.deckUnderfoot != null && collision.collider.tag != this.deckTag && force >= this.breakForce){
+        if(
+            this.DoesBreakFromShip(
+                this.deckUnderfoot, 
+                collision.collider.tag, 
+                force
+            )
+        ){
+           this.DetachFromShip();
+        }
+    }
+
+    bool DoesBreakFromShip(GameObject land, string objectTag, float force){
+        return land != null && objectTag != this.deckTag && force > this.breakForce;
+    }
+
+    void AttachToShip(Transform ship){
+        this.transform.parent = ship;
+        this.ratBody.isKinematic = true;
+        this.ratBody.useGravity = false;
+
+        this.ratBody.constraints = RigidbodyConstraints.None;
+    }
+
+    void DetachFromShip(){
             this.transform.parent = null;
             this.ratBody.isKinematic = false;
             this.ratBody.useGravity = true;
 
             this.ratBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-        }
-    }
-
-    void attachToDeck(Transform parent){
-        this.transform.parent = parent;
-        this.ratBody.isKinematic = true;
-        this.ratBody.useGravity = false;
     }
     #endregion
 
