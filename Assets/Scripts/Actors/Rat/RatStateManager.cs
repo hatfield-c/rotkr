@@ -18,15 +18,18 @@ public class RatStateManager : MonoBehaviour
     #endregion
 
     #region references
+    [SerializeField] RatDeckGrabber DeckGrabber = null;
+    [SerializeField] RatGroundChecker GroundChecker = null;
     [SerializeField] Animator animator = null;
     [SerializeField] RatHealthSystem healthSystem = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
+    [SerializeField] Transform assignedShip = null;
     public RatAnimationMode AnimationMode;
-    public RatMovement ratMovement;
     #endregion
 
     #region state variables
     public LayerMask LayerMask;
+    public GroundData GroundData;
     public float SteerValue = 0.5f;
     public bool Grounded = false;
     public bool Swimming = false;
@@ -37,6 +40,14 @@ public class RatStateManager : MonoBehaviour
     #region handlers
     void OnEnable()
     {
+        this.GroundChecker.Init(this.transform);
+        this.DeckGrabber.Init(
+            this.assignedShip, 
+            this.transform, 
+            this.assignedShip.gameObject.GetComponent<Rigidbody>(),
+            this.GetComponent<Rigidbody>()
+        );
+
         healthSystem.Death += OnDeath;
         healthSystem.Life += OnLife;
         buoyancyManager.UnderWater += OnUnderWater;
@@ -72,8 +83,11 @@ public class RatStateManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        bool wasGrounded = Grounded;
-        this.updateGrounded();
+        this.GroundData = this.GroundChecker.GetGroundData();
+        this.DeckGrabber.UpdateState(this.GroundData);
+
+        bool wasGrounded = this.Grounded;
+        this.Grounded = this.GroundData.IsGrounded();
         //Swimming = isSwimming();
         if (IsAlive)
         {
@@ -151,9 +165,8 @@ public class RatStateManager : MonoBehaviour
         animator.SetFloat("steerValue", value);
     }
     
-    void updateGrounded()
-    {        
-        this.Grounded = this.ratMovement.IsGrounded();
+    void OnCollisionEnter(Collision collision){
+        this.DeckGrabber.OnCollisionEnter(collision);
     }
     //bool isSwimming()
     //{
