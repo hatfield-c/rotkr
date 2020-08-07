@@ -45,8 +45,11 @@ public class Hunk : MonoBehaviour
         // Setup this object.
         if (this.rigidbody == null) {
             this.rigidbody = GetComponent<Rigidbody>();
-            if (this.rigidbody == null)
+            if (this.rigidbody == null) {
                 this.overrideRigidbody = true;
+                this.rigidbody = gameObject.AddComponent<Rigidbody>();
+            }
+                
         }
 
         if (this.overrideRigidbody == true) {
