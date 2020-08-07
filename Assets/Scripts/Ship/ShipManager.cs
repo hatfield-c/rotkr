@@ -22,7 +22,7 @@ public class ShipManager : MonoBehaviour {
         if (Debug)
         {
             InputRunner runner = new InputRunner();
-            Init(new ShipData(),runner.controls, FindObjectOfType<WaterCalculator>().gameObject);
+            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject);
         }
     }
 
@@ -41,13 +41,4 @@ public class ShipManager : MonoBehaviour {
     {
         return data;
     }
-}
-
-public class ShipData
-{
-    public ShipData()
-    {
-        HunkDatum = new List<HunkData>();
-    }
-    public List<HunkData> HunkDatum = null;
 }

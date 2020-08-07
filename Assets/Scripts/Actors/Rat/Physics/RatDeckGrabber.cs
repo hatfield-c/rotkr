@@ -8,7 +8,7 @@ public class RatDeckGrabber
     #region parameters
     [SerializeField] float breakForce = 10f;
     [SerializeField] float reattachVelocity = 10f;
-    [SerializeField] float deckDisplacement = 1f;;
+    [SerializeField] float deckDisplacement = 1f;
     #endregion
 
     #region blackboard variables
@@ -70,11 +70,11 @@ public class RatDeckGrabber
     }
 
     void DetachFromShip(){
-            this.ratTransform.parent = null;
-            this.ratBody.isKinematic = false;
-            this.ratBody.useGravity = true;
+        this.ratTransform.parent = null;
+        this.ratBody.isKinematic = false;
+        this.ratBody.useGravity = true;
 
-            this.ratBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        this.ratBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
     #endregion
 
