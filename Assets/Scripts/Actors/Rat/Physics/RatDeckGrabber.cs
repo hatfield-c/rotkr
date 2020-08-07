@@ -13,6 +13,7 @@ public class RatDeckGrabber
 
     #region blackboard variables
     protected Transform assignedShip;
+    protected Transform assignedDeck;
     protected Transform ratTransform;
     protected Rigidbody shipBody;
     protected Rigidbody ratBody;
@@ -21,19 +22,19 @@ public class RatDeckGrabber
     #endregion
 
     #region private function
-    public void Init(Transform assignedShip, Transform ratTransform, Rigidbody shipBody, Rigidbody ratBody){
-        this.assignedShip = assignedShip;
-        this.ratTransform = ratTransform;
-        this.shipBody = this.assignedShip.gameObject.GetComponent<Rigidbody>();
-        this.ratBody = ratBody;
-        this.AttachToShip(this.assignedShip);
+    public void Init(ShipReferences shipReferences, RatReferences ratReferences){
+        this.assignedShip = shipReferences.ShipObject.transform;
+        this.assignedDeck = shipReferences.DeckObject.transform;
+        this.ratTransform = ratReferences.RatObject.transform;
+        this.shipBody = shipReferences.ShipBody;
+        this.ratBody = ratReferences.Ratbody;
     }
 
     public void UpdateState(GroundData groundData)
     {
         this.groundData = groundData;
 
-        if(this.groundData.GetDeck() != null && this.ratTransform.parent == null){
+        if(this.CanReattach(groundData)){
             if(
                 this.VelocityDifference() > 0 &&
                 this.VelocityDifference() <= this.reattachVelocity
@@ -49,7 +50,6 @@ public class RatDeckGrabber
         if(
             this.DoesBreakFromShip(
                 this.groundData.GetDeck(), 
-                //collision.collider.tag, 
                 force
             )
         ){
@@ -57,12 +57,20 @@ public class RatDeckGrabber
         }
     }
 
+    bool CanReattach(GroundData groundData){
+        return this.groundData.GetDeck() != null &&
+        this.groundData.GetDeck().transform == this.assignedDeck &&
+        this.ratTransform.parent == null;
+    }
+
     bool DoesBreakFromShip(GameObject land, float force){
         return land != null && force > this.breakForce;
     }
 
     void AttachToShip(Transform ship){
-        this.ratTransform.parent = ship;
+        this.ratTransform.parent = this.assignedDeck.transform;
+        this.ratTransform.position = this.GetDeckDisplacement(this.ratTransform.position);
+
         this.ratBody.isKinematic = true;
         this.ratBody.useGravity = false;
 
@@ -75,6 +83,19 @@ public class RatDeckGrabber
         this.ratBody.useGravity = true;
 
         this.ratBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+    }
+
+    Vector3 GetDeckDisplacement(Vector3 originalPos){
+        if(this.assignedShip == null){
+            return Vector3.zero;
+        }
+
+        Vector3 localPos = this.assignedShip.InverseTransformPoint(originalPos);
+        float heightDiff = this.deckDisplacement - localPos.y;
+        Vector3 targetPos = new Vector3(localPos.x, this.deckDisplacement, localPos.z);
+        Vector3 newPos = this.assignedShip.TransformPoint(targetPos);
+
+        return newPos;
     }
     #endregion
 

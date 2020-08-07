@@ -407,18 +407,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d280cb24adda742a8c849f63122fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 152611074}
-  healthSystem: {fileID: 5652029553789277350}
-  buoyancyManager: {fileID: 3459839313841820526}
-  assignedShip: {fileID: 0}
-  AnimationMode: 0
   DeckGrabber:
     breakForce: 10
     reattachVelocity: 10
+    deckDisplacement: 1.51
   GroundChecker:
     maxDistance: 1.3
     deckTag: ship_deck
     ratCollider: {fileID: 152611072}
+  RatReferences:
+    RatObject: {fileID: 5434750042928678336}
+    Ratbody: {fileID: 5867579568298927403}
+  animator: {fileID: 152611074}
+  healthSystem: {fileID: 5652029553789277350}
+  buoyancyManager: {fileID: 3459839313841820526}
+  AnimationMode: 0
+  DEBUG_ShipReferences:
+    ShipObject: {fileID: 0}
+    DeckObject: {fileID: 0}
+    ShipBody: {fileID: 0}
   LayerMask:
     serializedVersion: 2
     m_Bits: 32768
