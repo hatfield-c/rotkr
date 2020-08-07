@@ -6,6 +6,7 @@ public class ShipManager : MonoBehaviour {
     
     [SerializeField] HunkManager hunkManager = null;
     [SerializeField] EquipmentManager equipmentManager = null;
+    [SerializeField] ShipReferences shipReferences = null;
     [SerializeField] PlayerShipMovement playerShipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
 
@@ -40,5 +41,9 @@ public class ShipManager : MonoBehaviour {
     public ShipData GetData()
     {
         return data;
+    }
+
+    public ShipReferences GetShipReferences(){
+        return this.shipReferences;
     }
 }

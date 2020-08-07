@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -593,6 +593,24 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5129697648813646137, guid: c050c547ba869b24c9b626a05ae762d5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c050c547ba869b24c9b626a05ae762d5, type: 3}
+--- !u!1 &1453785968 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7589817684636043897, guid: c050c547ba869b24c9b626a05ae762d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1453785967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1453785969 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6799618391581152856, guid: c050c547ba869b24c9b626a05ae762d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1453785967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1453785970 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 8539047575037818204, guid: c050c547ba869b24c9b626a05ae762d5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1453785967}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1953786347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -612,6 +630,26 @@ PrefabInstance:
       propertyPath: assignedShip
       value: 
       objectReference: {fileID: 2058225765}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: DeckGrabber.deckDisplacement
+      value: 1.51
+      objectReference: {fileID: 0}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: SteerValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: DEBUG_ShipReferences.ShipObject
+      value: 
+      objectReference: {fileID: 1453785968}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: DEBUG_ShipReferences.ShipBody
+      value: 
+      objectReference: {fileID: 1453785970}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: DEBUG_ShipReferences.DeckObject
+      value: 
+      objectReference: {fileID: 1453785969}
     - target: {fileID: 152611074, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
       propertyPath: m_Enabled
       value: 1

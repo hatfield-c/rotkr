@@ -424,7 +424,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281046598}
-  m_LocalRotation: {x: 0.022304162, y: -0.030066626, z: 0.005859105, w: 0.9992818}
+  m_LocalRotation: {x: 0.022304177, y: -0.030066593, z: 0.0058590923, w: 0.9992818}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1711,6 +1711,10 @@ MonoBehaviour:
     - {fileID: 6529821022255790368}
     - {fileID: 1796977512546398824}
     ammunitionStorage: {fileID: 4092080869983497443}
+  shipReferences:
+    ShipObject: {fileID: 7589817684636043897}
+    DeckObject: {fileID: 6799618391581152856}
+    ShipBody: {fileID: 8539047575037818204}
   playerShipMovement: {fileID: 4271463973893668852}
   buoyancyManager: {fileID: 2894900889011502428}
   Debug: 0

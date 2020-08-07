@@ -20,11 +20,15 @@ public class RatStateManager : MonoBehaviour
     #region references
     [SerializeField] RatDeckGrabber DeckGrabber = null;
     [SerializeField] RatGroundChecker GroundChecker = null;
+    [SerializeField] RatReferences RatReferences = null;
     [SerializeField] Animator animator = null;
     [SerializeField] RatHealthSystem healthSystem = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
-    [SerializeField] Transform assignedShip = null;
     public RatAnimationMode AnimationMode;
+    #endregion
+
+    #region DEBUG
+    public ShipReferences DEBUG_ShipReferences;
     #endregion
 
     #region state variables
@@ -41,12 +45,10 @@ public class RatStateManager : MonoBehaviour
     void OnEnable()
     {
         this.GroundChecker.Init(this.transform);
-        this.DeckGrabber.Init(
-            this.assignedShip, 
-            this.transform, 
-            this.assignedShip.gameObject.GetComponent<Rigidbody>(),
-            this.GetComponent<Rigidbody>()
-        );
+        
+        if(this.DEBUG_ShipReferences.ShipObject != null){
+            this.Init(this.DEBUG_ShipReferences);
+        }
 
         healthSystem.Death += OnDeath;
         healthSystem.Life += OnLife;
@@ -75,6 +77,10 @@ public class RatStateManager : MonoBehaviour
     #endregion
 
     #region logic
+
+    public void Init(ShipReferences shipReferences){
+        this.DeckGrabber.Init(shipReferences, this.RatReferences);
+    }
 
     void Start()
     {
