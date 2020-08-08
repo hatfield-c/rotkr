@@ -29,6 +29,7 @@ public class RatStateManager : MonoBehaviour
 
     #region DEBUG
     public ShipReferences DEBUG_ShipReferences;
+    public bool DEBUG = false;
     #endregion
 
     #region state variables
@@ -44,10 +45,6 @@ public class RatStateManager : MonoBehaviour
     #region handlers
     void OnEnable()
     {   
-        if(this.DEBUG_ShipReferences.ShipObject != null){
-            this.Init(this.DEBUG_ShipReferences);
-        }
-
         healthSystem.Death += OnDeath;
         healthSystem.Life += OnLife;
         buoyancyManager.UnderWater += OnUnderWater;
@@ -77,13 +74,17 @@ public class RatStateManager : MonoBehaviour
     #region logic
 
     public void Init(ShipReferences shipReferences){
-        this.GroundChecker.Init(this.RatReferences);
+        this.GroundChecker.Init(shipReferences, this.RatReferences);
         this.DeckGrabber.Init(shipReferences, this.RatReferences);
     }
 
     void Start()
     {
         IsAlive = healthSystem.IsAlive();
+
+        if(DEBUG){
+            this.Init(this.DEBUG_ShipReferences);
+        }
     }
 
     void FixedUpdate()
