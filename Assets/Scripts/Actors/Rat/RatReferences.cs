@@ -7,4 +7,6 @@ public class RatReferences
 {
     public GameObject RatObject;
     public Rigidbody Ratbody;
+    public CapsuleCollider ShipCollider;
+    public CapsuleCollider DamageCollider;
 }

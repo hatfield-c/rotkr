@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4373980416997922395}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: -3509828085592202582}
   m_Layer: 0
   m_Name: cardboard_small2
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 4373980417714161794}
   m_Layer: 0
   m_Name: colliders
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,13 +11,19 @@ public class RatDeckGrabber
     [SerializeField] float deckDisplacement = 1f;
     #endregion
 
-    #region blackboard variables
+    #region references
     protected Transform assignedShip;
     protected Transform assignedDeck;
     protected Transform ratTransform;
     protected Rigidbody shipBody;
     protected Rigidbody ratBody;
+    protected CapsuleCollider damageCollider;
+    protected CapsuleCollider shipCollider;
+    protected string deckTag;
+    protected string hunkTag;
+    #endregion
 
+    #region blackboard variables
     protected GroundData groundData;
     #endregion
 
@@ -25,13 +31,17 @@ public class RatDeckGrabber
     public void Init(ShipReferences shipReferences, RatReferences ratReferences){
         this.assignedShip = shipReferences.ShipObject.transform;
         this.assignedDeck = shipReferences.DeckObject.transform;
-        this.ratTransform = ratReferences.RatObject.transform;
         this.shipBody = shipReferences.ShipBody;
+        this.deckTag = shipReferences.DeckTag;
+        this.hunkTag = shipReferences.HunkTag;
+
+        this.ratTransform = ratReferences.RatObject.transform;
         this.ratBody = ratReferences.Ratbody;
+        this.damageCollider = ratReferences.DamageCollider;
+        this.shipCollider = ratReferences.ShipCollider;
     }
 
-    public void UpdateState(GroundData groundData)
-    {
+    public void UpdateState(GroundData groundData){
         this.groundData = groundData;
 
         if(this.CanReattach(groundData)){
@@ -44,37 +54,47 @@ public class RatDeckGrabber
         }
     }
 
-    public void OnCollisionEnter(Collision collision){
-        float force = collision.impulse.magnitude / Time.fixedDeltaTime;
+    public void CollisionCheck(Collision collision){
+        if(this.IsIgnoredCollision(collision.collider.tag)){
+            return;
+        }
 
-        if(
-            this.DoesBreakFromShip(
-                this.groundData.GetDeck(), 
-                force
-            )
-        ){
+        float force = collision.impulse.magnitude / Time.fixedDeltaTime;
+        if(this.DoesBreakFromShip(force, collision)){
            this.DetachFromShip();
         }
     }
 
     bool CanReattach(GroundData groundData){
         return this.groundData.GetDeck() != null &&
-        this.groundData.GetDeck().transform == this.assignedDeck &&
-        this.ratTransform.parent == null;
+        this.IsAssignedDeck(this.groundData.GetDeck().transform) &&
+        !this.IsAttached();
     }
 
-    bool DoesBreakFromShip(GameObject land, float force){
-        return land != null && force > this.breakForce;
+    bool DoesBreakFromShip(float force, Collision collision){
+        return this.IsAttached() && force > this.breakForce;
+    }
+
+    bool IsAttached(){
+        return this.ratTransform.parent != null;
+    }
+
+    bool IsAssignedDeck(Transform deck){
+        return deck == this.assignedDeck;
+    }
+
+    bool IsIgnoredCollision(string tag){
+        return tag == this.deckTag || tag == this.hunkTag;
     }
 
     void AttachToShip(Transform ship){
-        this.ratTransform.parent = this.assignedDeck.transform;
-        this.ratTransform.position = this.GetDeckDisplacement(this.ratTransform.position);
+        this.ratTransform.parent = this.assignedShip.transform;
 
         this.ratBody.isKinematic = true;
         this.ratBody.useGravity = false;
 
         this.ratBody.constraints = RigidbodyConstraints.None;
+        this.shipCollider.enabled = false;
     }
 
     void DetachFromShip(){
@@ -83,17 +103,18 @@ public class RatDeckGrabber
         this.ratBody.useGravity = true;
 
         this.ratBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        this.shipCollider.enabled = true;
     }
 
     Vector3 GetDeckDisplacement(Vector3 originalPos){
-        if(this.assignedShip == null){
+        if(this.assignedDeck == null){
             return Vector3.zero;
         }
 
-        Vector3 localPos = this.assignedShip.InverseTransformPoint(originalPos);
+        Vector3 localPos = this.assignedDeck.InverseTransformPoint(originalPos);
         float heightDiff = this.deckDisplacement - localPos.y;
         Vector3 targetPos = new Vector3(localPos.x, this.deckDisplacement, localPos.z);
-        Vector3 newPos = this.assignedShip.TransformPoint(targetPos);
+        Vector3 newPos = this.assignedDeck.TransformPoint(targetPos);
 
         return newPos;
     }

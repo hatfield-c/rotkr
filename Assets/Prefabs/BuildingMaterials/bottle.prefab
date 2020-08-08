@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 235723003266350051}
   m_Layer: 0
   m_Name: colliders
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 4319525709323689738}
   m_Layer: 0
   m_Name: bottle
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,9 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideRigidbody: 1
-  predecessor: {fileID: 0}
-  joint: {fileID: 0}
-  childJoint: {fileID: 0}
+  Predecessor: {fileID: 0}
+  rigidbody: {fileID: 0}
+  Joint: {fileID: 0}
+  ChildJoint: {fileID: 0}
 --- !u!54 &4319525709323689738
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -158,7 +159,7 @@ GameObject:
   - component: {fileID: 5801781436963256449}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -203,7 +204,7 @@ GameObject:
   - component: {fileID: 4848928229950017486}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

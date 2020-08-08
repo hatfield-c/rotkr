@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -251,7 +251,7 @@ PrefabInstance:
     - target: {fileID: 5315316437462006062, guid: 4886147cad5b54b4b873b38950dc28ed,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.915542
+      value: 13.025542
       objectReference: {fileID: 0}
     - target: {fileID: 5315316437462006062, guid: 4886147cad5b54b4b873b38950dc28ed,
         type: 3}
@@ -266,12 +266,12 @@ PrefabInstance:
     - target: {fileID: 5315316437462006062, guid: 4886147cad5b54b4b873b38950dc28ed,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.000000023406374
+      value: -0.000000016950576
       objectReference: {fileID: 0}
     - target: {fileID: 5315316437462006062, guid: 4886147cad5b54b4b873b38950dc28ed,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000004561251
+      value: 0.0000000033031957
       objectReference: {fileID: 0}
     - target: {fileID: 5315316437462006062, guid: 4886147cad5b54b4b873b38950dc28ed,
         type: 3}
@@ -487,15 +487,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1110767922, guid: c050c547ba869b24c9b626a05ae762d5, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.022304177
+      value: 0.022304162
       objectReference: {fileID: 0}
     - target: {fileID: 1110767922, guid: c050c547ba869b24c9b626a05ae762d5, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.030066634
+      value: -0.030066626
       objectReference: {fileID: 0}
     - target: {fileID: 1110767922, guid: c050c547ba869b24c9b626a05ae762d5, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.005859108
+      value: 0.005859105
       objectReference: {fileID: 0}
     - target: {fileID: 1281046600, guid: c050c547ba869b24c9b626a05ae762d5, type: 3}
       propertyPath: m_LocalRotation.x
@@ -530,6 +530,11 @@ PrefabInstance:
       propertyPath: Debug
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6946668044921198487, guid: c050c547ba869b24c9b626a05ae762d5,
+        type: 3}
+      propertyPath: m_Name
+      value: capsule_thimble
+      objectReference: {fileID: 0}
     - target: {fileID: 7589817684636043893, guid: c050c547ba869b24c9b626a05ae762d5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -538,7 +543,7 @@ PrefabInstance:
     - target: {fileID: 7589817684636043893, guid: c050c547ba869b24c9b626a05ae762d5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.58
+      value: 5.69
       objectReference: {fileID: 0}
     - target: {fileID: 7589817684636043893, guid: c050c547ba869b24c9b626a05ae762d5,
         type: 3}
@@ -632,7 +637,7 @@ PrefabInstance:
       objectReference: {fileID: 2058225765}
     - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
       propertyPath: DeckGrabber.deckDisplacement
-      value: 1.51
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
       propertyPath: SteerValue
@@ -650,24 +655,42 @@ PrefabInstance:
       propertyPath: DEBUG_ShipReferences.DeckObject
       value: 
       objectReference: {fileID: 1453785969}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: DEBUG_ShipReferences.DeckTag
+      value: ship_deck
+      objectReference: {fileID: 0}
+    - target: {fileID: 152611073, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
+      propertyPath: DEBUG_ShipReferences.HunkTag
+      value: hunk
+      objectReference: {fileID: 0}
     - target: {fileID: 152611074, guid: 5ff989f6c329b3c45a3df7fe06c407a5, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 33563279979075317, guid: 5ff989f6c329b3c45a3df7fe06c407a5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 932185148106664754, guid: 5ff989f6c329b3c45a3df7fe06c407a5,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5434750042928677951, guid: 5ff989f6c329b3c45a3df7fe06c407a5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.435
+      value: 1.23
       objectReference: {fileID: 0}
     - target: {fileID: 5434750042928677951, guid: 5ff989f6c329b3c45a3df7fe06c407a5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.129
+      value: 7.174
       objectReference: {fileID: 0}
     - target: {fileID: 5434750042928677951, guid: 5ff989f6c329b3c45a3df7fe06c407a5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.359
+      value: 2.46
       objectReference: {fileID: 0}
     - target: {fileID: 5434750042928677951, guid: 5ff989f6c329b3c45a3df7fe06c407a5,
         type: 3}

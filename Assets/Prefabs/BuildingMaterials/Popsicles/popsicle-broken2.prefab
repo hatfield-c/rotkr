@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2202749344079767739}
   m_Layer: 14
   m_Name: colliders
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 80764345744839450}
   m_Layer: 14
   m_Name: popsicle-broken2
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -126,9 +126,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideRigidbody: 1
-  predecessor: {fileID: 0}
-  joint: {fileID: 0}
-  childJoint: {fileID: 0}
+  Predecessor: {fileID: 0}
+  rigidbody: {fileID: 0}
+  Joint: {fileID: 0}
+  ChildJoint: {fileID: 0}
 --- !u!54 &80764345744839450
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -157,7 +158,7 @@ GameObject:
   - component: {fileID: 2202749345319724910}
   m_Layer: 14
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

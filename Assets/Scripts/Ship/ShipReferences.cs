@@ -8,4 +8,6 @@ public class ShipReferences
     public GameObject ShipObject;
     public GameObject DeckObject;
     public Rigidbody ShipBody;
+    public string DeckTag;
+    public string HunkTag;
 }

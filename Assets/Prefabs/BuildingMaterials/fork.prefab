@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6957741972796148355}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 6539014507751589770}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 7358947365734549133}
   m_Layer: 0
   m_Name: fork
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -183,9 +183,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideRigidbody: 1
-  predecessor: {fileID: 0}
-  joint: {fileID: 0}
-  childJoint: {fileID: 0}
+  Predecessor: {fileID: 0}
+  rigidbody: {fileID: 0}
+  Joint: {fileID: 0}
+  ChildJoint: {fileID: 0}
 --- !u!54 &7358947365734549133
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -213,7 +214,7 @@ GameObject:
   - component: {fileID: 6205884290445019193}
   m_Layer: 0
   m_Name: colliders
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -247,7 +248,7 @@ GameObject:
   - component: {fileID: 6205884290979806384}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: hunk
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
