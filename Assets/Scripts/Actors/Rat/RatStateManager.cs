@@ -43,9 +43,7 @@ public class RatStateManager : MonoBehaviour
 
     #region handlers
     void OnEnable()
-    {
-        this.GroundChecker.Init(this.transform);
-        
+    {   
         if(this.DEBUG_ShipReferences.ShipObject != null){
             this.Init(this.DEBUG_ShipReferences);
         }
@@ -79,6 +77,7 @@ public class RatStateManager : MonoBehaviour
     #region logic
 
     public void Init(ShipReferences shipReferences){
+        this.GroundChecker.Init(this.RatReferences);
         this.DeckGrabber.Init(shipReferences, this.RatReferences);
     }
 
@@ -172,7 +171,7 @@ public class RatStateManager : MonoBehaviour
     }
     
     void OnCollisionEnter(Collision collision){
-        this.DeckGrabber.OnCollisionEnter(collision);
+        this.DeckGrabber.CollisionCheck(collision);
     }
     //bool isSwimming()
     //{

@@ -7,13 +7,14 @@ public class RatGroundChecker
 {
     [SerializeField] float maxDistance = 1.3f;
     [SerializeField] string deckTag = "ship_deck";
-    [SerializeField] CapsuleCollider ratCollider = null;
-
+    
+    protected CapsuleCollider ratCollider;
     protected RaycastHit castData;
     protected Transform ratTransform;
 
-    public void Init(Transform ratTransform){
-        this.ratTransform = ratTransform;
+    public void Init(RatReferences ratReferences){
+        this.ratTransform = ratReferences.RatObject.transform;
+        this.ratCollider = ratReferences.ShipCollider;
     }
 
     public GroundData GetGroundData(){
@@ -23,7 +24,7 @@ public class RatGroundChecker
 
         bool grounded = Physics.SphereCast(
             this.ratTransform.TransformPoint(ratCollider.center), 
-            this.ratCollider.radius, 
+            this.ratCollider.radius / 2,
             -this.ratTransform.up, 
             out this.castData,
             this.maxDistance
