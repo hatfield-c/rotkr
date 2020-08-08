@@ -532,9 +532,9 @@ MonoBehaviour:
   DeckGrabber:
     breakForce: 10
     reattachVelocity: 10
-    deckDisplacement: 1.51
+    deckDisplacement: 0.25
   GroundChecker:
-    maxDistance: 1.3
+    maxDistance: 0.8
     deckTag: ship_deck
   RatReferences:
     RatObject: {fileID: 5434750042928678336}
@@ -549,6 +549,8 @@ MonoBehaviour:
     ShipObject: {fileID: 0}
     DeckObject: {fileID: 0}
     ShipBody: {fileID: 0}
+    DeckTag: 
+    HunkTag: 
   LayerMask:
     serializedVersion: 2
     m_Bits: 32768

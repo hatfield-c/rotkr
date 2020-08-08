@@ -6,15 +6,16 @@ using UnityEngine;
 public class RatGroundChecker
 {
     [SerializeField] float maxDistance = 1.3f;
-    [SerializeField] string deckTag = "ship_deck";
-    
+
     protected CapsuleCollider ratCollider;
     protected RaycastHit castData;
     protected Transform ratTransform;
+    protected string deckTag;
 
-    public void Init(RatReferences ratReferences){
+    public void Init(ShipReferences shipReferences, RatReferences ratReferences){
         this.ratTransform = ratReferences.RatObject.transform;
         this.ratCollider = ratReferences.ShipCollider;
+        this.deckTag = shipReferences.DeckTag;
     }
 
     public GroundData GetGroundData(){
