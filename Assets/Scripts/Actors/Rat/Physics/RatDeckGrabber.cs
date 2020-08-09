@@ -25,8 +25,7 @@ public class RatDeckGrabber
     #endregion
 
     #region events
-    public Action GetReattached;
-    public Action GetDetached;
+    public Action DetachedAction;
     #endregion
 
     #region blackboard variables
@@ -89,6 +88,14 @@ public class RatDeckGrabber
 
         return newPos;
     }
+
+    public bool IsAttached(){
+        return this.ratTransform.parent != null;
+    }
+
+    public bool IsOverboard(){
+        return this.groundData.GetDeck() == null;
+    }
     #endregion
 
     #region private function
@@ -100,10 +107,6 @@ public class RatDeckGrabber
 
     bool DoesBreakFromShip(float force, Collision collision){
         return this.IsAttached() && force > this.breakForce;
-    }
-
-    bool IsAttached(){
-        return this.ratTransform.parent != null;
     }
 
     bool IsAssignedDeck(Transform deck){
@@ -125,7 +128,6 @@ public class RatDeckGrabber
         this.ratBody.useGravity = false;
 
         this.shipCollider.enabled = false;
-        this.GetReattached?.Invoke();
     }
 
     void DetachFromShip(){
@@ -137,7 +139,8 @@ public class RatDeckGrabber
         this.ratTransform.eulerAngles = this.GetDetachRotation();
 
         this.shipCollider.enabled = true;
-        this.GetDetached?.Invoke();
+
+        this.DetachedAction?.Invoke();
     }
 
     Vector3 GetValidSpawnPoint(){
