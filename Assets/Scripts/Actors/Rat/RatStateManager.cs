@@ -103,15 +103,15 @@ public class RatStateManager : MonoBehaviour
         GroundData = groundChecker.GetGroundData();
         deckGrabber.UpdateState(GroundData);
 
-        bool wasGrounded = Grounded;
+        //bool wasGrounded = Grounded;
         Grounded = GroundData.IsGrounded();
         if (IsAlive)
         {
             if (Grounded)
             {
                 // Don't interrupt a task if you were already grounded.
-                if (wasGrounded != Grounded)
-                    ChangeAnimationMode(RatAnimationMode.Default);
+                //if (wasGrounded != Grounded)
+                ChangeAnimationMode(RatAnimationMode.Default);
             }
             else
             {
@@ -179,4 +179,33 @@ public class RatStateManager : MonoBehaviour
         deckGrabber.CollisionCheck(collision);
     }
     #endregion
+
+    void OnDrawGizmos()
+    {
+        RaycastHit hit;
+
+        Vector3 position = this.transform.TransformPoint(this.ratReferences.ShipCollider.center);
+        Vector3 direction = -this.transform.up;
+
+        bool grounded = Physics.SphereCast(
+            this.transform.TransformPoint(this.ratReferences.ShipCollider.center), 
+            this.ratReferences.ShipCollider.radius / 2,
+            -this.transform.up, 
+            out hit,
+            this.groundChecker.maxDistance
+        );
+
+        if (grounded)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(position, direction * hit.distance);
+            Gizmos.DrawWireSphere(position + direction * hit.distance, this.ratReferences.ShipCollider.radius);
+        }
+        else
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(position, direction * this.groundChecker.maxDistance);
+            Gizmos.DrawWireSphere(position + direction * this.groundChecker.maxDistance, this.ratReferences.ShipCollider.radius);
+        }
+    }
 }
