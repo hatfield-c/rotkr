@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 public class BuoyancyManager : MonoBehaviour {
     #region proposed changes for rat health
     public Action UnderWater;
+    public Action AboveWater;
     #endregion
 
     public WaterCalculator waterLevel;
@@ -29,7 +30,6 @@ public class BuoyancyManager : MonoBehaviour {
     }
 
     void FixedUpdate(){
-        // TODO: PERHAPS REFACTOR THIS LATER??? Dependency injection riddle with this.waterLevel
         if (waterLevel == null)
             return;
 
@@ -47,6 +47,7 @@ public class BuoyancyManager : MonoBehaviour {
             this.Rigidbody.useGravity = false;
             UnderWater?.Invoke();
         } else {
+            AboveWater?.Invoke();
             this.Rigidbody.useGravity = true;
         }
 
@@ -60,7 +61,6 @@ public class BuoyancyManager : MonoBehaviour {
             float depth = targets[i] - this.floatPoints[i].position.y;
             this.applyBuoyancy(this.floatPoints[i], depth);    
         }
-
 
         this.applyStableForce(targetCenter);
         this.dampenBobbing(stablePoints);

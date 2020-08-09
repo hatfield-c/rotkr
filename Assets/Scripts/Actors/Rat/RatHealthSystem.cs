@@ -23,16 +23,18 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     Sequence currentSequence = null;
     #endregion
 
+    public void Init(RatData data)
+    {
+        SetMaxHealth(data.MaxHealth);
+        SetHealth(data.CurrentHealth);
+        if (IsAlive())
+            Life?.Invoke();
+        else
+            Death?.Invoke();
+    }
     #region logic
-    void Start()
-    {
-        //TODO: Modify when this thing is initialized later
-        Life?.Invoke();
-    }
-    void Update()
-    {
-
-    }
+    void Start() { }
+    void Update() { }
     #endregion
 
     #region public functions
@@ -101,6 +103,10 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
         {
             Life?.Invoke();
         }
+    }
+    void SetMaxHealth(float value)
+    {
+        MaxHealth = value;
     }
     void Die()
     {

@@ -9,6 +9,7 @@ public class ShipManager : MonoBehaviour {
     [SerializeField] ShipReferences shipReferences = null;
     [SerializeField] PlayerShipMovement playerShipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
+    [SerializeField] RatGroupManager ratGroupManager = null;
 
     ShipData data;
 
@@ -37,13 +38,15 @@ public class ShipManager : MonoBehaviour {
         playerShipMovement.Init(controls);
         buoyancyManager.Init(waterPlane);
         hunkManager.Init(data.HunkDatum);
+        ratGroupManager.Init(data, shipReferences, waterPlane);
     }
     public ShipData GetData()
     {
         return data;
     }
 
-    public ShipReferences GetShipReferences(){
-        return this.shipReferences;
+    public ShipReferences GetShipReferences()
+    {
+        return shipReferences;
     }
 }

@@ -30,7 +30,7 @@ public class RatGroundChecker
             out this.castData,
             this.maxDistance
         );
-
+        
         GroundData data;
         if(castData.collider != null && castData.collider.tag == this.deckTag){
             data = new GroundData(
@@ -43,7 +43,6 @@ public class RatGroundChecker
                 null
             );
         }
-
         return data;
     }
 }
