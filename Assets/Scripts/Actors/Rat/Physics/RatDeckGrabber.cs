@@ -91,7 +91,8 @@ public class RatDeckGrabber
         this.ratBody.constraints = RigidbodyConstraints.None;
 
         this.ratTransform.parent = this.assignedShip.transform;
-        ratTransform.localRotation = Quaternion.Euler(0, ratTransform.localRotation.eulerAngles.y, 0);
+        this.ratTransform.localRotation = Quaternion.Euler(0, this.ratTransform.localRotation.eulerAngles.y, 0);
+        this.ratTransform.position = this.GetRelativeDeckPosition(this.ratTransform.position);
 
         this.ratBody.isKinematic = true;
         this.ratBody.useGravity = false;

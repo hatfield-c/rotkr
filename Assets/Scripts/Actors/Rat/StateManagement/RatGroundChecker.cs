@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class RatGroundChecker
 {
-    [SerializeField] float maxDistance = 1.3f;
+    public float maxDistance = 1.3f;
 
     protected CapsuleCollider ratCollider;
     protected RaycastHit castData;
