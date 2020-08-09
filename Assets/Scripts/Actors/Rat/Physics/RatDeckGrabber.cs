@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,11 +24,16 @@ public class RatDeckGrabber
     protected string hunkTag;
     #endregion
 
+    #region events
+    public Action GetReattached;
+    public Action GetDetached;
+    #endregion
+
     #region blackboard variables
     protected GroundData groundData;
     #endregion
 
-    #region private function
+    #region public function
     public void Init(ShipReferences shipReferences, RatReferences ratReferences){
         this.assignedShip = shipReferences.ShipObject.transform;
         this.assignedDeck = shipReferences.DeckObject.transform;
@@ -49,7 +55,7 @@ public class RatDeckGrabber
                 this.VelocityDifference() > 0 &&
                 this.VelocityDifference() <= this.reattachVelocity
             ){
-                this.AttachToShip(this.groundData.GetDeck().transform);
+                this.Reattach();
             }
         }
     }
@@ -65,6 +71,27 @@ public class RatDeckGrabber
         }
     }
 
+    public void PlaceOnShip(){
+        Vector3 position = this.GetValidSpawnPoint();
+
+        this.ratTransform.position = position;
+        this.Reattach();
+    }
+
+    public Vector3 GetRelativeDeckPosition(Vector3 originalPos){
+        if(this.assignedDeck == null){
+            return Vector3.zero;
+        }
+
+        Vector3 localPos = this.assignedDeck.InverseTransformPoint(originalPos);
+        Vector3 targetPos = new Vector3(localPos.x, this.deckDisplacement, localPos.z);
+        Vector3 newPos = this.assignedDeck.TransformPoint(targetPos);
+
+        return newPos;
+    }
+    #endregion
+
+    #region private function
     bool CanReattach(GroundData groundData){
         return this.groundData.GetDeck() != null &&
         this.IsAssignedDeck(this.groundData.GetDeck().transform) &&
@@ -87,7 +114,7 @@ public class RatDeckGrabber
         return tag == this.deckTag || tag == this.hunkTag;
     }
 
-    void AttachToShip(Transform ship){
+    void Reattach(){
         this.ratBody.constraints = RigidbodyConstraints.None;
 
         this.ratTransform.parent = this.assignedShip.transform;
@@ -98,6 +125,7 @@ public class RatDeckGrabber
         this.ratBody.useGravity = false;
 
         this.shipCollider.enabled = false;
+        this.GetReattached?.Invoke();
     }
 
     void DetachFromShip(){
@@ -109,23 +137,17 @@ public class RatDeckGrabber
         this.ratTransform.eulerAngles = this.GetDetachRotation();
 
         this.shipCollider.enabled = true;
+        this.GetDetached?.Invoke();
+    }
+
+    Vector3 GetValidSpawnPoint(){
+        //** todo: Determine where to place the rat on the ship
+
+        return this.GetRelativeDeckPosition(this.assignedShip.position);
     }
 
     Vector3 GetDetachRotation(){
         return Vector3.up * this.ratTransform.eulerAngles.y;
-    }
-
-    public Vector3 GetRelativeDeckPosition(Vector3 originalPos){
-        if(this.assignedDeck == null){
-            return Vector3.zero;
-        }
-
-        Vector3 localPos = this.assignedDeck.InverseTransformPoint(originalPos);
-        float heightDiff = this.deckDisplacement - localPos.y;
-        Vector3 targetPos = new Vector3(localPos.x, this.deckDisplacement, localPos.z);
-        Vector3 newPos = this.assignedDeck.TransformPoint(targetPos);
-
-        return newPos;
     }
     #endregion
 
