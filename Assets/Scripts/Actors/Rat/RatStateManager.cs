@@ -20,6 +20,7 @@ public class RatStateManager : MonoBehaviour
     #region references
     [SerializeField] RatDeckGrabber deckGrabber = null;
     [SerializeField] RatGroundChecker groundChecker = null;
+    [SerializeField] OverboardSwimmer overboardSwimmer = null;
     [SerializeField] RatReferences ratReferences = null;
     [SerializeField] Animator animator = null;
     [SerializeField] RatHealthSystem healthSystem = null;
@@ -49,6 +50,7 @@ public class RatStateManager : MonoBehaviour
         healthSystem.Life += OnLife;
         buoyancyManager.UnderWater += OnUnderWater;
         buoyancyManager.AboveWater += OnAboveWater;
+        deckGrabber.GetDetached += overboardSwimmer.DetachActivate;
     }
     void OnDisable()
     {
@@ -84,6 +86,7 @@ public class RatStateManager : MonoBehaviour
     {
         groundChecker.Init(shipReferences, ratReferences);
         deckGrabber.Init(shipReferences, ratReferences);
+        overboardSwimmer.Init(shipReferences, ratReferences, deckGrabber);
         buoyancyManager.Init(waterPlane);
         healthSystem.Init(data);
     }
@@ -102,6 +105,7 @@ public class RatStateManager : MonoBehaviour
     {
         GroundData = groundChecker.GetGroundData();
         deckGrabber.UpdateState(GroundData);
+
 
         //bool wasGrounded = Grounded;
         Grounded = GroundData.IsGrounded();
@@ -177,6 +181,11 @@ public class RatStateManager : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         deckGrabber.CollisionCheck(collision);
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        overboardSwimmer.TriggerActivate(collider);
     }
     #endregion
 
