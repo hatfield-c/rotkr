@@ -18,9 +18,9 @@ public class RatStateManager : MonoBehaviour
     #endregion
 
     #region references
-    [SerializeField] RatDeckGrabber DeckGrabber = null;
-    [SerializeField] RatGroundChecker GroundChecker = null;
-    [SerializeField] RatReferences RatReferences = null;
+    [SerializeField] RatDeckGrabber deckGrabber = null;
+    [SerializeField] RatGroundChecker groundChecker = null;
+    [SerializeField] RatReferences ratReferences = null;
     [SerializeField] Animator animator = null;
     [SerializeField] RatHealthSystem healthSystem = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
@@ -48,12 +48,14 @@ public class RatStateManager : MonoBehaviour
         healthSystem.Death += OnDeath;
         healthSystem.Life += OnLife;
         buoyancyManager.UnderWater += OnUnderWater;
+        buoyancyManager.AboveWater += OnAboveWater;
     }
     void OnDisable()
     {
         healthSystem.Death -= OnDeath;
         healthSystem.Life -= OnLife;
         buoyancyManager.UnderWater -= OnUnderWater;
+        buoyancyManager.AboveWater -= OnAboveWater;
     }
     void OnDeath()
     {
@@ -69,50 +71,54 @@ public class RatStateManager : MonoBehaviour
         healthSystem.Drown();
         Swimming = true;
     }
+    void OnAboveWater()
+    {
+        healthSystem.StopDrowning();
+        Swimming = false;
+    }
     #endregion
 
     #region logic
 
-    public void Init(ShipReferences shipReferences){
-        this.GroundChecker.Init(shipReferences, this.RatReferences);
-        this.DeckGrabber.Init(shipReferences, this.RatReferences);
+    public void Init(RatData data, ShipReferences shipReferences, GameObject waterPlane)
+    {
+        groundChecker.Init(shipReferences, ratReferences);
+        deckGrabber.Init(shipReferences, ratReferences);
+        buoyancyManager.Init(waterPlane);
+        healthSystem.Init(data);
     }
 
     void Start()
     {
         IsAlive = healthSystem.IsAlive();
 
-        if(DEBUG){
-            this.Init(this.DEBUG_ShipReferences);
+        if(DEBUG)
+        {
+            Init(new RatData(100, 100, "Jerry"), DEBUG_ShipReferences, FindObjectOfType<WaterCalculator>().gameObject);
         }
     }
 
     void FixedUpdate()
     {
-        this.GroundData = this.GroundChecker.GetGroundData();
-        this.DeckGrabber.UpdateState(this.GroundData);
+        GroundData = groundChecker.GetGroundData();
+        deckGrabber.UpdateState(GroundData);
 
-        bool wasGrounded = this.Grounded;
-        this.Grounded = this.GroundData.IsGrounded();
-        //Swimming = isSwimming();
+        bool wasGrounded = Grounded;
+        Grounded = GroundData.IsGrounded();
         if (IsAlive)
         {
-            if(Swimming)
+            if (Grounded)
             {
-                ChangeAnimationMode(RatAnimationMode.Swimming);
+                // Don't interrupt a task if you were already grounded.
+                if (wasGrounded != Grounded)
+                    ChangeAnimationMode(RatAnimationMode.Default);
             }
             else
             {
-                if (Grounded)
-                {
-                    //Don't interrupt a task if you were already grounded
-                    if (wasGrounded != Grounded)
-                        ChangeAnimationMode(RatAnimationMode.Default);
-                }
+                if (Swimming)
+                    ChangeAnimationMode(RatAnimationMode.Swimming);
                 else
-                {
                     ChangeAnimationMode(RatAnimationMode.Falling);
-                }
             }
             
         }
@@ -145,9 +151,6 @@ public class RatStateManager : MonoBehaviour
     #region public
     public void ChangeAnimationMode(RatAnimationMode mode)
     {
-        if(mode != RatAnimationMode.Swimming){
-            Swimming = false;
-        }
         int toInteger = (int)mode;
         
         animator.SetInteger("animationMode", toInteger);
@@ -158,7 +161,7 @@ public class RatStateManager : MonoBehaviour
     {
         //TODO: 
     }
-    public void SteerTheShip(Vector3 pos)
+    public void GoSteerTheShip(Vector3 pos)
     {
         //TODO:
         Debug.Log("Look-look at me. I am the captain now.");
@@ -171,12 +174,9 @@ public class RatStateManager : MonoBehaviour
         animator.SetFloat("steerValue", value);
     }
     
-    void OnCollisionEnter(Collision collision){
-        this.DeckGrabber.CollisionCheck(collision);
+    void OnCollisionEnter(Collision collision)
+    {
+        deckGrabber.CollisionCheck(collision);
     }
-    //bool isSwimming()
-    //{
-    //    return true;
-    //}
     #endregion
 }

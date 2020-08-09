@@ -529,14 +529,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63d280cb24adda742a8c849f63122fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeckGrabber:
+  deckGrabber:
     breakForce: 10
     reattachVelocity: 10
-    deckDisplacement: 0.25
-  GroundChecker:
+    deckDisplacement: 1
+  groundChecker:
     maxDistance: 0.8
-    deckTag: ship_deck
-  RatReferences:
+  ratReferences:
     RatObject: {fileID: 5434750042928678336}
     Ratbody: {fileID: 5867579568298927403}
     ShipCollider: {fileID: 5218751123386759517}
@@ -551,6 +550,7 @@ MonoBehaviour:
     ShipBody: {fileID: 0}
     DeckTag: 
     HunkTag: 
+  DEBUG: 0
   LayerMask:
     serializedVersion: 2
     m_Bits: 32768
