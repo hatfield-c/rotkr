@@ -94,6 +94,8 @@ public class RatDeckGrabber
         this.ratBody.useGravity = false;
 
         this.ratBody.constraints = RigidbodyConstraints.None;
+        this.ratTransform.eulerAngles = this.GetAttachRotation();
+
         this.shipCollider.enabled = false;
     }
 
@@ -106,7 +108,19 @@ public class RatDeckGrabber
         this.shipCollider.enabled = true;
     }
 
-    Vector3 GetDeckDisplacement(Vector3 originalPos){
+    Vector3 GetAttachRotation(){
+        return (
+            (Vector3.right * this.assignedShip.eulerAngles.x) +
+            (Vector3.up * this.ratTransform.eulerAngles.y) +
+            (Vector3.forward * this.assignedShip.eulerAngles.z)
+        );
+    }
+
+    Vector3 GetDetachRotation(){
+        return Vector3.up * this.ratTransform.eulerAngles.y;
+    }
+
+    public Vector3 GetRelativeDeckPosition(Vector3 originalPos){
         if(this.assignedDeck == null){
             return Vector3.zero;
         }
