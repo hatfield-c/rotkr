@@ -50,7 +50,7 @@ public class RatStateManager : MonoBehaviour
         healthSystem.Life += OnLife;
         buoyancyManager.UnderWater += OnUnderWater;
         buoyancyManager.AboveWater += OnAboveWater;
-        deckGrabber.GetDetached += overboardSwimmer.DetachActivate;
+        deckGrabber.DetachedAction += overboardSwimmer.OverboardActivate;
     }
     void OnDisable()
     {
@@ -58,6 +58,7 @@ public class RatStateManager : MonoBehaviour
         healthSystem.Life -= OnLife;
         buoyancyManager.UnderWater -= OnUnderWater;
         buoyancyManager.AboveWater -= OnAboveWater;
+        deckGrabber.DetachedAction -= overboardSwimmer.OverboardActivate;
     }
     void OnDeath()
     {
