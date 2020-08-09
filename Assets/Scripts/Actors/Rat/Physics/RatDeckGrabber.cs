@@ -88,13 +88,13 @@ public class RatDeckGrabber
     }
 
     void AttachToShip(Transform ship){
+        this.ratBody.constraints = RigidbodyConstraints.None;
+
         this.ratTransform.parent = this.assignedShip.transform;
+        ratTransform.localRotation = Quaternion.Euler(0, ratTransform.localRotation.eulerAngles.y, 0);
 
         this.ratBody.isKinematic = true;
         this.ratBody.useGravity = false;
-
-        this.ratBody.constraints = RigidbodyConstraints.None;
-        this.ratTransform.eulerAngles = this.GetAttachRotation();
 
         this.shipCollider.enabled = false;
     }
@@ -105,15 +105,9 @@ public class RatDeckGrabber
         this.ratBody.useGravity = true;
 
         this.ratBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-        this.shipCollider.enabled = true;
-    }
+        this.ratTransform.eulerAngles = this.GetDetachRotation();
 
-    Vector3 GetAttachRotation(){
-        return (
-            (Vector3.right * this.assignedShip.eulerAngles.x) +
-            (Vector3.up * this.ratTransform.eulerAngles.y) +
-            (Vector3.forward * this.assignedShip.eulerAngles.z)
-        );
+        this.shipCollider.enabled = true;
     }
 
     Vector3 GetDetachRotation(){
