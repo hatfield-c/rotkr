@@ -532,7 +532,7 @@ MonoBehaviour:
   deckGrabber:
     breakForce: 10
     reattachVelocity: 10
-    deckDisplacement: 1
+    deckDisplacement: 0.15
   groundChecker:
     maxDistance: 0.8
   ratReferences:
