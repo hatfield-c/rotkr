@@ -36,6 +36,16 @@ public abstract class AShipMovement: MonoBehaviour, IShipMovement
     [SerializeField] protected Rigidbody Rigidbody;
 
     /// <summary>
+    /// Reference to the scene's <see cref="WaterCalculator"/>
+    /// </summary>
+    [SerializeField] protected WaterCalculator waterCalculator;
+
+    /// <summary>
+    /// Vertical displacement above the water at which the ship can't accelerate
+    /// </summary>
+    protected float cutoffThreshold = 0.5f;
+
+    /// <summary>
     /// Starting Rotation of the Motor
     /// </summary>
     protected Quaternion startRotation;

@@ -35,7 +35,7 @@ public class ShipManager : MonoBehaviour {
         this.data = data;
         this.controls = controls;
         equipmentManager.Init(controls);
-        playerShipMovement.Init(controls);
+        playerShipMovement.Init(controls, waterPlane);
         buoyancyManager.Init(waterPlane);
         hunkManager.Init(data.HunkDatum);
         ratGroupManager.Init(data, shipReferences, waterPlane);
