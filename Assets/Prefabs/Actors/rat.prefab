@@ -536,6 +536,8 @@ MonoBehaviour:
     deckDisplacement: 0.15
   groundChecker:
     maxDistance: 0.8
+  overboardSwimmer:
+    pickupDelay: 3
   ratReferences:
     RatObject: {fileID: 5434750042928678336}
     AoeObject: {fileID: 6023639120661546015}

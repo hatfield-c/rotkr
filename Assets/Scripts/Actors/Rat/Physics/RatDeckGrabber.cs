@@ -25,6 +25,7 @@ public class RatDeckGrabber
     #endregion
 
     #region events
+    public Action ReattachedAction;
     public Action DetachedAction;
     #endregion
 
@@ -128,6 +129,8 @@ public class RatDeckGrabber
         this.ratBody.useGravity = false;
 
         this.shipCollider.enabled = false;
+
+        this.ReattachedAction?.Invoke();
     }
 
     void DetachFromShip(){

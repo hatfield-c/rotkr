@@ -1920,7 +1920,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipBody: {fileID: 8539047575037818204}
-  maxAngle: 45
+  maxAngle: 60
   threshold: 3
 --- !u!114 &2894900889011502428
 MonoBehaviour:
@@ -3801,6 +3801,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8200090805562941708, guid: 7f7c95454cee1a745b24a0d570d4b946,
+        type: 3}
+      propertyPath: m_Name
+      value: capsule_thimble
       objectReference: {fileID: 0}
     - target: {fileID: 8200090805962547504, guid: 7f7c95454cee1a745b24a0d570d4b946,
         type: 3}

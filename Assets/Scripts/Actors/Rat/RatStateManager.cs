@@ -51,6 +51,7 @@ public class RatStateManager : MonoBehaviour
         buoyancyManager.UnderWater += OnUnderWater;
         buoyancyManager.AboveWater += OnAboveWater;
         deckGrabber.DetachedAction += overboardSwimmer.OverboardActivate;
+        overboardSwimmer.Rescued += deckGrabber.PlaceOnShip;
     }
     void OnDisable()
     {
@@ -59,6 +60,7 @@ public class RatStateManager : MonoBehaviour
         buoyancyManager.UnderWater -= OnUnderWater;
         buoyancyManager.AboveWater -= OnAboveWater;
         deckGrabber.DetachedAction -= overboardSwimmer.OverboardActivate;
+        overboardSwimmer.Rescued -= deckGrabber.PlaceOnShip;
     }
     void OnDeath()
     {
@@ -87,7 +89,7 @@ public class RatStateManager : MonoBehaviour
     {
         groundChecker.Init(shipReferences, ratReferences);
         deckGrabber.Init(shipReferences, ratReferences);
-        overboardSwimmer.Init(shipReferences, ratReferences, deckGrabber);
+        overboardSwimmer.Init(shipReferences, ratReferences, deckGrabber.IsAttached);
         buoyancyManager.Init(waterPlane);
         healthSystem.Init(data);
     }

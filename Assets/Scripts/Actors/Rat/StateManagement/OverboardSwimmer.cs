@@ -2,33 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 [System.Serializable]
 public class OverboardSwimmer
 {
+    public Action Rescued;
+
     [SerializeField] float pickupDelay = 3;
 
     protected GameObject assignedDeck = null;
     protected GameObject aoeObject = null;
-    protected RatDeckGrabber deckGrabber = null;
     protected Sequence aoeSequence = null;
 
-    public void Init(ShipReferences shipReferences, RatReferences ratReferences, RatDeckGrabber deckGrabber){
+    public delegate bool IsAttachedDelegate();
+
+    public void Init(ShipReferences shipReferences, RatReferences ratReferences, IsAttachedDelegate isAttached){
         this.assignedDeck = shipReferences.DeckObject;
         this.aoeObject = ratReferences.AoeObject;
-        this.deckGrabber = deckGrabber;
 
         Sequence sequence = DOTween.Sequence();
         sequence.SetAutoKill(false);
         sequence.Pause();
         sequence.OnComplete(this.ResetTween);
-        sequence.InsertCallback(this.pickupDelay, this.AllowPickup);
+        sequence.InsertCallback(this.pickupDelay, () => {
+            if (!isAttached()){
+                this.AllowPickup();
+            }
+        });
         this.aoeSequence = sequence;
     }
 
     public void AttachActivate(){
         this.aoeObject.SetActive(false);
-        this.deckGrabber.PlaceOnShip();
+        Rescued?.Invoke();
     }
 
     public void OverboardActivate(){
@@ -36,10 +43,6 @@ public class OverboardSwimmer
     }
 
     public void AllowPickup(){
-        if(this.deckGrabber.IsAttached()){
-            return;
-        }
-
         this.aoeObject.SetActive(true);
     }
 
@@ -49,7 +52,6 @@ public class OverboardSwimmer
         }
 
         this.AttachActivate();
-        
     }
 
     void ResetTween(){
