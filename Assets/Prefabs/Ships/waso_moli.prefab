@@ -424,7 +424,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281046598}
-  m_LocalRotation: {x: 0.022304162, y: -0.030066626, z: 0.005859105, w: 0.9992818}
+  m_LocalRotation: {x: 0.022304177, y: -0.030066593, z: 0.0058590923, w: 0.9992818}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1743,6 +1743,7 @@ GameObject:
   - component: {fileID: 8539047575037818204}
   - component: {fileID: 3610885462050231089}
   - component: {fileID: 4271463973893668852}
+  - component: {fileID: 5062665790314181143}
   - component: {fileID: 2894900889011502428}
   - component: {fileID: 3679849006570010588}
   m_Layer: 13
@@ -1906,6 +1907,21 @@ MonoBehaviour:
   maxSpeed: 500
   drag: 0
   Rigidbody: {fileID: 8539047575037818204}
+--- !u!114 &5062665790314181143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7589817684636043897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc9c54bcb5419af4b949dbf158b16902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipBody: {fileID: 8539047575037818204}
+  maxAngle: 45
+  threshold: 3
 --- !u!114 &2894900889011502428
 MonoBehaviour:
   m_ObjectHideFlags: 0
