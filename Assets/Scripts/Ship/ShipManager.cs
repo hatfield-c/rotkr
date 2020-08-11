@@ -28,7 +28,7 @@ public class ShipManager : MonoBehaviour {
         }
     }
 
-    void Update() { }
+    void FixedUpdate() { }
 
     public void Init(ShipData data, InputMaster controls, GameObject waterPlane)
     {
@@ -48,5 +48,9 @@ public class ShipManager : MonoBehaviour {
     public ShipReferences GetShipReferences()
     {
         return shipReferences;
+    }
+
+    public List<Hunk> GetDeletedHunks(){
+        return hunkManager.GetDeletedHunks();
     }
 }

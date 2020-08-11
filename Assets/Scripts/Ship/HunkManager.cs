@@ -16,6 +16,19 @@ public class HunkManager
 
         this.hunkList = buildFromData(hunkDatum);
     }
+
+    public List<Hunk> GetDeletedHunks(){
+        List<Hunk> hunks = new List<Hunk>();
+
+        foreach(Hunk hunk in this.hunkList){
+            if(hunk.IsDeleted()){
+                hunks.Add(hunk);
+            }
+        }
+
+        return hunks;
+    }
+
     protected List<Hunk> buildFromData(List<HunkData> hunkDatum) {
         List<Hunk> hunks = new List<Hunk>();
 
@@ -30,6 +43,7 @@ public class HunkManager
             for(int i = 0; i < hunkGroup.childCount; i++) {
                 Hunk hunk = this.hunkGroup.GetChild(i).GetComponent<Hunk>();
                 HunkData data = new HunkData(i, false);
+
                 hunk.Init(data, this.jointData, this.rigidBodyData, this.hunkDespawnTime);
                 hunks.Add(hunk);
                 hunkDatum.Add(data);
@@ -37,4 +51,5 @@ public class HunkManager
         }
         return hunks;
     }
+
 }
