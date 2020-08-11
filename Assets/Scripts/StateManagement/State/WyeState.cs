@@ -119,8 +119,12 @@ public class WyeState : AGameState
                 break;
             case WyeSubState.Repairing:
                 // Bring up repair menu and on click listener
-                refs.RepairMenu.Init(() => { EndWye(); });
+                refs.RepairMenu.Init(
+                    () => { EndWye(); }, 
+                    ship.GetDeletedHunks()
+                );
                 refs.RepairMenu.Show();
+
                 break;
         }
     }
