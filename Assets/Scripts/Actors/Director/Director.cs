@@ -19,7 +19,7 @@ public class Director : MonoBehaviour
 
     protected List<ActorShip> ActiveShips = new List<ActorShip>();
 
-    protected bool spawned = false;
+    protected int spawnCount = 0;
 
     public void Init(SpawnPool Spawner, GameObject WaterPlane){
         this.Spawner = Spawner;
@@ -27,13 +27,13 @@ public class Director : MonoBehaviour
     }
 
     void FixedUpdate(){
-        if(!this.spawned){
-            this.spawned = true;
+        if(this.spawnCount < 10){
+            this.spawnCount++;
 
             ActorShip blueprint = this.Blueprints[0];
             SpawnParameters parameters = new SpawnParameters(this.WaterPlane, Difficulty.Easy);
             
-            ActorShip instance = this.Spawner.Spawn(blueprint, parameters);
+            ActorShip instance = this.Spawner.Spawn(blueprint, parameters, new Vector3(this.spawnCount * 20, 0, 0));
             this.ActiveShips.Add(instance);
         }
     }
