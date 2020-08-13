@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 [System.Serializable]
 public class FloatDeadzone {
@@ -8,6 +9,7 @@ public class FloatDeadzone {
     public float floatMin = -1f;
     public float deadMax = 0.25f;
     public float deadMin = -0.25f;
+    public float stabilizingForce = Physics.gravity.y;
 
     public float stableForce(float velocityY, float yPos, float target){
 
@@ -22,7 +24,7 @@ public class FloatDeadzone {
             dir = -1;
         }
 
-        float force = -Physics.gravity.y;
+        float force = -this.stabilizingForce;
         return force * dir * this.distanceMultiplier(yPos, target);
     }
 
@@ -106,5 +108,12 @@ public class FloatDeadzone {
         }
 
         return false;
+    }
+
+    public void Sink(float sinkAmount, float sinkForce){
+        this.floatMin -= sinkAmount;
+        this.deadMin -= sinkAmount;
+        this.deadMax -= sinkAmount;
+        this.stabilizingForce = sinkForce;
     }
 }

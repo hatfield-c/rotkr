@@ -27,7 +27,7 @@ public class Director : MonoBehaviour
     }
 
     void FixedUpdate(){
-        if(this.spawnCount < 10){
+        if(this.spawnCount < 1){
             this.spawnCount++;
 
             ActorShip blueprint = this.Blueprints[0];

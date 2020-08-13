@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ActorShipMovement : AShipMovement
 {
+    protected int canMove = 1;
     protected float acceleration = 0f;
     protected float turnAngle = 0f;
 
@@ -23,10 +24,18 @@ public class ActorShipMovement : AShipMovement
         this.turnAngle = turnAngle;
     }
 
+    public void SetCanMove(bool move){
+        if(move){
+            this.canMove = 1;
+        }
+
+        this.canMove = 0;
+    }
+
     void FixedUpdate()
     {
         float steer = 0f;
-        steer = 1 * this.turnAngle;
+        steer = 1 * this.turnAngle * this.canMove;
 
         Rigidbody.AddTorque(steer * this.transform.up * this.steerPower);
 
@@ -44,8 +53,8 @@ public class ActorShipMovement : AShipMovement
     }
 
     bool CanAccelerate(){
-        if(waterCalculator == null){
-            return true;
+        if(waterCalculator == null || this.canMove == 0){
+            return false;
         }
 
         float height = waterCalculator.calculateHeight(

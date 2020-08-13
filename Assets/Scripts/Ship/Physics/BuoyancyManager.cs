@@ -17,8 +17,12 @@ public class BuoyancyManager : MonoBehaviour {
     public BuoyancyParameters parameters;
     public WaterFrictionParameters friction;
 
+    [SerializeField] float sinkAmount = 30f;
+    [SerializeField] float sinkForce = 0.1f;
+
     protected Rigidbody Rigidbody;
     protected float hammerVelocity;
+    protected bool sinking = false;
 
     private Vector3 frictionForceBuffer;
     
@@ -70,8 +74,19 @@ public class BuoyancyManager : MonoBehaviour {
         this.dampenBobbing(this.StablePoints);
         this.applyWaterFriction();
     }
+
     public void Init(GameObject waterPlane) {
         this.waterLevel = waterPlane.GetComponent<WaterCalculator>();
+    }
+
+    public void ActivateSinking(){
+        this.sinking = true;
+        this.parameters.force = 0f;
+        this.floatzone.Sink(this.sinkAmount, this.sinkForce);
+    }
+
+    public bool IsSinking(){
+        return this.sinking;
     }
 
     protected void applyBuoyancy(Transform floatPoint, float depth){

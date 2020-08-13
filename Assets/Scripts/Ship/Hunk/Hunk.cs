@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using DG.Tweening;
 
 public class Hunk : MonoBehaviour
@@ -10,7 +11,7 @@ public class Hunk : MonoBehaviour
     [SerializeField] Hunk Predecessor = null;
     [SerializeField] new Rigidbody rigidbody = null;
 
-    
+    public Action HunkBroken;
     public FixedJoint Joint;
     public FixedJoint ChildJoint = null;
 
@@ -21,8 +22,15 @@ public class Hunk : MonoBehaviour
 
     void Update() {}
 
-    public void Init(HunkData data, HunkJointData jointData, HunkRigidbodyData rigidbodyData, float despawnTime){
+    public void Init(
+        HunkData data, 
+        HunkJointData jointData, 
+        HunkRigidbodyData rigidbodyData,
+        Action HunkBroken,
+        float despawnTime
+    ){
         this.data = data;
+        this.HunkBroken = HunkBroken;
         this.jointParameters = jointData;
 
         this.despawnTime = despawnTime;
@@ -102,6 +110,7 @@ public class Hunk : MonoBehaviour
 
         this.data.Deleted = true;
         this.DetachChildren();
+        this.HunkBroken?.Invoke();
 
         Sequence sequence = DOTween.Sequence();
         sequence.SetAutoKill(false);

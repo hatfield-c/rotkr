@@ -1172,6 +1172,8 @@ MonoBehaviour:
       mass: 1
       useGravity: 0
     hunkDespawnTime: 7
+  healthManager:
+    DeathPercent: 100
   equipmentManager:
     gunList:
     - {fileID: 636789895717199728}
@@ -1247,6 +1249,8 @@ MonoBehaviour:
   friction:
     maxForce: 15000
     rate: 5
+  sinkAmount: 10
+  sinkTime: 30
 --- !u!114 &1442910358795145861
 MonoBehaviour:
   m_ObjectHideFlags: 0
