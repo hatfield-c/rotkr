@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -8,6 +9,7 @@ public class HunkManager
     public HunkJointData jointData;
     public HunkRigidbodyData rigidBodyData;
     public float hunkDespawnTime = 7f;
+    public Action HunkBroken;
 
     protected List<Hunk> hunkList;
 
@@ -29,13 +31,32 @@ public class HunkManager
         return hunks;
     }
 
+    public int GetHunkCount(){
+        return this.hunkList.Count;
+    }
+
+    public void DestroyHunks(){
+        if(this.hunkGroup == null)
+            return;
+        
+        GameObject.Destroy(this.hunkGroup.gameObject);
+    }
+
     protected List<Hunk> buildFromData(List<HunkData> hunkDatum) {
         List<Hunk> hunks = new List<Hunk>();
 
         if(hunkDatum.Count > 0) {
             foreach (HunkData data in hunkDatum) {
                 Hunk hunk = this.hunkGroup.GetChild(data.HunkID).GetComponent<Hunk>();
-                hunk.Init(data, this.jointData, this.rigidBodyData, this.hunkDespawnTime);
+                
+                hunk.Init(
+                    data, 
+                    this.jointData, 
+                    this.rigidBodyData,
+                    this.HunkBroken,
+                    this.hunkDespawnTime
+                );
+
                 hunks.Add(hunk);
             }
         }
@@ -44,7 +65,14 @@ public class HunkManager
                 Hunk hunk = this.hunkGroup.GetChild(i).GetComponent<Hunk>();
                 HunkData data = new HunkData(i, false);
 
-                hunk.Init(data, this.jointData, this.rigidBodyData, this.hunkDespawnTime);
+                hunk.Init(
+                    data, 
+                    this.jointData, 
+                    this.rigidBodyData, 
+                    this.HunkBroken,
+                    this.hunkDespawnTime
+                );
+
                 hunks.Add(hunk);
                 hunkDatum.Add(data);
             }

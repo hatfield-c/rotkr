@@ -21,4 +21,11 @@ public class ActorEquipment
             gun.lightFuse();
         }
     }
+
+    public void DestroyEquipment(){
+        if(this.ammunitionStorage == null)
+            return;
+
+        GameObject.Destroy(this.ammunitionStorage.gameObject);
+    }
 }

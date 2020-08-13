@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ActorShipManager : MonoBehaviour {
 
     [SerializeField] HunkManager hunkManager = null;
+    [SerializeField] ActorHealthManager healthManager = null;
     [SerializeField] ActorEquipment equipmentManager = null;
+    [SerializeField] List<Brain> BrainList = new List<Brain>();
     [SerializeField] ShipAgent shipAgent = null;
     [SerializeField] ActorShipMovement shipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
-
-    [SerializeField] List<Brain> BrainList = new List<Brain>();
 
     public void Init(GameObject waterPlane, Director.Difficulty Difficulty)
     {
@@ -19,6 +20,8 @@ public class ActorShipManager : MonoBehaviour {
         Brain brain = this.BrainList[0];
 
         hunkManager.Init(shipData.HunkDatum);
+        healthManager.Init(hunkManager.GetHunkCount());
+
         equipmentManager.Init();
         shipAgent.Init(brain);
         shipMovement.Init(waterPlane);
@@ -32,6 +35,32 @@ public class ActorShipManager : MonoBehaviour {
         );
 
         this.equipmentManager.Activate(actions.GetShoot());
+    }
+
+    public void KillThisShip(){
+        if(buoyancyManager.IsSinking())
+            return;
+
+        buoyancyManager.ActivateSinking();
+        shipMovement.SetCanMove(false);
+
+        Sequence deathSequence = DOTween.Sequence();
+        deathSequence.InsertCallback(healthManager.DeathDelay, () => {
+            hunkManager.DestroyHunks();
+            equipmentManager.DestroyEquipment();
+            Destroy(this.gameObject);
+        });
+        deathSequence.Play();
+    }
+
+    void OnEnable(){
+        this.hunkManager.HunkBroken += this.healthManager.OnHunkBreak;
+        this.healthManager.DeathAction += this.KillThisShip;
+    }
+
+    void OnDisable(){
+        this.hunkManager.HunkBroken -= this.healthManager.OnHunkBreak;
+        this.healthManager.DeathAction -= this.KillThisShip;
     }
 
 }
