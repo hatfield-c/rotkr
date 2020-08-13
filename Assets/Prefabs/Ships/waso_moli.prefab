@@ -1907,6 +1907,7 @@ MonoBehaviour:
   maxSpeed: 500
   drag: 0
   Rigidbody: {fileID: 8539047575037818204}
+  waterCalculator: {fileID: 0}
 --- !u!114 &5062665790314181143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1981,7 +1982,9 @@ MonoBehaviour:
   - {fileID: 5610616957036859921}
   - {fileID: 5682919695068499369}
   - {fileID: 5530309245214661262}
-  NewCurrentRatCount: 1
+  ratStatusNodePrefab: {fileID: 1053443961325980066, guid: 4094b782e3578814d98e5217401d570d,
+    type: 3}
+  NewCurrentRatCount: 2
   NewRatHealth: 100
 --- !u!1 &8473714971500122931
 GameObject:

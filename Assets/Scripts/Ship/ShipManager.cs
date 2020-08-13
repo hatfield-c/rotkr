@@ -24,13 +24,13 @@ public class ShipManager : MonoBehaviour {
         if (Debug)
         {
             InputRunner runner = new InputRunner();
-            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject);
+            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject, null);
         }
     }
 
     void FixedUpdate() { }
 
-    public void Init(ShipData data, InputMaster controls, GameObject waterPlane)
+    public void Init(ShipData data, InputMaster controls, GameObject waterPlane, RectTransform ratHealthGroup)
     {
         this.data = data;
         this.controls = controls;
@@ -38,7 +38,7 @@ public class ShipManager : MonoBehaviour {
         playerShipMovement.Init(controls, waterPlane);
         buoyancyManager.Init(waterPlane);
         hunkManager.Init(data.HunkDatum);
-        ratGroupManager.Init(data, shipReferences, waterPlane);
+        ratGroupManager.Init(data, shipReferences, waterPlane, ratHealthGroup);
     }
     public ShipData GetData()
     {

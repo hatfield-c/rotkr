@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Point of contact for <see cref="ShipManager"/> to control the rats depending on the context. Handles management of the group of <see cref="RatStateManager"/>s.
@@ -12,6 +13,8 @@ public class RatGroupManager : MonoBehaviour
     [SerializeField] Transform steeragePoint = null;
     [SerializeField] Transform harpoonPoint = null;
     [SerializeField] List<Transform> cannonPoints = null;
+    [SerializeField] GameObject ratStatusNodePrefab = null;
+    RectTransform ratHealthGroup = null;
 
     List<RatStateManager> rats = null;
     public int NewCurrentRatCount = 1;
@@ -27,8 +30,9 @@ public class RatGroupManager : MonoBehaviour
     }
 
     #region public functions
-    public void Init(ShipData shipData, ShipReferences shipReferences, GameObject waterPlane)
+    public void Init(ShipData shipData, ShipReferences shipReferences, GameObject waterPlane, RectTransform ratHealthGroup = null)
     {
+        this.ratHealthGroup = ratHealthGroup;
         maxRatCount = shipData.MaxRatCount;
         NewCurrentRatCount = (NewCurrentRatCount > maxRatCount) ? maxRatCount : NewCurrentRatCount;
         rats = new List<RatStateManager>();
@@ -36,7 +40,11 @@ public class RatGroupManager : MonoBehaviour
         if (shipData.RatDatum.Count > 0)
         {
             foreach (RatData data in shipData.RatDatum)
-                rats.Add(SpawnRat(data, shipReferences, waterPlane));
+            {
+                RatStateManager rat = SpawnRat(data, shipReferences, waterPlane);
+                rats.Add(rat);
+                CreateRatStatusNode(data, rat);
+            }
         }
         else
         {
@@ -46,6 +54,7 @@ public class RatGroupManager : MonoBehaviour
                 shipData.RatDatum.Add(data);
                 RatStateManager rat = SpawnRat(data, shipReferences, waterPlane);
                 rats.Add(rat);
+                CreateRatStatusNode(data, rat);
             }
         }
         
@@ -72,6 +81,14 @@ public class RatGroupManager : MonoBehaviour
     void TeleportRat(RatStateManager rat, Vector3 targetPosition)
     {
         rat.transform.position = targetPosition;
+    }
+
+    void CreateRatStatusNode(RatData data, RatStateManager rat)
+    {
+        if (ratHealthGroup == null)
+            return;
+        GameObject GO = Instantiate(ratStatusNodePrefab, ratHealthGroup);
+        GO.GetComponent<RatStatusNode>().Init(data, rat);
     }
     #endregion
 
