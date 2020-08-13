@@ -7,7 +7,7 @@ using Unity.MLAgents.Sensors;
 
 public class Ship_Move_Agent : Agent
 {
-    public Ship_Move_Area shipArea;
+    /*public Ship_Move_Area shipArea;
 
     public ActorShipMovement moveControl;
     public ActorShipManager shipManager;
@@ -53,13 +53,14 @@ public class Ship_Move_Agent : Agent
             this.AddReward(1f / 5000f);
         }
 
-    }
+    }*/
 
     /***
     ***     float vectorAction[]
     ***         0: accel
     ***         1 : turn rate
-    ***/
+    ***/ 
+    /*
     public override void OnActionReceived(float[] vectorAction){
         float accel = vectorAction[0];
         float turn = vectorAction[1];
@@ -123,5 +124,6 @@ public class Ship_Move_Agent : Agent
     public void HeuristicShoot(){
         this.shoot = 1f;
     }
+    */
 
 }

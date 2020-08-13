@@ -12,7 +12,11 @@ public class ActorEquipment
         this.ammunitionStorage.parent = null;
     }
 
-    public void activate(){
+    public void Activate(float shoot){
+        if(shoot < 0.5f){
+            return;
+        }
+
         foreach(Cannon gun in this.gunList){
             gun.lightFuse();
         }
