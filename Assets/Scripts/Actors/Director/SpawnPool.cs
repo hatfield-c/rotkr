@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnPool : MonoBehaviour {
-    public ActorShip Spawn(ActorShip shipBlueprint, SpawnParameters parameters){
+    public ActorShip Spawn(ActorShip shipBlueprint, SpawnParameters parameters, Vector3 position){
 
         GameObject shipObject = Instantiate(
             shipBlueprint.gameObject, 
-            new Vector3(0, 0, 0), 
+            position, 
             Quaternion.identity, 
             null
         );
