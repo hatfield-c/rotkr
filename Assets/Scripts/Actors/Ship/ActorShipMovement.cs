@@ -9,35 +9,55 @@ public class ActorShipMovement : AShipMovement
     protected float acceleration = 0f;
     protected float turnAngle = 0f;
 
-    void Start(){}
+    protected Vector3 forwardBuffer;
+    protected Vector3 horizontalScale = new Vector3(1, 0, 1);
+
+    public void Init(GameObject waterPlane)
+    {
+        waterCalculator = waterPlane.GetComponent<WaterCalculator>();
+    }
+
+    public void ApplyControls(float acceleration, float turnAngle)
+    {
+        this.acceleration = acceleration;
+        this.turnAngle = turnAngle;
+    }
 
     void FixedUpdate()
     {
-        Vector3 forceDirection = transform.forward;
         float steer = 0f;
         steer = 1 * this.turnAngle;
 
-        Vector3 calc = steer * this.transform.up * this.steerPower;
-        //Debug.Log($"turn: {this.turnAngle} , steer: {steer}, transform: {this.transform.up}, power: {this.steerPower}");
-        //Debug.Log($"calc: {calc}");
-        Rigidbody.AddTorque(calc);
+        Rigidbody.AddTorque(steer * this.transform.up * this.steerPower);
 
-        //Debug.Log(this.turnAngle);
+        if(CanAccelerate()){
+            forwardBuffer = Vector3.Scale(horizontalScale, transform.forward);
+        } else {
+            forwardBuffer = Vector3.zero;
+        }
 
-        Vector3 forward = Vector3.Scale(new Vector3(1, 0, 1), transform.forward);
         PhysicsHelper.ApplyForceToReachVelocity(
             Rigidbody, 
-            forward * maxSpeed * this.acceleration, 
+            forwardBuffer * maxSpeed * this.acceleration, 
             power
         );
     }
 
-    public void ControlShip(float acceleration, float turnAngle)
-    {
-        //Debug.Log($"calc: {calc}");
+    bool CanAccelerate(){
+        if(waterCalculator == null){
+            return true;
+        }
 
-        this.acceleration = acceleration;
-        this.turnAngle = turnAngle;
+        float height = waterCalculator.calculateHeight(
+            motor.position.x,
+            motor.position.z
+        );
+
+        if(motor.position.y > height + cutoffThreshold){
+            return false;
+        }
+
+        return true;
     }
 
 }

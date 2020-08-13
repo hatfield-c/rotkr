@@ -7,6 +7,7 @@ using Unity.MLAgents.Sensors;
 
 public class Ship_Shoot_Agent : Agent
 {
+    /*
     public Ship_Shoot_Area shipArea;
     public ActorShipMovement moveControl;
     public ActorShipManager shipManager;
@@ -45,11 +46,12 @@ public class Ship_Shoot_Agent : Agent
             //this.EndEpisode();
         }
     }
-
+    */
     /***
     ***     float vectorAction[]
     ***         0: shoot/hold fire
     ***/
+    /*
     public override void OnActionReceived(float[] vectorAction){
         float shootNow = vectorAction[0];
 
@@ -86,5 +88,5 @@ public class Ship_Shoot_Agent : Agent
         //this.equipment.activate();
         this.shoot = 1f;
     }
-
+    */
 }
