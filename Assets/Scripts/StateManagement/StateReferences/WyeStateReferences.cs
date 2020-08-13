@@ -8,4 +8,5 @@ public class WyeStateReferences : MonoBehaviour
     public List<Transform> SpawnPoints;
     public List<EndGate> EndGates;
     public RepairMenu RepairMenu;
+    public RectTransform RatHealthGroup;
 }

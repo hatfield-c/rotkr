@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class RatStateManager : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class RatStateManager : MonoBehaviour
         Falling = 4,
         Drowned = 5
     };
+    #endregion
+
+    #region variables
+    RatData data;
+    public Action<float, float, float> ChangedHealth;
+    public Action<RatAnimationMode> ChangedStatus;
     #endregion
 
     #region references
@@ -48,6 +55,7 @@ public class RatStateManager : MonoBehaviour
     {   
         healthSystem.Death += OnDeath;
         healthSystem.Life += OnLife;
+        healthSystem.ChangedHealth += OnChangedHealth;
         buoyancyManager.UnderWater += OnUnderWater;
         buoyancyManager.AboveWater += OnAboveWater;
         deckGrabber.DetachedAction += overboardSwimmer.OverboardActivate;
@@ -57,6 +65,7 @@ public class RatStateManager : MonoBehaviour
     {
         healthSystem.Death -= OnDeath;
         healthSystem.Life -= OnLife;
+        healthSystem.ChangedHealth -= OnChangedHealth;
         buoyancyManager.UnderWater -= OnUnderWater;
         buoyancyManager.AboveWater -= OnAboveWater;
         deckGrabber.DetachedAction -= overboardSwimmer.OverboardActivate;
@@ -81,12 +90,18 @@ public class RatStateManager : MonoBehaviour
         healthSystem.StopDrowning();
         Swimming = false;
     }
+    void OnChangedHealth(float oldHealth, float newHealth, float maxHealth)
+    {
+        data.CurrentHealth = newHealth;
+        ChangedHealth?.Invoke(oldHealth, newHealth, maxHealth);
+    }
     #endregion
 
     #region logic
 
     public void Init(RatData data, ShipReferences shipReferences, GameObject waterPlane)
     {
+        this.data = data;
         groundChecker.Init(shipReferences, ratReferences);
         deckGrabber.Init(shipReferences, ratReferences);
         overboardSwimmer.Init(shipReferences, ratReferences, deckGrabber.IsAttached);
@@ -158,8 +173,8 @@ public class RatStateManager : MonoBehaviour
     #region public
     public void ChangeAnimationMode(RatAnimationMode mode)
     {
+        ChangeStatus(AnimationMode, mode);
         int toInteger = (int)mode;
-        
         animator.SetInteger("animationMode", toInteger);
         AnimationMode = mode;
 
@@ -176,6 +191,11 @@ public class RatStateManager : MonoBehaviour
     #endregion
 
     #region private
+    void ChangeStatus(RatAnimationMode oldMode, RatAnimationMode newMode)
+    {
+        //if((int)oldMode != (int)newMode)
+        //    ChangedStatus?.Invoke(newMode);
+    }
     void UpdateSteerValue(float value)
     {
         animator.SetFloat("steerValue", value);
