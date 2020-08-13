@@ -64,7 +64,7 @@ public class WyeState : AGameState
 
             player = Object.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation);
             ship = player.GetComponent<ShipManager>();
-            ship.Init(shipData, controls, refs.WaterPlane);
+            ship.Init(shipData, controls, refs.WaterPlane, refs.RatHealthGroup);
         }
         else
             Debug.LogError($"Tried to spawn the player but there is no prefab");

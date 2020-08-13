@@ -10,6 +10,7 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     #region events
     public Action Death;
     public Action Life;
+    public Action<float, float, float> ChangedHealth;
     #endregion
 
     #region variables
@@ -21,6 +22,7 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     // How much damage the rat takes every drowning cycle
     public float DrowningDamage = 10f;
     Sequence currentSequence = null;
+    Sequence cancelDrowning = null;
     #endregion
 
     public void Init(RatData data)
@@ -86,7 +88,17 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
 
     public void StopDrowning()
     {
-        currentSequence.Kill();
+        cancelDrowning.Kill();
+        Sequence sequence = DOTween.Sequence();
+        sequence.InsertCallback(2f, () =>
+        {
+            currentSequence.Kill();
+        });
+        sequence.SetAutoKill(false);
+        sequence.Pause();
+        cancelDrowning = sequence;
+        cancelDrowning.Play();
+        
     }
     #endregion
 
@@ -103,6 +115,8 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
         {
             Life?.Invoke();
         }
+
+        ChangedHealth?.Invoke(oldHealth, health, MaxHealth);
     }
     void SetMaxHealth(float value)
     {
