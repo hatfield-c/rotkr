@@ -45,7 +45,9 @@ public class OverboardSwimmer
     public void AllowPickup(){
         this.aoeObject.SetActive(true);
     }
-
+    public void DisablePickup(){
+        this.aoeObject.SetActive(false);
+    }
     public void TriggerActivate(Collider collider){
         if(collider.gameObject != this.assignedDeck){
             return;

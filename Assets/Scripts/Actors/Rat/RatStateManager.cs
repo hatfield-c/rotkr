@@ -75,6 +75,8 @@ public class RatStateManager : MonoBehaviour
     {
         IsAlive = healthSystem.IsAlive();
         ChangeAnimationMode(RatAnimationMode.Drowned);
+        overboardSwimmer.DisablePickup();
+        data.CurrentHealth = 0;
     }
     void OnLife()
     {
