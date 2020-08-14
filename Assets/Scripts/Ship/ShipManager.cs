@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,13 +25,13 @@ public class ShipManager : MonoBehaviour {
         if (Debug)
         {
             InputRunner runner = new InputRunner();
-            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject, null);
+            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject, null, null);
         }
     }
 
     void FixedUpdate() { }
 
-    public void Init(ShipData data, InputMaster controls, GameObject waterPlane, RectTransform ratHealthGroup)
+    public void Init(ShipData data, InputMaster controls, GameObject waterPlane, RectTransform ratHealthGroup, Action allDeadCallback)
     {
         this.data = data;
         this.controls = controls;
@@ -38,7 +39,7 @@ public class ShipManager : MonoBehaviour {
         playerShipMovement.Init(controls, waterPlane);
         buoyancyManager.Init(waterPlane);
         hunkManager.Init(data.HunkDatum);
-        ratGroupManager.Init(data, shipReferences, waterPlane, ratHealthGroup);
+        ratGroupManager.Init(data, shipReferences, waterPlane, ratHealthGroup, allDeadCallback);
     }
     public ShipData GetData()
     {
