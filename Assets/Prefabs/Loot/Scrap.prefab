@@ -79,6 +79,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &7117042524665279881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2959028492563345490}
+  m_Layer: 0
+  m_Name: floatpoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2959028492563345490
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7117042524665279881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7864281755716896382}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7138838959350842854
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,6 +198,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7864281755716896382}
   - component: {fileID: 6543409132240106010}
+  - component: {fileID: 1100457664384574363}
+  - component: {fileID: 8558134072487866340}
   m_Layer: 0
   m_Name: Scrap
   m_TagString: Untagged
@@ -190,6 +222,7 @@ Transform:
   - {fileID: 4864022988578092130}
   - {fileID: 2478936125570750387}
   - {fileID: 2203226246229203874}
+  - {fileID: 2959028492563345490}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -205,7 +238,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf71eeed8f6d274791f0fedb408ff6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BuoyancyManager: {fileID: 8558134072487866340}
   Value: 0
+--- !u!54 &1100457664384574363
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7864281755716896383}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &8558134072487866340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7864281755716896383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a848716aca0e04b8e107f051f4b1a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterLevel: {fileID: 0}
+  floatPoints:
+  - {fileID: 2959028492563345490}
+  floatzone:
+    floatMax: 1
+    floatMin: -1
+    deadMax: 0.25
+    deadMin: -0.25
+    stabilizingForce: -18
+  parameters:
+    force: 9.8
+    forceRatio: 1
+    forceBias: 0
+    threshold: 0
+    torqueDamping: 1
+    maxDepth: 1
+    maxForce: 10000
+    maxVelocity: 20
+  friction:
+    maxForce: 10
+    rate: 1
+  sinkAmount: 30
+  sinkForce: 0.1
 --- !u!1 &7970126167321712812
 GameObject:
   m_ObjectHideFlags: 0

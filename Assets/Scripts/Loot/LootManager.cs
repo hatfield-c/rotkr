@@ -10,7 +10,9 @@ public class LootManager
 
     protected List<ILoot> LootList = new List<ILoot>();
 
-    public void Init(){
+    public void Init(GameObject waterplane){
+        this.ScrapFactory.Init(waterplane);
+
         this.GenerateLoot(this.ScrapFactory);
 
         foreach(ILoot iloot in this.LootList){

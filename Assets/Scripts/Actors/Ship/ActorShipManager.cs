@@ -20,7 +20,7 @@ public class ActorShipManager : MonoBehaviour {
 
         Brain brain = this.BrainList[0];
 
-        lootManager.Init();
+        lootManager.Init(waterPlane);
         hunkManager.Init(shipData.HunkDatum);
         healthManager.Init(hunkManager.GetHunkCount());
 
