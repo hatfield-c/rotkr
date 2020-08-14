@@ -45,6 +45,7 @@ public class ActorShipManager : MonoBehaviour {
 
         buoyancyManager.ActivateSinking();
         shipMovement.SetCanMove(false);
+        lootManager.DropLoot();
 
         Sequence deathSequence = DOTween.Sequence();
         deathSequence.InsertCallback(healthManager.DeathDelay, () => {
