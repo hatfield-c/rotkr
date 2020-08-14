@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Scrap : MonoBehaviour, ILoot
 {
-    [SerializeField] BuoyancyManager BuoyancyManager;
+    [SerializeField] BuoyancyManager BuoyancyManager = null;
+    [SerializeField] Rigidbody Rigidbody = null;
     public int Value = 0;
 
     public void Init(int value, GameObject waterplane){
@@ -14,5 +15,9 @@ public class Scrap : MonoBehaviour, ILoot
 
     public GameObject GetGameObject(){
         return this.gameObject;
+    }
+
+    public Rigidbody GetRigidbody(){
+        return this.Rigidbody;
     }
 }

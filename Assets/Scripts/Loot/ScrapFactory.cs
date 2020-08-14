@@ -31,14 +31,23 @@ public class ScrapFactory : ILootFactory
 
         for(int i = 0; i < instanceCount; i++){
             GameObject scrapObject = GameObject.Instantiate(this.Prefab);
+
             Scrap scrap = scrapObject.GetComponent<Scrap>();
             scrap.Init(instanceValue, this.Waterplane);
+
+            scrapList.Add(scrap);
         }
 
         return scrapList;
     }
 
     protected int CalculateInstanceValue(int totalValue, int instanceCount){
-        return (int)( (float)totalValue / (float)instanceCount );
+        int value = (int)( (float)totalValue / (float)instanceCount );
+
+        if(value < 1){
+            return 1;
+        }
+
+        return value;
     }
 }
