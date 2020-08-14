@@ -15,6 +15,7 @@ public class LootManager
 
     protected List<ILoot> LootList = new List<ILoot>();
     protected Vector3 directionBuffer = new Vector3();
+    protected Vector3 angleBuffer = new Vector3();
 
     public void Init(GameObject waterplane){
         this.ScrapFactory.Init(waterplane);
@@ -42,6 +43,9 @@ public class LootManager
 
             objectBuffer.SetActive(true);
             objectBuffer.transform.parent = null;
+
+            this.angleBuffer.y = Random.Range(0f, 360f);
+            objectBuffer.transform.eulerAngles = this.angleBuffer;
             
             bodyBuffer.AddForce(this.GetRandomDirection() * this.DropForce);
         }
