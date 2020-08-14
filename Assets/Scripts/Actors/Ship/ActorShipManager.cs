@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class ActorShipManager : MonoBehaviour {
 
+    [SerializeField] LootManager lootManager = null;
     [SerializeField] HunkManager hunkManager = null;
     [SerializeField] ActorHealthManager healthManager = null;
     [SerializeField] ActorEquipment equipmentManager = null;
@@ -19,6 +20,7 @@ public class ActorShipManager : MonoBehaviour {
 
         Brain brain = this.BrainList[0];
 
+        lootManager.Init();
         hunkManager.Init(shipData.HunkDatum);
         healthManager.Init(hunkManager.GetHunkCount());
 
