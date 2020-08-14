@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ public class RatGroupManager : MonoBehaviour
     public int NewCurrentRatCount = 1;
     public int NewRatHealth = 100;
     int maxRatCount;
-
+    Action allDeadCallback = null;
     void Start()
     {
     }
@@ -30,9 +31,10 @@ public class RatGroupManager : MonoBehaviour
     }
 
     #region public functions
-    public void Init(ShipData shipData, ShipReferences shipReferences, GameObject waterPlane, RectTransform ratHealthGroup = null)
+    public void Init(ShipData shipData, ShipReferences shipReferences, GameObject waterPlane, RectTransform ratHealthGroup, Action allDeadCallback = null)
     {
         this.ratHealthGroup = ratHealthGroup;
+        this.allDeadCallback = allDeadCallback;
         maxRatCount = shipData.MaxRatCount;
         NewCurrentRatCount = (NewCurrentRatCount > maxRatCount) ? maxRatCount : NewCurrentRatCount;
         rats = new List<RatStateManager>();
@@ -56,6 +58,11 @@ public class RatGroupManager : MonoBehaviour
                 rats.Add(rat);
                 CreateRatStatusNode(data, rat);
             }
+        }
+
+        foreach(RatStateManager rat in rats)
+        {
+            rat.Death += OnDeath;
         }
         
     }
@@ -89,6 +96,21 @@ public class RatGroupManager : MonoBehaviour
             return;
         GameObject GO = Instantiate(ratStatusNodePrefab, ratHealthGroup);
         GO.GetComponent<RatStatusNode>().Init(data, rat);
+    }
+
+    void OnDeath()
+    {
+        if (!AreAnyRatsAlive(rats))
+            allDeadCallback?.Invoke();
+    }
+    bool AreAnyRatsAlive(List<RatStateManager> rats)
+    {
+        foreach(RatStateManager rat in rats)
+        {
+            if (rat.IsAlive)
+                return true;
+        }
+        return false;
     }
     #endregion
 
