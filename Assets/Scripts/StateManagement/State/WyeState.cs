@@ -19,6 +19,7 @@ public class WyeState : AGameState
     }
 
     enum WyeSubState { None, MidWye, Repairing};
+
     #region variables
     bool success;
     WyeSubState substate = WyeSubState.None;
@@ -64,7 +65,11 @@ public class WyeState : AGameState
 
             player = Object.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation);
             ship = player.GetComponent<ShipManager>();
-            ship.Init(shipData, controls, refs.WaterPlane, refs.RatHealthGroup);
+            ship.Init(shipData, controls, refs.WaterPlane, refs.RatHealthGroup, () =>
+            {
+                UnsubscribeAll();
+                ExecuteComplete?.Invoke();
+            });
         }
         else
             Debug.LogError($"Tried to spawn the player but there is no prefab");
