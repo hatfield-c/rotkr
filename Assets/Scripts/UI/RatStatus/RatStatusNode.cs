@@ -23,7 +23,6 @@ public class RatStatusNode : MonoBehaviour
 
     void OnChangedHealth(float oldHealth, float newHealth, float maxHealth)
     {
-        Debug.Log($"Setting healthSlider value: {newHealth}");
         healthSlider.value = newHealth;
     }
     void OnChangedStatus(RatStateManager.RatAnimationMode mode)
@@ -40,8 +39,8 @@ public class RatStatusNode : MonoBehaviour
     }
     void ClearStatusBar()
     {
-        while(statusBar.childCount > 0)
-            Destroy(statusBar.GetChild(0));
+        for(int i = statusBar.childCount - 1; i > -1; i--)
+            Destroy(statusBar.GetChild(i).gameObject);
     }
     void ApplyStatus(GameObject icon)
     {
