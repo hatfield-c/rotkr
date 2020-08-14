@@ -17,12 +17,9 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     [SerializeField] float health = 100f;
     public float Health => health;
     public float MaxHealth = 100f;
-    // How many seconds the rat needs to drown for to TakeDamage
-    public float DrowningPeriod = 1f;
     // How much damage the rat takes every drowning cycle
     public float DrowningDamage = 10f;
-    Sequence currentSequence = null;
-    Sequence cancelDrowning = null;
+    bool drowning;
     #endregion
 
     public void Init(RatData data)
@@ -36,7 +33,13 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     }
     #region logic
     void Start() { }
-    void Update() { }
+    void FixedUpdate()
+    {
+        if(drowning)
+        {
+            TakeDamage(DrowningDamage * Time.fixedDeltaTime);
+        }
+    }
     #endregion
 
     #region public functions
@@ -70,35 +73,12 @@ public class RatHealthSystem : MonoBehaviour, IDamageable, IRepairable
     }
     public void Drown()
     {
-        if (currentSequence != null)
-            return;
-        Sequence sequence = DOTween.Sequence();
-        sequence.InsertCallback(DrowningPeriod, () =>
-        {
-            TakeDamage(DrowningDamage);
-            Drown();
-            currentSequence = null;
-        });
-        sequence.SetAutoKill(false);
-        sequence.Pause();
-        currentSequence.Kill();
-        currentSequence = sequence;
-        currentSequence.Play();
+        drowning = true;
     }
 
     public void StopDrowning()
     {
-        cancelDrowning.Kill();
-        Sequence sequence = DOTween.Sequence();
-        sequence.InsertCallback(2f, () =>
-        {
-            currentSequence.Kill();
-        });
-        sequence.SetAutoKill(false);
-        sequence.Pause();
-        cancelDrowning = sequence;
-        cancelDrowning.Play();
-        
+        drowning = false;
     }
     #endregion
 

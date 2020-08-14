@@ -22,6 +22,7 @@ public class RatStateManager : MonoBehaviour
     RatData data;
     public Action<float, float, float> ChangedHealth;
     public Action<RatAnimationMode> ChangedStatus;
+    public Action Death;
     #endregion
 
     #region references
@@ -75,6 +76,9 @@ public class RatStateManager : MonoBehaviour
     {
         IsAlive = healthSystem.IsAlive();
         ChangeAnimationMode(RatAnimationMode.Drowned);
+        overboardSwimmer.DisablePickup();
+        data.CurrentHealth = 0;
+        Death?.Invoke();
     }
     void OnLife()
     {
@@ -193,8 +197,8 @@ public class RatStateManager : MonoBehaviour
     #region private
     void ChangeStatus(RatAnimationMode oldMode, RatAnimationMode newMode)
     {
-        //if((int)oldMode != (int)newMode)
-        //    ChangedStatus?.Invoke(newMode);
+        if ((int)oldMode != (int)newMode)
+            ChangedStatus?.Invoke(newMode);
     }
     void UpdateSteerValue(float value)
     {
