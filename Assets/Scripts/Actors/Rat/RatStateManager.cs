@@ -193,8 +193,8 @@ public class RatStateManager : MonoBehaviour
     #region private
     void ChangeStatus(RatAnimationMode oldMode, RatAnimationMode newMode)
     {
-        //if((int)oldMode != (int)newMode)
-        //    ChangedStatus?.Invoke(newMode);
+        if ((int)oldMode != (int)newMode)
+            ChangedStatus?.Invoke(newMode);
     }
     void UpdateSteerValue(float value)
     {
