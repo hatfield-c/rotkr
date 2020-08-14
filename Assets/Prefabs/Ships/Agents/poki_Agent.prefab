@@ -1019,7 +1019,7 @@ MonoBehaviour:
     hunkGroup: {fileID: 8073920965602876612}
     jointData:
       origin: {fileID: 4312528073176205863}
-      breakForce: 15000
+      breakForce: 3000
       breakTorque: Infinity
       jointCollision: 0
       enablePreprocessing: 1
