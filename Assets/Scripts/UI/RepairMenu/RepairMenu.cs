@@ -85,67 +85,82 @@ public class RepairMenu : AView
     void UpdateHunkRepairDisplay(float hunkRatio, bool instantUpdate = false)
     {
         cellsToFill = Mathf.FloorToInt(hunkCells.Count * hunkRatio);
+        Debug.Log($"UpdateHunkRepairDisplay, cellsToFill: {cellsToFill}");
         for(int i = 0; i < hunkCells.Count; i++)
         {
             if (i < cellsToFill)
+            {
                 hunkCells[i].Fill(true);
+            }
             else
-                hunkCells[i].Fill(false, instantUpdate);
+            {
+                hunkCells[i].Fill(false);
+            }
         }
     }
     void HunkRepair(List<Hunk> deletedHunks)
     {
-
+        hunkIntegrityRatio = newIntegrityRatio;
+        cellsToRepair = 0;
+        for (int i = 0; i < cellsToRepair; i++)
+        {
+            Hunk repairedHunk = deletedHunks[0].Repair();
+            deletedHunks.Remove(repairedHunk);
+        }
+        UpdateHunkRepairDisplay(hunkIntegrityRatio);
+        UpdateRepairButtons();
+        //HighlightCellsToRepair();
     }
     void IncreaseHunkRepair(List<Hunk> deletedHunks)
     {
         if(hunkIntegrityRatio < 1)
         {
-            newIntegrityRatio = hunkIntegrityRatio + (1 * cellsToRepair / hunkCells.Count);
-
-            BTN_DecreaseHunkRepair.interactable = true;
-            BTN_Repair.interactable = true;
-
-            if (newIntegrityRatio < 1)
-            {
-                cellsToRepair++;
-                int highlightIndex = cellsToFill - 1 + cellsToRepair;
-                hunkCells[highlightIndex].Highlight(true);
-            }
-            else
-            {
-                BTN_IncreaseHunkRepair.interactable = false;
-            }
+            cellsToRepair++;
         }
         else
         {
             hunkIntegrityRatio = 1;
             BTN_IncreaseHunkRepair.interactable = false;
         }
-
+        UpdateRepairButtons();
     }
     void DecreaseHunkRepair(List<Hunk> deletedHunks)
     {
-        if(hunkIntegrityRatio > 0)
+        cellsToRepair--;
+        UpdateRepairButtons();
+    }
+
+    void UpdateRepairButtons()
+    {
+        if (cellsToRepair > 0)
         {
-            newIntegrityRatio = hunkIntegrityRatio + (1 * cellsToRepair / hunkCells.Count);
-
-            BTN_IncreaseHunkRepair.interactable = true;
-
-            if(newIntegrityRatio >= hunkIntegrityRatio)
-            {
-                cellsToRepair--;
-            }
-            else
-            {
-
-            }
+            BTN_Repair.interactable = true;
+            BTN_DecreaseHunkRepair.interactable = true;
         }
         else
         {
-            hunkIntegrityRatio = 0;
+            cellsToRepair = 0;
+            BTN_Repair.interactable = false;
             BTN_DecreaseHunkRepair.interactable = false;
         }
-    }
 
+        newIntegrityRatio = hunkIntegrityRatio + ((float)cellsToRepair / hunkCells.Count);
+        BTN_IncreaseHunkRepair.interactable = (newIntegrityRatio < 1);
+        BTN_Repair.interactable = (hunkIntegrityRatio < 1);
+        Debug.Log($"newIntegrityRatio: {newIntegrityRatio}, hunkIntegrityRatio: {hunkIntegrityRatio}");
+
+        HighlightCellsToRepair();
+    }
+    void HighlightCellsToRepair()
+    {
+        int highlightStartIndex = cellsToFill;
+
+        for (int i = highlightStartIndex; i < hunkCells.Count; i++)
+        {
+            if (i < highlightStartIndex + cellsToRepair)
+                hunkCells[i].Highlight();
+            else
+                hunkCells[i].Fill(false);
+        }
+    }
 }
