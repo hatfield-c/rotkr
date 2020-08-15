@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpawnParameters
 {
     public GameObject WaterPlane;
-    public Director.Difficulty Difficulty;
+    public EnemyFactory.Difficulty Difficulty;
 
-    public SpawnParameters(GameObject WaterPlane, Director.Difficulty Difficulty){
+    public SpawnParameters(GameObject WaterPlane, EnemyFactory.Difficulty Difficulty){
         this.WaterPlane = WaterPlane;
         this.Difficulty = Difficulty;
     }
