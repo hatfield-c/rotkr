@@ -14,7 +14,7 @@ public class ActorShipManager : MonoBehaviour {
     [SerializeField] ActorShipMovement shipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
 
-    public void Init(GameObject waterPlane, Director.Difficulty Difficulty)
+    public void Init(GameObject waterPlane, EnemyFactory.Difficulty Difficulty)
     {
         ShipData shipData = new ShipData();
 
