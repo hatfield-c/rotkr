@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Brain
 {
-    [SerializeField] Director.Difficulty Difficulty;
+    [SerializeField] EnemyFactory.GameDifficulty Difficulty;
     public NNBehaviour PatrolBehavior = new NNBehaviour();
     public NNBehaviour CombatBehavior = new NNBehaviour();
 }

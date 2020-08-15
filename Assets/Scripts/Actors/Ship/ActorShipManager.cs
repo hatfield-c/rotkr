@@ -14,13 +14,13 @@ public class ActorShipManager : MonoBehaviour {
     [SerializeField] ActorShipMovement shipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
 
-    public void Init(GameObject waterPlane, Director.Difficulty Difficulty)
+    public void Init(GameObject waterPlane, EnemyFactory.GameDifficulty Difficulty)
     {
         ShipData shipData = new ShipData();
 
         Brain brain = this.BrainList[0];
 
-        lootManager.Init();
+        lootManager.Init(waterPlane);
         hunkManager.Init(shipData.HunkDatum);
         healthManager.Init(hunkManager.GetHunkCount());
 
@@ -45,6 +45,7 @@ public class ActorShipManager : MonoBehaviour {
 
         buoyancyManager.ActivateSinking();
         shipMovement.SetCanMove(false);
+        lootManager.DropLoot();
 
         Sequence deathSequence = DOTween.Sequence();
         deathSequence.InsertCallback(healthManager.DeathDelay, () => {
