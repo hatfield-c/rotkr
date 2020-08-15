@@ -5,6 +5,8 @@ using UnityEngine;
 public class ActorShip : MonoBehaviour
 {
     public ActorShipManager ShipManager;
-    public float ChallengeRating;
-
+    [MinAttribute(1)]
+    public int ComputationCost = 1;
+    [MinAttribute(1)]
+    public int ChallengeRating = 1;
 }

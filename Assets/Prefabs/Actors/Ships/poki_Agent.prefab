@@ -773,7 +773,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3662464380462731858}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.02, y: -0.6899986, z: -6}
+  m_LocalPosition: {x: 5, y: -0.6899986, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7050225585806150088}
@@ -976,7 +976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipBody: {fileID: 2597896458723063042}
-  maxAngle: 10
+  maxAngle: 15
   threshold: 3
 --- !u!114 &5027622040037258879
 MonoBehaviour:
@@ -991,6 +991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShipManager: {fileID: 3942272117582753456}
+  ComputationCost: 1
   ChallengeRating: 1
 --- !u!114 &3942272117582753456
 MonoBehaviour:
@@ -1103,7 +1104,7 @@ MonoBehaviour:
     threshold: -3
     torqueDamping: 0.95
     maxDepth: 1.4
-    maxForce: 10000
+    maxForce: 5000
     maxVelocity: 20
   friction:
     maxForce: 15000
@@ -1483,7 +1484,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6610078613827789586}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.02, y: -0.6899986, z: -6}
+  m_LocalPosition: {x: -5, y: -0.6899986, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5123716524528531836}
@@ -1514,7 +1515,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6646986256950593867}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.02, y: -0.6899986, z: 5.25}
+  m_LocalPosition: {x: -5, y: -0.6899986, z: 5.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7579452016320259337}
@@ -1545,7 +1546,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7011777206486430639}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.02, y: -0.69, z: 5.25}
+  m_LocalPosition: {x: 5, y: -0.69, z: 5.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6994756605994407598}
