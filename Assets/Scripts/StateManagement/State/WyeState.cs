@@ -125,8 +125,9 @@ public class WyeState : AGameState
             case WyeSubState.Repairing:
                 // Bring up repair menu and on click listener
                 refs.RepairMenu.Init(
-                    () => { EndWye(); }, 
-                    ship.GetDeletedHunks()
+                    ship.GetData(),
+                    ship.GetDeletedHunks(),
+                    () => { EndWye(); }
                 );
                 refs.RepairMenu.Show();
 
