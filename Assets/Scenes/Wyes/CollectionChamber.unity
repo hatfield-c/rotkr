@@ -1262,6 +1262,11 @@ PrefabInstance:
       propertyPath: RatHealthGroup
       value: 
       objectReference: {fileID: 1695005397}
+    - target: {fileID: 6137520725397624954, guid: ecfcdf7c2eb2ed54db4fbb02979c2c9d,
+        type: 3}
+      propertyPath: ScrapDisplay
+      value: 
+      objectReference: {fileID: 2216406830798384679}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecfcdf7c2eb2ed54db4fbb02979c2c9d, type: 3}
 --- !u!4 &542556341461063773 stripped
@@ -1277,6 +1282,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1266399908421591416, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266399908421591416, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266399908421591416, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266399908421591416, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2216406830898802993, guid: 109f1c22344bf884e90ab916d704e765,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1387,5 +1412,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: WyeCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5474824103707924005, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5474824103707924005, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5474824103707924005, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5474824103707924005, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5474824103707924005, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_textInfo.pageCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7204784049283071315, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7204784049283071315, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7204784049283071315, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7204784049283071315, guid: 109f1c22344bf884e90ab916d704e765,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 109f1c22344bf884e90ab916d704e765, type: 3}
+--- !u!114 &2216406830798384679 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5474824103707924005, guid: 109f1c22344bf884e90ab916d704e765,
+    type: 3}
+  m_PrefabInstance: {fileID: 2216406830798384678}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
