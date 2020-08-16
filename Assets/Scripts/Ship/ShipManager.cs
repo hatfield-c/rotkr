@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ShipManager : MonoBehaviour {
@@ -18,23 +19,26 @@ public class ShipManager : MonoBehaviour {
     /// Check this true if using the player in a non-game State
     /// </summary>
     public bool Debug;
+
     protected InputMaster controls;
+    TextMeshProUGUI scrapDisplay;
 
     void Start()
     {
         if (Debug)
         {
             InputRunner runner = new InputRunner();
-            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject, null, null);
+            Init(new ShipData(), runner.controls, FindObjectOfType<WaterCalculator>().gameObject, null, null, null);
         }
     }
 
     void FixedUpdate() { }
 
-    public void Init(ShipData data, InputMaster controls, GameObject waterPlane, RectTransform ratHealthGroup, Action allDeadCallback)
+    public void Init(ShipData data, InputMaster controls, GameObject waterPlane, RectTransform ratHealthGroup, TextMeshProUGUI scrapDisplay, Action allDeadCallback)
     {
         this.data = data;
         this.controls = controls;
+        this.scrapDisplay = scrapDisplay;
         equipmentManager.Init(controls);
         playerShipMovement.Init(controls, waterPlane);
         buoyancyManager.Init(waterPlane);
@@ -54,4 +58,12 @@ public class ShipManager : MonoBehaviour {
     public List<Hunk> GetDeletedHunks(){
         return hunkManager.GetDeletedHunks();
     }
+
+    public void ScrapPickUp(int value)
+    {
+        data.ScrapData.AddScrap(value);
+        if (scrapDisplay == null) return;
+        scrapDisplay.text = data.ScrapData.GetScrap().ToString();
+    }
+
 }

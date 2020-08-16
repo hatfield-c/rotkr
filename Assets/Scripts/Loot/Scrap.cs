@@ -20,4 +20,14 @@ public class Scrap : MonoBehaviour, ILoot
     public Rigidbody GetRigidbody(){
         return this.Rigidbody;
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag != "Player") return;
+        ShipManager ship = other.GetComponentInParent<ShipManager>();
+        if (ship == null) return;
+        ship.ScrapPickUp(Value);
+        Value = 0;
+        Destroy(gameObject, .1f);
+    }
 }
