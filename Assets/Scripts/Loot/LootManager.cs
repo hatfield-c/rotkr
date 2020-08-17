@@ -20,8 +20,12 @@ public class LootManager
     public void Init(GameObject waterplane){
         this.ScrapFactory.Init(waterplane);
 
-        this.GenerateLoot(this.ScrapFactory);
+        this.ResetLoot();
+    }
 
+    public void ResetLoot(){
+        this.DestroyLoot();
+        this.GenerateLoot(this.ScrapFactory);
 
         GameObject objectBuffer;
         foreach(ILoot iloot in this.LootList){
@@ -72,5 +76,11 @@ public class LootManager
                 Vector3.Cross(Vector3.up, this.directionBuffer)
             ) * this.directionBuffer
         ).normalized;
+    }
+
+    protected void DestroyLoot(){
+        foreach(ILoot iloot in this.LootList){
+            iloot.DestroySelf();
+        }
     }
 }
