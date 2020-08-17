@@ -65,7 +65,7 @@ public class WyeState : AGameState
 
             player = Object.Instantiate(playerPrefab, refs.SpawnPoints[spawnIndex].position, refs.SpawnPoints[spawnIndex].rotation);
             ship = player.GetComponent<ShipManager>();
-            ship.Init(shipData, controls, refs.WaterPlane, refs.RatHealthGroup, () =>
+            ship.Init(shipData, controls, refs.WaterPlane, refs.RatHealthGroup, refs.ScrapDisplay, () =>
             {
                 UnsubscribeAll();
                 ExecuteComplete?.Invoke();

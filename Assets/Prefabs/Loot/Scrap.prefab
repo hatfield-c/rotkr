@@ -200,6 +200,7 @@ GameObject:
   - component: {fileID: 6543409132240106010}
   - component: {fileID: 1100457664384574363}
   - component: {fileID: 8558134072487866340}
+  - component: {fileID: 5965363974721040262}
   m_Layer: 0
   m_Name: Scrap
   m_TagString: Untagged
@@ -292,6 +293,19 @@ MonoBehaviour:
     rate: 1
   sinkAmount: 30
   sinkForce: 0.1
+--- !u!135 &5965363974721040262
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7864281755716896383}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 8
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7970126167321712812
 GameObject:
   m_ObjectHideFlags: 0
