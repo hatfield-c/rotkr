@@ -20,4 +20,8 @@ public class Scrap : MonoBehaviour, ILoot
     public Rigidbody GetRigidbody(){
         return this.Rigidbody;
     }
+
+    public void DestroySelf(){
+        Destroy(this.gameObject);
+    }
 }

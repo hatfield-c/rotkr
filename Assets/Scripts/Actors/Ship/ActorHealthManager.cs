@@ -32,6 +32,11 @@ public class ActorHealthManager
         }
     }
 
+    public void ResetHealth(){
+        this.dead = false;
+        this.hunkCount = this.maxHunks;
+    }
+
     public float GetHunkPercent(){
         return (float)this.hunkCount / (float)this.maxHunks;
     }

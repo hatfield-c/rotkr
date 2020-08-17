@@ -42,6 +42,12 @@ public class HunkManager
         GameObject.Destroy(this.hunkGroup.gameObject);
     }
 
+    public void ResetHunks(){
+        foreach(Hunk hunk in this.hunkList){
+            hunk.ResetHunk();
+        }
+    }
+
     protected List<Hunk> buildFromData(List<HunkData> hunkDatum) {
         List<Hunk> hunks = new List<Hunk>();
 

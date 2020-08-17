@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 public class ActorShipManager : MonoBehaviour {
+
+    public Action RemoveShipAction;
 
     [SerializeField] LootManager lootManager = null;
     [SerializeField] HunkManager hunkManager = null;
@@ -49,21 +52,36 @@ public class ActorShipManager : MonoBehaviour {
 
         Sequence deathSequence = DOTween.Sequence();
         deathSequence.InsertCallback(healthManager.DeathDelay, () => {
-            hunkManager.DestroyHunks();
-            equipmentManager.DestroyEquipment();
-            Destroy(this.gameObject);
+            this.RemoveShipAction?.Invoke();
         });
         deathSequence.Play();
+    }
+
+    public void ResetShip(){
+        lootManager.ResetLoot();
+        hunkManager.ResetHunks();
+        healthManager.ResetHealth();
+        buoyancyManager.Reset();
+    }
+
+    public void DisableShip(){
+        this.gameObject.SetActive(false);
+    }
+
+    public void EnableShip(){
+        this.gameObject.SetActive(true);
     }
 
     void OnEnable(){
         this.hunkManager.HunkBroken += this.healthManager.OnHunkBreak;
         this.healthManager.DeathAction += this.KillThisShip;
+        this.RemoveShipAction += this.DisableShip;
     }
 
     void OnDisable(){
         this.hunkManager.HunkBroken -= this.healthManager.OnHunkBreak;
         this.healthManager.DeathAction -= this.KillThisShip;
+        this.RemoveShipAction -= this.DisableShip;
     }
 
 }

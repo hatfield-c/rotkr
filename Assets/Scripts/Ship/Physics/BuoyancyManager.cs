@@ -79,6 +79,12 @@ public class BuoyancyManager : MonoBehaviour {
         this.waterLevel = waterPlane.GetComponent<WaterCalculator>();
     }
 
+    public void Reset(){
+        this.sinking = false;
+        this.parameters.force = this.parameters.GetOrigForce();
+        this.floatzone.Sink(-this.sinkAmount, this.floatzone.GetOrigForce());
+    }
+
     public void ActivateSinking(){
         this.sinking = true;
         this.parameters.force = 0f;

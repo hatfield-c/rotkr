@@ -10,6 +10,12 @@ public class FloatDeadzone {
     public float deadMax = 0.25f;
     public float deadMin = -0.25f;
     public float stabilizingForce = Physics.gravity.y;
+    
+    protected float origStabilizingForce;
+
+    public FloatDeadzone(){
+        this.origStabilizingForce = this.stabilizingForce;
+    }
 
     public float stableForce(float velocityY, float yPos, float target){
 
@@ -115,5 +121,9 @@ public class FloatDeadzone {
         this.deadMin -= sinkAmount;
         this.deadMax -= sinkAmount;
         this.stabilizingForce = sinkForce;
+    }
+
+    public float GetOrigForce(){
+        return this.origStabilizingForce;
     }
 }

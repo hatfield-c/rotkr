@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyFactory : MonoBehaviour
 {
@@ -12,15 +13,18 @@ public class EnemyFactory : MonoBehaviour
     }
 
     [Header("Possible Ships")]
-    [SerializeField] List<ActorShip> Blueprints = new List<ActorShip>();
+    [SerializeField] List<ActorShip> Prefabs = new List<ActorShip>();
     
     [Header("References")]
-    [SerializeField] List<Transform> Layers = new List<Transform>();
-    [SerializeField] GameObject WaterPlane;
+    [SerializeField] Warehouse Warehouse = null;
+    [SerializeField] Transform LayersContainer = null;
+    [SerializeField] GameObject WaterPlane = null;
 
     [Header("Spawn Parameters")]
     [SerializeField] bool DEBUG = false;
+    [SerializeField] float DesiredSpawnDepth = 8f;
     [SerializeField] int MaxCost = 1;
+    [SerializeField] float SpawnDelay = 5;
 
     protected List<ActorShip> ActiveShips = new List<ActorShip>();
     protected EnemyFactory.GameDifficulty Difficulty;
@@ -33,25 +37,34 @@ public class EnemyFactory : MonoBehaviour
         this.WaterPlane = WaterPlane;
         this.MaxChallengeRating = MaxChallengeRating;
 
-        this.CheckInventory();
+        this.Warehouse.Init(this.Prefabs);
+        this.FillWarehouse();
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.Pause();
+        sequence.InsertCallback(this.SpawnDelay, () => { this.CheckInventory(); });
+        sequence.Play();
     }
 
     public void CheckInventory(){
-        while(this.ShouldSpawn()){
-            ActorShip chosenShip = this.Spawn();
-            this.CurrentCost += chosenShip.ComputationCost;
+        if(this.ShouldSpawn()){
+            this.Spawn();
         }
     }
 
-    protected ActorShip Spawn(){
+    protected void Spawn(){
         ActorShip blueprint = this.ChooseBlueprint();
         Transform layer = this.GetSpawnLayer();
         Vector3 point = this.GetSpawnPoint(layer);
 
-        ActorShip instance = this.CreateEnemy(blueprint, point);
-        this.ActiveShips.Add(instance);
+        ActorShip instance = this.DeployEnemy(blueprint.identity, point);
 
-        return instance;
+        if(instance == null){
+            return;
+        }
+
+        this.ActiveShips.Add(instance);
+        this.CurrentCost += instance.ComputationCost;
     }
 
     protected Vector3 GetSpawnPoint(Transform layer){
@@ -66,11 +79,19 @@ public class EnemyFactory : MonoBehaviour
     }
 
     protected Transform GetSpawnLayer(){
+        if(this.LayersContainer.childCount < 1){
+            return this.LayersContainer;
+        }
+
         Transform closest = null;
         float smallestDistance = 999999999999;
         float distance;
-        foreach(Transform layer in this.Layers){
-            distance = layer.position.y - this.WaterPlane.transform.position.y;
+        foreach(Transform layer in this.LayersContainer){
+            if(layer.position.y + this.DesiredSpawnDepth > this.WaterPlane.transform.position.y){
+                continue;
+            }
+
+            distance = this.WaterPlane.transform.position.y - layer.position.y;
             if(distance < smallestDistance){
                 closest = layer;
                 smallestDistance = distance;
@@ -81,24 +102,33 @@ public class EnemyFactory : MonoBehaviour
     }
 
     protected ActorShip ChooseBlueprint(){
-        if(this.Blueprints.Count < 1){
+        if(this.Prefabs.Count < 1){
             return null;
         }
 
-        return this.Blueprints[0];
+        return this.Prefabs[0];
     }
 
-    protected ActorShip CreateEnemy(ActorShip blueprint, Vector3 position){
-        GameObject shipObject = Instantiate(
-            blueprint.gameObject, 
-            position, 
-            Quaternion.Euler(
-                Random.Range(-14f, -5f),
-                Random.Range(0f, 360f),
-                0
-            ), 
-            null
+    protected ActorShip DeployEnemy(string identity, Vector3 position){
+        if(!this.Warehouse.HasItem(identity)){
+            return null;
+        }
+
+        ActorShip instance = this.Warehouse.FetchItem(identity);
+        instance.transform.position = position;
+        instance.transform.rotation = Quaternion.Euler(
+            Random.Range(-14f, -5f),
+            Random.Range(0f, 360f),
+            0
         );
+
+        instance.Reset();
+
+        return instance;
+    }
+
+    protected ActorShip BuildShip(ActorShip blueprint){
+        GameObject shipObject = Instantiate(blueprint.gameObject);
 
         ActorShip instance = shipObject.GetComponent<ActorShip>();
         instance.ShipManager.Init(
@@ -106,7 +136,27 @@ public class EnemyFactory : MonoBehaviour
             this.Difficulty
         );
 
+        instance.RemoveShipAction += this.StoreShip;
+
         return instance; 
+    }
+
+    protected void FillWarehouse(){
+        ActorShip shipBuffer;
+        foreach(ActorShip prefab in this.Prefabs){
+            for(int i = 0; i < this.GetMaxInstances(prefab); i++){
+                shipBuffer = this.BuildShip(prefab);
+                this.Warehouse.StockItem(shipBuffer);
+            }
+        }
+    }
+
+    protected void StoreShip(ActorShip ship){
+        this.Warehouse.StockItem(ship);
+    }
+
+    protected int GetMaxInstances(ActorShip ship){
+        return 1;
     }
 
     protected bool ShouldSpawn(){
