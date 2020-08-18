@@ -23,11 +23,11 @@ public class ActorShip : MonoBehaviour, IStorable
     }
 
     public void Enable(){
-        this.gameObject.SetActive(true);
+        this.ShipManager.EnableShip();
     }
 
     public void Disable(){
-        this.gameObject.SetActive(false);
+        this.ShipManager.DisableShip();
     }
 
     void OnEnable(){
@@ -42,7 +42,4 @@ public class ActorShip : MonoBehaviour, IStorable
         this.RemoveShipAction?.Invoke(this);
     }
 
-    public void Reset(){
-        this.ShipManager.ResetShip();
-    }
 }

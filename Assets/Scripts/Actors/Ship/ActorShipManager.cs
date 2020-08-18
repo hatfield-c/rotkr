@@ -57,23 +57,26 @@ public class ActorShipManager : MonoBehaviour {
         deathSequence.Play();
     }
 
-    public void ResetShip(){
-        lootManager.ResetLoot();
-        hunkManager.ResetHunks();
-        healthManager.ResetHealth();
-        buoyancyManager.Reset();
-    }
-
     public List<IStorable> GetPossibleLoot(){
         return this.lootManager.GetPossibleLoot();
     }
 
-    public void DisableShip(){
-        this.gameObject.SetActive(false);
+    public void EnableShip(){
+        lootManager.EnableLoot();
+        hunkManager.EnableHunks();
+        healthManager.Enable();
+        buoyancyManager.Enable();
+
+        this.gameObject.SetActive(true);
     }
 
-    public void EnableShip(){
-        this.gameObject.SetActive(true);
+    public void DisableShip(){
+        lootManager.DisableLoot();
+        hunkManager.DisableHunks();
+        healthManager.Disable();
+        buoyancyManager.Disable();
+
+        this.gameObject.SetActive(false);
     }
 
     void OnEnable(){

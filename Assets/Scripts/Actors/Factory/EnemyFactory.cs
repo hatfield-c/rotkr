@@ -125,15 +125,12 @@ public class EnemyFactory : MonoBehaviour
             Random.Range(0f, 360f),
             0
         );
-
-        instance.Reset();
+        instance.Enable();
 
         return instance;
     }
 
     protected ActorShip BuildShip(ActorShip blueprint){
-        GameObject shipObject = Instantiate(blueprint.gameObject);
-
         ActorShip instance = Instantiate<ActorShip>(blueprint);
         instance.ShipManager.Init(
             this.LootWarehouse,
@@ -151,6 +148,7 @@ public class EnemyFactory : MonoBehaviour
         foreach(ActorShip prefab in this.Prefabs){
             for(int i = 0; i < this.GetMaxInstances(prefab); i++){
                 shipBuffer = this.BuildShip(prefab);
+                shipBuffer.Disable();
                 this.EnemyWarehouse.StockItem((IStorable)shipBuffer);
             }
         }
@@ -174,7 +172,16 @@ public class EnemyFactory : MonoBehaviour
             for(int i = 0; i < 3; i++){
                 objectBuffer = Instantiate(storable.GetMyGameObject());
                 ILoot loot = objectBuffer.GetComponent<ILoot>();
-                loot.Init(this.WaterPlane, this.LootWarehouse.StockItem);
+
+                loot.Init(
+                    this.WaterPlane, 
+                    (IStorable istorable) => {
+                        istorable.Disable();
+                        this.LootWarehouse.StockItem(istorable);
+                    }
+                );
+
+                ((IStorable)loot).Disable();
 
                 this.LootWarehouse.StockItem((IStorable)loot);
             }
@@ -192,6 +199,9 @@ public class EnemyFactory : MonoBehaviour
     }
 
     protected void StoreShip(ActorShip ship){
+        this.CurrentCost -= ship.ComputationCost;
+        this.ActiveShips.Remove(ship);
+        ship.Disable();
         this.EnemyWarehouse.StockItem(ship);
     }
 
@@ -209,7 +219,7 @@ public class EnemyFactory : MonoBehaviour
 
     void Start(){
         if(DEBUG){
-            this.Init(GameDifficulty.Easy, this.WaterPlane, 100);
+            this.Init(EnemyFactory.GameDifficulty.Easy, this.WaterPlane, 100);
         }
     }
 

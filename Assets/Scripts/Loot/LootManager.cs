@@ -13,8 +13,6 @@ public class LootManager
     [SerializeField] float DropForce = 500f;
     [SerializeField] float DropAngle = 45f;
 
-    public delegate void StorageFunction(IStorable iStorable);
-
     protected List<ILoot> LootList = new List<ILoot>();
     protected Vector3 directionBuffer = new Vector3();
     protected Vector3 angleBuffer = new Vector3();
@@ -25,7 +23,7 @@ public class LootManager
         this.ScrapFactory.Init(lootWarehouse);
     }
 
-    public void ResetLoot(){
+    public void EnableLoot(){
         this.LootList.Clear();
         this.GenerateLoot(this.ScrapFactory);
 
@@ -37,6 +35,14 @@ public class LootManager
             objectBuffer.transform.position = this.LootSpawn.position;
             objectBuffer.SetActive(false);
         }
+    }
+
+    public void DisableLoot(){
+        foreach(ILoot iloot in this.LootList){
+            iloot.ReturnToPool();
+        }
+
+        this.LootList.Clear();
     }
 
     public void DropLoot(){
@@ -55,6 +61,8 @@ public class LootManager
             
             bodyBuffer.AddForce(this.GetRandomDirection() * this.DropForce);
         }
+
+        this.LootList.Clear();
     }
 
     public List<IStorable> GetPossibleLoot(){
@@ -67,11 +75,6 @@ public class LootManager
 
     protected void GenerateLoot(ILootFactory lootFactory){
         this.listBuffer = lootFactory.GetLoot();
-
-        if(this.listBuffer.Count < 0){
-            return;
-        }
-
         this.LootList.AddRange(listBuffer);
     }
 

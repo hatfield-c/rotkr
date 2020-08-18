@@ -37,12 +37,13 @@ public class ScrapFactory : ILootFactory
             maxAvailable = availableCount;
         }
 
-        int instanceCount = Random.Range(this.MinInstances, maxAvailable + 1);
+        int instanceCount = 0;//Random.Range(this.MinInstances, maxAvailable + 1);
         int totalValue = Random.Range(this.MinTotalValue, this.MaxTotalValue + 1);
         int instanceValue = this.CalculateInstanceValue(totalValue, instanceCount);
 
         for(int i = 0; i < instanceCount; i++){
             Scrap scrap = (Scrap)this.LootWarehouse.FetchItem(this.Prefab.GetArchetype());
+            scrap.Enable();
             scrap.SetValue(instanceValue);
 
             this.ScrapList.Add(scrap);
