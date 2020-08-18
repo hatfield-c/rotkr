@@ -9,8 +9,11 @@ public class Scrap : MonoBehaviour, ILoot, IStorable
     [SerializeField] string identity = "scrap";
     public int Value = 0;
 
-    public void Init(GameObject waterplane){
+    public LootManager.StorageFunction StorageFunction;
+
+    public void Init(GameObject waterplane, LootManager.StorageFunction storageFunction){
         this.BuoyancyManager.Init(waterplane);
+        this.StorageFunction = storageFunction;
     }
 
     public GameObject GetGameObject(){
@@ -45,8 +48,8 @@ public class Scrap : MonoBehaviour, ILoot, IStorable
         this.gameObject.SetActive(false);
     }
 
-    public void DestroySelf(){
-        Destroy(this.gameObject);
+    public void ReturnToPool(){
+        this.StorageFunction((IStorable)this);
     }
 
     void OnTriggerEnter(Collider other)
@@ -56,6 +59,6 @@ public class Scrap : MonoBehaviour, ILoot, IStorable
         if (ship == null) return;
         ship.ScrapPickUp(Value);
         Value = 0;
-        Destroy(gameObject, .1f);
+        this.ReturnToPool();
     }
 }

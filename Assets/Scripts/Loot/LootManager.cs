@@ -13,6 +13,8 @@ public class LootManager
     [SerializeField] float DropForce = 500f;
     [SerializeField] float DropAngle = 45f;
 
+    public delegate void StorageFunction(IStorable iStorable);
+
     protected List<ILoot> LootList = new List<ILoot>();
     protected Vector3 directionBuffer = new Vector3();
     protected Vector3 angleBuffer = new Vector3();
@@ -86,9 +88,4 @@ public class LootManager
         ).normalized;
     }
 
-    protected void DestroyLoot(){
-        foreach(ILoot iloot in this.LootList){
-            iloot.DestroySelf();
-        }
-    }
 }

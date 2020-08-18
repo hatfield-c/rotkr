@@ -134,7 +134,7 @@ public class EnemyFactory : MonoBehaviour
     protected ActorShip BuildShip(ActorShip blueprint){
         GameObject shipObject = Instantiate(blueprint.gameObject);
 
-        ActorShip instance = shipObject.GetComponent<ActorShip>();
+        ActorShip instance = Instantiate<ActorShip>(blueprint);
         instance.ShipManager.Init(
             this.LootWarehouse,
             this.WaterPlane,
@@ -162,13 +162,20 @@ public class EnemyFactory : MonoBehaviour
         // memory.
         // For now, just create 3 instance of all loot kinds
 
+        GameObject objectBuffer;
         List<IStorable> possibleLoot = this.GetPossibleLoot();
         foreach(IStorable storable in possibleLoot){
-            ILoot loot = (ILoot)storable;
-            loot.Init(this.WaterPlane);
-            this.LootWarehouse.AddShelf((IStorable)loot);
+            if(this.LootWarehouse.HasShelf(storable.GetArchetype())){
+                continue;
+            }
+            
+            this.LootWarehouse.AddShelf(storable);
 
             for(int i = 0; i < 3; i++){
+                objectBuffer = Instantiate(storable.GetMyGameObject());
+                ILoot loot = objectBuffer.GetComponent<ILoot>();
+                loot.Init(this.WaterPlane, this.LootWarehouse.StockItem);
+
                 this.LootWarehouse.StockItem((IStorable)loot);
             }
         }
