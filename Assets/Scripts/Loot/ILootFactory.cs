@@ -3,6 +3,6 @@ using System.Collections.Generic;
 
 public interface ILootFactory
 {
-    void Init(GameObject waterplane);
-    List<ILoot> CreateLoot();
+    void Init(Warehouse lootWarehouse);
+    List<ILoot> GetLoot();
 }

@@ -17,13 +17,13 @@ public class ActorShipManager : MonoBehaviour {
     [SerializeField] ActorShipMovement shipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
 
-    public void Init(GameObject waterPlane, EnemyFactory.GameDifficulty Difficulty)
+    public void Init(Warehouse lootWarehouse, GameObject waterPlane, EnemyFactory.GameDifficulty Difficulty)
     {
         ShipData shipData = new ShipData();
 
         Brain brain = this.BrainList[0];
 
-        lootManager.Init(waterPlane);
+        lootManager.Init(lootWarehouse);
         hunkManager.Init(shipData.HunkDatum);
         healthManager.Init(hunkManager.GetHunkCount());
 
@@ -62,6 +62,10 @@ public class ActorShipManager : MonoBehaviour {
         hunkManager.ResetHunks();
         healthManager.ResetHealth();
         buoyancyManager.Reset();
+    }
+
+    public List<IStorable> GetPossibleLoot(){
+        return this.lootManager.GetPossibleLoot();
     }
 
     public void DisableShip(){

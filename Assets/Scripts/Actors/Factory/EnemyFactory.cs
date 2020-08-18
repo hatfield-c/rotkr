@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -16,7 +17,8 @@ public class EnemyFactory : MonoBehaviour
     [SerializeField] List<ActorShip> Prefabs = new List<ActorShip>();
     
     [Header("References")]
-    [SerializeField] Warehouse Warehouse = null;
+    [SerializeField] Warehouse EnemyWarehouse = null;
+    [SerializeField] Warehouse LootWarehouse = null;
     [SerializeField] Transform LayersContainer = null;
     [SerializeField] GameObject WaterPlane = null;
 
@@ -37,8 +39,10 @@ public class EnemyFactory : MonoBehaviour
         this.WaterPlane = WaterPlane;
         this.MaxChallengeRating = MaxChallengeRating;
 
-        this.Warehouse.Init(this.Prefabs);
-        this.FillWarehouse();
+        this.EnemyWarehouse.Init(this.Prefabs.Cast<IStorable>().ToList());
+        this.LootWarehouse.Init();
+        this.FillEnemyWarehouse();
+        this.FillLootWarehouse();
 
         Sequence sequence = DOTween.Sequence();
         sequence.Pause();
@@ -110,11 +114,11 @@ public class EnemyFactory : MonoBehaviour
     }
 
     protected ActorShip DeployEnemy(string identity, Vector3 position){
-        if(!this.Warehouse.HasItem(identity)){
+        if(!this.EnemyWarehouse.HasItem(identity)){
             return null;
         }
 
-        ActorShip instance = this.Warehouse.FetchItem(identity);
+        ActorShip instance = (ActorShip)this.EnemyWarehouse.FetchItem(identity);
         instance.transform.position = position;
         instance.transform.rotation = Quaternion.Euler(
             Random.Range(-14f, -5f),
@@ -132,6 +136,7 @@ public class EnemyFactory : MonoBehaviour
 
         ActorShip instance = shipObject.GetComponent<ActorShip>();
         instance.ShipManager.Init(
+            this.LootWarehouse,
             this.WaterPlane,
             this.Difficulty
         );
@@ -141,18 +146,46 @@ public class EnemyFactory : MonoBehaviour
         return instance; 
     }
 
-    protected void FillWarehouse(){
+    protected void FillEnemyWarehouse(){
         ActorShip shipBuffer;
         foreach(ActorShip prefab in this.Prefabs){
             for(int i = 0; i < this.GetMaxInstances(prefab); i++){
                 shipBuffer = this.BuildShip(prefab);
-                this.Warehouse.StockItem(shipBuffer);
+                this.EnemyWarehouse.StockItem((IStorable)shipBuffer);
             }
         }
     }
 
+    protected void FillLootWarehouse(){
+        // todo: develop system for creating needed loot instances, to ensure
+        // there is enough loot to go around, but not so much that we waste
+        // memory.
+        // For now, just create 3 instance of all loot kinds
+
+        List<IStorable> possibleLoot = this.GetPossibleLoot();
+        foreach(IStorable storable in possibleLoot){
+            ILoot loot = (ILoot)storable;
+            loot.Init(this.WaterPlane);
+            this.LootWarehouse.AddShelf((IStorable)loot);
+
+            for(int i = 0; i < 3; i++){
+                this.LootWarehouse.StockItem((IStorable)loot);
+            }
+        }
+    }
+
+    protected List<IStorable> GetPossibleLoot(){
+        List<IStorable> lootList = new List<IStorable>();
+
+        foreach(ActorShip shipPrefab in this.Prefabs){
+            lootList.AddRange(shipPrefab.ShipManager.GetPossibleLoot());
+        }
+
+        return lootList;
+    }
+
     protected void StoreShip(ActorShip ship){
-        this.Warehouse.StockItem(ship);
+        this.EnemyWarehouse.StockItem(ship);
     }
 
     protected int GetMaxInstances(ActorShip ship){

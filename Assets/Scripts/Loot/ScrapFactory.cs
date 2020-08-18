@@ -6,7 +6,7 @@ using UnityEngine;
 public class ScrapFactory : ILootFactory
 {
     [Header("Prefab")]
-    [SerializeField] GameObject Prefab = null;
+    [SerializeField] Scrap Prefab = null;
 
     [Header("Instance Count")]
     [SerializeField] int MaxInstances = 1;
@@ -16,29 +16,43 @@ public class ScrapFactory : ILootFactory
     [SerializeField] int MaxTotalValue = 10;
     [SerializeField] int MinTotalValue = 10;
 
-    protected GameObject Waterplane;
+    protected Warehouse LootWarehouse;
+    protected List<ILoot> ScrapList = new List<ILoot>();
 
-    public void Init(GameObject waterplane){
-        this.Waterplane = waterplane;
+    public void Init(Warehouse lootWarehouse){
+        this.LootWarehouse = lootWarehouse;
     }
 
-    public List<ILoot> CreateLoot(){
-        List<ILoot> scrapList = new List<ILoot>();
+    public List<ILoot> GetLoot(){
+        this.ScrapList.Clear();
 
-        int instanceCount = Random.Range(this.MinInstances, this.MaxInstances + 1);
+        int maxAvailable = this.MaxInstances;
+        int availableCount = this.LootWarehouse.GetItemCount(this.Prefab.GetArchetype());
+
+        if(availableCount < 1){
+            return this.ScrapList;
+        }
+
+        if(availableCount < this.MaxInstances){
+            maxAvailable = availableCount;
+        }
+
+        int instanceCount = Random.Range(this.MinInstances, maxAvailable + 1);
         int totalValue = Random.Range(this.MinTotalValue, this.MaxTotalValue + 1);
         int instanceValue = this.CalculateInstanceValue(totalValue, instanceCount);
 
         for(int i = 0; i < instanceCount; i++){
-            GameObject scrapObject = GameObject.Instantiate(this.Prefab);
+            Scrap scrap = (Scrap)this.LootWarehouse.FetchItem(this.Prefab.GetArchetype());
+            scrap.SetValue(instanceValue);
 
-            Scrap scrap = scrapObject.GetComponent<Scrap>();
-            scrap.Init(instanceValue, this.Waterplane);
-
-            scrapList.Add(scrap);
+            this.ScrapList.Add(scrap);
         }
 
-        return scrapList;
+        return this.ScrapList;
+    }
+
+    public Scrap GetPrefab(){
+        return this.Prefab;
     }
 
     protected int CalculateInstanceValue(int totalValue, int instanceCount){
