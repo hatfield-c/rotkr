@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActorShip : MonoBehaviour
+public class ActorShip : MonoBehaviour, IStorable
 {
     public ActorShipManager ShipManager;
     public string identity;
@@ -13,6 +13,22 @@ public class ActorShip : MonoBehaviour
     public int ChallengeRating = 1;
 
     public Action<ActorShip> RemoveShipAction;
+
+    public GameObject GetMyGameObject(){
+        return this.gameObject;
+    }
+
+    public string GetArchetype(){
+        return this.identity;
+    }
+
+    public void Enable(){
+        this.gameObject.SetActive(true);
+    }
+
+    public void Disable(){
+        this.gameObject.SetActive(false);
+    }
 
     void OnEnable(){
         this.ShipManager.RemoveShipAction += this.Remove;

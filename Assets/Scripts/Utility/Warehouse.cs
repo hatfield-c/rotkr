@@ -10,45 +10,77 @@ public class Warehouse : MonoBehaviour
     protected List<IStorable> listBuffer = new List<IStorable>();
     protected IStorable itemBuffer;
 
-    public void Init(List<IStorable> inventory){
+    public void Init(List<IStorable> inventory = null){
+        if(inventory == null){
+            return;
+        }
+
         foreach(IStorable item in inventory){
-            this.Shelves.Add(item.GetArchetype(), new List<IStorable>());
+            this.AddShelf(item);
         }
     }
     
     public void StockItem(IStorable item){
-        item.GetGameObject().transform.parent = this.transform;
-        item.GetGameObject().transform.position = this.transform.position;
+        if(!this.Shelves.ContainsKey(item.GetArchetype())){
+            return;
+        }
+
+        item.GetMyGameObject().transform.parent = this.transform;
+        item.GetMyGameObject().transform.position = this.transform.position;
         item.Disable();
         this.Shelves[item.GetArchetype()].Add(item);
     }
 
-    public ActorShip FetchItem(string archetype){
+    public IStorable FetchItem(string archetype){
         if(!this.Shelves.ContainsKey(archetype)){
             return null;
         }
 
-        this.itemBuffer = this.Shelves[archetype];
+        this.listBuffer = this.Shelves[archetype];
 
-        if(this.itemBuffer.Count < 1){
+        if(this.listBuffer.Count < 1){
             return null;
         }
 
         this.itemBuffer = this.listBuffer[0];
         this.listBuffer.RemoveAt(0);
         
-        this.itemBuffer.GetGameObject().transform.parent = null;
+        this.itemBuffer.GetMyGameObject().transform.parent = null;
         this.itemBuffer.Enable();
 
         return this.itemBuffer;
     }
 
     public bool HasItem(string archetype){
-        if(!this.Shelves.ContainsKey(archetype)){
+        if(!this.HasShelf(archetype)){
             return false;
         }
 
         if(this.Shelves[archetype].Count < 1){
+            return false;
+        }
+
+        return true;
+    }
+
+    public int GetItemCount(string archetype){
+        if(!this.HasShelf(archetype)){
+            return 0;
+        }
+
+        return this.Shelves[archetype].Count;
+    }
+
+    public void AddShelf(IStorable item){
+        if(this.HasShelf(item.GetArchetype())){
+            return;
+        }
+
+        this.Shelves.Add(item.GetArchetype(), new List<IStorable>());
+    }
+
+    public bool HasShelf(string archetype){
+        if(!this.Shelves.ContainsKey(archetype)){
             return false;
         }
 

@@ -2,7 +2,7 @@
 
 public interface IStorable
 {
-    GameObject GetGameObject();
+    GameObject GetMyGameObject();
     string GetArchetype();
     void Enable();
     void Disable();

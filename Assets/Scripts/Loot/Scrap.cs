@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scrap : MonoBehaviour, ILoot
+public class Scrap : MonoBehaviour, ILoot, IStorable
 {
     [SerializeField] BuoyancyManager BuoyancyManager = null;
     [SerializeField] Rigidbody Rigidbody = null;
+    [SerializeField] string identity = "scrap";
     public int Value = 0;
 
-    public void Init(int value, GameObject waterplane){
-        this.Value = value;
+    public void Init(GameObject waterplane){
         this.BuoyancyManager.Init(waterplane);
     }
 
@@ -19,6 +19,30 @@ public class Scrap : MonoBehaviour, ILoot
 
     public Rigidbody GetRigidbody(){
         return this.Rigidbody;
+    }
+
+    public void SetValue(int value){
+        this.Value = value;
+    }
+
+    public int GetValue(){
+        return this.Value;
+    }
+
+    public GameObject GetMyGameObject() {
+        return this.gameObject;
+    }
+
+    public string GetArchetype() {
+        return this.identity;
+    }
+
+    public void Enable() {
+        this.gameObject.SetActive(true);
+    }
+
+    public void Disable() {
+        this.gameObject.SetActive(false);
     }
 
     public void DestroySelf(){
