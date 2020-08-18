@@ -5,6 +5,8 @@ using UnityEngine;
 public class Warehouse : MonoBehaviour
 {
 
+    public delegate void StorageFunction(IStorable iStorable);
+    
     protected Dictionary<string, List<IStorable>> Shelves = new Dictionary<string, List<IStorable>>();
 
     protected List<IStorable> listBuffer = new List<IStorable>();
@@ -27,7 +29,6 @@ public class Warehouse : MonoBehaviour
 
         item.GetMyGameObject().transform.parent = this.transform;
         item.GetMyGameObject().transform.position = this.transform.position;
-        item.Disable();
         this.Shelves[item.GetArchetype()].Add(item);
     }
 
@@ -46,7 +47,6 @@ public class Warehouse : MonoBehaviour
         this.listBuffer.RemoveAt(0);
         
         this.itemBuffer.GetMyGameObject().transform.parent = null;
-        this.itemBuffer.Enable();
 
         return this.itemBuffer;
     }

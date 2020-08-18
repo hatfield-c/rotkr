@@ -1009,9 +1009,9 @@ MonoBehaviour:
   lootManager:
     LootSpawn: {fileID: 8907107650927663768}
     ScrapFactory:
-      Prefab: {fileID: 7864281755716896383, guid: 8d78e4f2b7b09984fb44fcdf57d6178c,
+      Prefab: {fileID: 6543409132240106010, guid: 8d78e4f2b7b09984fb44fcdf57d6178c,
         type: 3}
-      MaxInstances: 1
+      MaxInstances: 4
       MinInstances: 4
       MaxTotalValue: 20
       MinTotalValue: 5
@@ -1024,7 +1024,7 @@ MonoBehaviour:
       breakForce: 3000
       breakTorque: Infinity
       jointCollision: 0
-      enablePreprocessing: 1
+      enablePreprocessing: 0
       massScale: 1
       connectedMassScale: 0.00001
     rigidBodyData:

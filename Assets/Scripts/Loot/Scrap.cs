@@ -9,9 +9,9 @@ public class Scrap : MonoBehaviour, ILoot, IStorable
     [SerializeField] string identity = "scrap";
     public int Value = 0;
 
-    public LootManager.StorageFunction StorageFunction;
+    public Warehouse.StorageFunction StorageFunction;
 
-    public void Init(GameObject waterplane, LootManager.StorageFunction storageFunction){
+    public void Init(GameObject waterplane, Warehouse.StorageFunction storageFunction){
         this.BuoyancyManager.Init(waterplane);
         this.StorageFunction = storageFunction;
     }
