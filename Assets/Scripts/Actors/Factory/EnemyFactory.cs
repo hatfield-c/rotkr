@@ -24,9 +24,9 @@ public class EnemyFactory : MonoBehaviour
 
     [Header("Spawn Parameters")]
     [SerializeField] bool DEBUG = false;
-    [SerializeField] float DesiredSpawnDepth = 8f;
+    [SerializeField] float DesiredSpawnDepth = 2f;
     [SerializeField] int MaxCost = 1;
-    [SerializeField] float SpawnDelay = 5;
+    [SerializeField] float InitialSpawnDelay = 5;
 
     protected List<ActorShip> ActiveShips = new List<ActorShip>();
     protected EnemyFactory.GameDifficulty Difficulty;
@@ -46,19 +46,25 @@ public class EnemyFactory : MonoBehaviour
 
         Sequence sequence = DOTween.Sequence();
         sequence.Pause();
-        sequence.InsertCallback(this.SpawnDelay, () => { this.CheckInventory(); });
+        sequence.InsertCallback(this.InitialSpawnDelay, () => { this.CheckInventory(); });
         sequence.Play();
     }
 
     public void CheckInventory(){
-        if(this.ShouldSpawn()){
+        if(this.CanSpawn() && this.ShouldSpawn()){
             this.Spawn();
+            this.CheckInventory();
         }
     }
 
     protected void Spawn(){
         ActorShip blueprint = this.ChooseBlueprint();
         Transform layer = this.GetSpawnLayer();
+
+        if(layer == null){
+            Debug.Log($"<color=red>No valid layer found! Set EnemyFactory.LayerContainer, or increase EnemyFactory.SpawnTime delay.</color>");
+        }
+
         Vector3 point = this.GetSpawnPoint(layer);
 
         ActorShip instance = this.DeployEnemy(blueprint.identity, point);
@@ -135,10 +141,9 @@ public class EnemyFactory : MonoBehaviour
         instance.ShipManager.Init(
             this.LootWarehouse,
             this.WaterPlane,
-            this.Difficulty
+            this.Difficulty,
+            this.StoreShip
         );
-
-        instance.RemoveShipAction += this.StoreShip;
 
         return instance; 
     }
@@ -158,7 +163,7 @@ public class EnemyFactory : MonoBehaviour
         // todo: develop system for creating needed loot instances, to ensure
         // there is enough loot to go around, but not so much that we waste
         // memory.
-        // For now, just create 3 instance of all loot kinds
+        // For now, just create 8 instance of all loot kinds
 
         GameObject objectBuffer;
         List<IStorable> possibleLoot = this.GetPossibleLoot();
@@ -169,7 +174,7 @@ public class EnemyFactory : MonoBehaviour
             
             this.LootWarehouse.AddShelf(storable);
 
-            for(int i = 0; i < 3; i++){
+            for(int i = 0; i < 8; i++){
                 objectBuffer = Instantiate(storable.GetMyGameObject());
                 ILoot loot = objectBuffer.GetComponent<ILoot>();
 
@@ -198,15 +203,21 @@ public class EnemyFactory : MonoBehaviour
         return lootList;
     }
 
-    protected void StoreShip(ActorShip ship){
+    protected void StoreShip(IStorable istorable){
+        ActorShip ship = (ActorShip)istorable;
+
         this.CurrentCost -= ship.ComputationCost;
         this.ActiveShips.Remove(ship);
         ship.Disable();
         this.EnemyWarehouse.StockItem(ship);
+
+        this.CheckInventory();
     }
 
     protected int GetMaxInstances(ActorShip ship){
-        return 1;
+        //todo: Determine max instances of each kind of ship
+
+        return 2;
     }
 
     protected bool ShouldSpawn(){
@@ -215,6 +226,23 @@ public class EnemyFactory : MonoBehaviour
         }
 
         return true;
+    }
+
+    protected bool CanSpawn(){
+        if(this.EnemyWarehouse.GetTotalCount() < 1){
+            return false;
+        }
+
+        foreach(ActorShip prefab in this.Prefabs){
+            if(
+                prefab.ComputationCost + this.CurrentCost <= this.MaxCost &&
+                this.EnemyWarehouse.GetItemCount(prefab.GetArchetype()) > 0
+            ){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void Start(){
