@@ -24,7 +24,7 @@ public class ActorShipManager : MonoBehaviour {
         Warehouse.StorageFunction storageFunction
     ){
         ShipData shipData = new ShipData();
-        Brain brain = this.BrainList[0];
+        Brain brain = this.ChooseBrain(Difficulty);
         this.StorageFunction = storageFunction;
 
         lootManager.Init(lootWarehouse);
@@ -80,6 +80,16 @@ public class ActorShipManager : MonoBehaviour {
         buoyancyManager.Disable();
 
         this.gameObject.SetActive(false);
+    }
+
+    protected Brain ChooseBrain(EnemyFactory.GameDifficulty difficulty){
+        foreach(Brain brain in this.BrainList){
+            if(brain.GetDifficulty() == difficulty){
+                return brain;
+            }
+        }
+
+        return this.BrainList[0];
     }
 
     void OnEnable(){

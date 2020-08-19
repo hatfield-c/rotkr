@@ -8,4 +8,8 @@ public class Brain
     [SerializeField] EnemyFactory.GameDifficulty Difficulty;
     public NNBehaviour PatrolBehavior = new NNBehaviour();
     public NNBehaviour CombatBehavior = new NNBehaviour();
+
+    public EnemyFactory.GameDifficulty GetDifficulty(){
+        return this.Difficulty;
+    }
 }
