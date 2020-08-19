@@ -11,12 +11,16 @@ public class HunkManager
     public float hunkDespawnTime = 7f;
     public Action HunkBroken;
 
+    protected Transform origParent;
     protected List<Hunk> hunkList;
 
     public void Init(List<HunkData> hunkDatum) {
-        this.hunkGroup.parent = null;
-
         this.hunkList = buildFromData(hunkDatum);
+
+        this.origParent = this.hunkGroup.parent;
+        this.hunkGroup.position = this.origParent.position;
+        this.hunkGroup.rotation = this.origParent.rotation;
+        this.hunkGroup.parent = null;
     }
 
     public List<Hunk> GetDeletedHunks(){
@@ -35,11 +39,24 @@ public class HunkManager
         return this.hunkList.Count;
     }
 
-    public void DestroyHunks(){
-        if(this.hunkGroup == null)
-            return;
-        
-        GameObject.Destroy(this.hunkGroup.gameObject);
+    public void EnableHunks(){
+        this.hunkGroup.gameObject.SetActive(true);
+        this.hunkGroup.position = this.origParent.position;
+        this.hunkGroup.rotation = this.origParent.rotation;
+        this.hunkGroup.parent = null;
+
+        foreach(Hunk hunk in this.hunkList){
+            hunk.EnableHunk();
+        }
+    }
+
+    public void DisableHunks(){
+        foreach(Hunk hunk in this.hunkList){
+            hunk.DisableHunk();
+        }
+
+        this.hunkGroup.parent = this.origParent;
+        this.hunkGroup.gameObject.SetActive(false);
     }
 
     protected List<Hunk> buildFromData(List<HunkData> hunkDatum) {

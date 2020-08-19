@@ -15,6 +15,12 @@ public class BuoyancyParameters
     public float maxForce = 10000f;
     public float maxVelocity = 20f;
 
+    protected float origForce;
+
+    public BuoyancyParameters(){
+        this.origForce = this.force;
+    }
+
     public float buoyantForce(float depth){
         return this.force * (forceRatio / (Mathf.Exp( (forceRatio - (depth - threshold)) * forceBias)));
     }
@@ -28,5 +34,9 @@ public class BuoyancyParameters
         float acceleration = this.force / mass;
         float timeToStop = velocity / acceleration;
         return (velocity * timeToStop) - (0.5f * acceleration * Mathf.Pow(timeToStop, 2));
+    }
+
+    public float GetOrigForce(){
+        return this.origForce;
     }
 }
