@@ -59,5 +59,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Custom ignores
+Assets/ML-Agents/Timers/*
 ML-Cache/*
 !ML-Cache/cache.txt
