@@ -87,4 +87,13 @@ public class Warehouse : MonoBehaviour
         return true;
     }
 
+    public int GetTotalCount(){
+        int count = 0;
+        foreach(KeyValuePair<string, List<IStorable>> pair in this.Shelves){
+            count += pair.Value.Count;
+        }
+
+        return count;
+    }
+
 }

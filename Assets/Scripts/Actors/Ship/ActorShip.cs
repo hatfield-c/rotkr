@@ -12,8 +12,6 @@ public class ActorShip : MonoBehaviour, IStorable
     [MinAttribute(1)]
     public int ChallengeRating = 1;
 
-    public Action<ActorShip> RemoveShipAction;
-
     public GameObject GetMyGameObject(){
         return this.gameObject;
     }
@@ -28,18 +26,6 @@ public class ActorShip : MonoBehaviour, IStorable
 
     public void Disable(){
         this.ShipManager.DisableShip();
-    }
-
-    void OnEnable(){
-        this.ShipManager.RemoveShipAction += this.Remove;
-    }
-
-    void OnDisable(){
-        this.ShipManager.RemoveShipAction -= this.Remove;
-    }
-
-    public void Remove(){
-        this.RemoveShipAction?.Invoke(this);
     }
 
 }

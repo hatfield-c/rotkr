@@ -21,23 +21,21 @@ public class ScrapFactory : ILootFactory
 
     public void Init(Warehouse lootWarehouse){
         this.LootWarehouse = lootWarehouse;
+
+        if(this.MaxInstances < this.MinInstances){
+            this.MaxInstances = this.MinInstances;
+        }
     }
 
     public List<ILoot> GetLoot(){
         this.ScrapList.Clear();
 
-        int maxAvailable = this.MaxInstances;
-        int availableCount = this.LootWarehouse.GetItemCount(this.Prefab.GetArchetype());
+        int instanceCount = this.GetInstanceCount();//
 
-        if(availableCount < 1){
+        if(instanceCount < 1){
             return this.ScrapList;
         }
 
-        if(availableCount < this.MaxInstances){
-            maxAvailable = availableCount;
-        }
-
-        int instanceCount = 0;//Random.Range(this.MinInstances, maxAvailable + 1);
         int totalValue = Random.Range(this.MinTotalValue, this.MaxTotalValue + 1);
         int instanceValue = this.CalculateInstanceValue(totalValue, instanceCount);
 
@@ -54,6 +52,23 @@ public class ScrapFactory : ILootFactory
 
     public Scrap GetPrefab(){
         return this.Prefab;
+    }
+
+    protected int GetInstanceCount(){
+        int availableCount = this.LootWarehouse.GetItemCount(this.Prefab.GetArchetype());
+
+        if(availableCount <= this.MinInstances){
+            return availableCount;
+        }
+
+        int maxAvailable = this.MaxInstances;
+
+        if(availableCount < this.MaxInstances){
+            maxAvailable = availableCount;
+        }
+
+        return Random.Range(this.MinInstances, maxAvailable + 1);
+
     }
 
     protected int CalculateInstanceValue(int totalValue, int instanceCount){
