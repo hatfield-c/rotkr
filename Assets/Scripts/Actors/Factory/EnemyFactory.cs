@@ -60,6 +60,11 @@ public class EnemyFactory : MonoBehaviour
     protected void Spawn(){
         ActorShip blueprint = this.ChooseBlueprint();
         Transform layer = this.GetSpawnLayer();
+
+        if(layer == null){
+            Debug.Log($"<color=red>No valid layer found! Set EnemyFactory.LayerContainer, or increase EnemyFactory.SpawnTime delay.</color>");
+        }
+
         Vector3 point = this.GetSpawnPoint(layer);
 
         ActorShip instance = this.DeployEnemy(blueprint.identity, point);
