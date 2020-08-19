@@ -18,7 +18,12 @@ public class Hunk : MonoBehaviour
     Sequence currentSequence = null;
     float despawnTime;
 
-    void Start() {}
+    protected Vector3 origPosition;
+    protected Quaternion origRotation;
+
+    void Start() {
+
+    }
 
     void Update() {}
 
@@ -54,12 +59,15 @@ public class Hunk : MonoBehaviour
         else
             this.rigidbody.useGravity = false;
 
-        this.Joint = this.CreateJoint();
+        this.origPosition = this.jointParameters.origin.transform.InverseTransformPoint(this.transform.position);
+        this.origRotation = this.transform.localRotation;
+
+        this.CreateJoint();
 
         // Toggle this object on or off.
-        if (data.Deleted)
+        if (data.Deleted){
             this.Despawn();
-
+        }
     }
 
     // Returns the hunk that was repaired
@@ -84,7 +92,36 @@ public class Hunk : MonoBehaviour
         return this.Predecessor != null;
     }
 
-    FixedJoint CreateJoint(){
+    public void EnableHunk(){
+        this.gameObject.SetActive(true);
+
+        this.rigidbody.velocity = Vector3.zero;
+        this.transform.position = this.jointParameters.origin.transform.TransformPoint(this.origPosition);
+        this.transform.localRotation = this.origRotation;
+        this.CreateJoint();
+
+        Sequence sequence = DOTween.Sequence();
+        sequence.SetAutoKill(false);
+        sequence.Pause();
+        currentSequence = sequence.InsertCallback(0.01f, () => {
+            this.gameObject.SetActive(false);
+            this.gameObject.SetActive(true);    
+        });
+        currentSequence.Play();
+
+        //this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(true);
+    }
+
+    public void DisableHunk(){
+        this.Despawn();
+    }
+
+    void CreateJoint(){
+        Destroy(this.Joint);
+        this.Joint = null;
+
+        this.data.Deleted = false;
         FixedJoint fixedJoint = gameObject.AddComponent<FixedJoint>();
 
         if (this.Predecessor != null) {
@@ -101,10 +138,12 @@ public class Hunk : MonoBehaviour
         fixedJoint.connectedMassScale = this.jointParameters.connectedMassScale;
         fixedJoint.massScale = this.jointParameters.massScale;
 
-        return fixedJoint;
+        this.Joint = fixedJoint;
     }
 
     void OnJointBreak(float breakForce){
+        this.Joint = null;
+
         if(this.rigidbody != null)
             this.rigidbody.useGravity = true;
 
@@ -124,12 +163,20 @@ public class Hunk : MonoBehaviour
     }
 
     void DetachChildren() {
-        if (this.ChildJoint != null) {
-            this.ChildJoint.breakForce = 0;
+        if (this.ChildJoint == null) {
+            return;
         }
+
+        this.ChildJoint.breakForce = 0;
     }
     void Despawn() {
         DetachChildren();
+
+        if(this.Joint != null){
+            Destroy(this.Joint);
+            this.Joint = null;
+        }
+
         this.gameObject.SetActive(false);
     }
 }

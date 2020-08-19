@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 public class ActorShipManager : MonoBehaviour {
+
+    public Action RemoveShipAction;
 
     [SerializeField] LootManager lootManager = null;
     [SerializeField] HunkManager hunkManager = null;
@@ -14,13 +17,13 @@ public class ActorShipManager : MonoBehaviour {
     [SerializeField] ActorShipMovement shipMovement = null;
     [SerializeField] BuoyancyManager buoyancyManager = null;
 
-    public void Init(GameObject waterPlane, EnemyFactory.GameDifficulty Difficulty)
+    public void Init(Warehouse lootWarehouse, GameObject waterPlane, EnemyFactory.GameDifficulty Difficulty)
     {
         ShipData shipData = new ShipData();
 
         Brain brain = this.BrainList[0];
 
-        lootManager.Init(waterPlane);
+        lootManager.Init(lootWarehouse);
         hunkManager.Init(shipData.HunkDatum);
         healthManager.Init(hunkManager.GetHunkCount());
 
@@ -49,21 +52,43 @@ public class ActorShipManager : MonoBehaviour {
 
         Sequence deathSequence = DOTween.Sequence();
         deathSequence.InsertCallback(healthManager.DeathDelay, () => {
-            hunkManager.DestroyHunks();
-            equipmentManager.DestroyEquipment();
-            Destroy(this.gameObject);
+            this.RemoveShipAction?.Invoke();
         });
         deathSequence.Play();
+    }
+
+    public List<IStorable> GetPossibleLoot(){
+        return this.lootManager.GetPossibleLoot();
+    }
+
+    public void EnableShip(){
+        lootManager.EnableLoot();
+        hunkManager.EnableHunks();
+        healthManager.Enable();
+        buoyancyManager.Enable();
+
+        this.gameObject.SetActive(true);
+    }
+
+    public void DisableShip(){
+        lootManager.DisableLoot();
+        hunkManager.DisableHunks();
+        healthManager.Disable();
+        buoyancyManager.Disable();
+
+        this.gameObject.SetActive(false);
     }
 
     void OnEnable(){
         this.hunkManager.HunkBroken += this.healthManager.OnHunkBreak;
         this.healthManager.DeathAction += this.KillThisShip;
+        this.RemoveShipAction += this.DisableShip;
     }
 
     void OnDisable(){
         this.hunkManager.HunkBroken -= this.healthManager.OnHunkBreak;
         this.healthManager.DeathAction -= this.KillThisShip;
+        this.RemoveShipAction -= this.DisableShip;
     }
 
 }

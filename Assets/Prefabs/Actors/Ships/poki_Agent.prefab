@@ -883,7 +883,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4312528073176205863}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -67.43453, y: 46.200886, z: 428.14868}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4312528073005909697}
@@ -991,6 +991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShipManager: {fileID: 3942272117582753456}
+  identity: 
   ComputationCost: 1
   ChallengeRating: 1
 --- !u!114 &3942272117582753456
@@ -1008,9 +1009,9 @@ MonoBehaviour:
   lootManager:
     LootSpawn: {fileID: 8907107650927663768}
     ScrapFactory:
-      Prefab: {fileID: 7864281755716896383, guid: 8d78e4f2b7b09984fb44fcdf57d6178c,
+      Prefab: {fileID: 6543409132240106010, guid: 8d78e4f2b7b09984fb44fcdf57d6178c,
         type: 3}
-      MaxInstances: 1
+      MaxInstances: 4
       MinInstances: 4
       MaxTotalValue: 20
       MinTotalValue: 5
@@ -1023,7 +1024,7 @@ MonoBehaviour:
       breakForce: 3000
       breakTorque: Infinity
       jointCollision: 0
-      enablePreprocessing: 1
+      enablePreprocessing: 0
       massScale: 1
       connectedMassScale: 0.00001
     rigidBodyData:

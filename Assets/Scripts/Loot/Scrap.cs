@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Scrap : MonoBehaviour, ILoot
+public class Scrap : MonoBehaviour, ILoot, IStorable
 {
     [SerializeField] BuoyancyManager BuoyancyManager = null;
     [SerializeField] Rigidbody Rigidbody = null;
+    [SerializeField] string identity = "scrap";
     public int Value = 0;
 
-    public void Init(int value, GameObject waterplane){
-        this.Value = value;
+    public Warehouse.StorageFunction StorageFunction;
+
+    public void Init(GameObject waterplane, Warehouse.StorageFunction storageFunction){
         this.BuoyancyManager.Init(waterplane);
+        this.StorageFunction = storageFunction;
     }
 
     public GameObject GetGameObject(){
@@ -21,6 +24,34 @@ public class Scrap : MonoBehaviour, ILoot
         return this.Rigidbody;
     }
 
+    public void SetValue(int value){
+        this.Value = value;
+    }
+
+    public int GetValue(){
+        return this.Value;
+    }
+
+    public GameObject GetMyGameObject() {
+        return this.gameObject;
+    }
+
+    public string GetArchetype() {
+        return this.identity;
+    }
+
+    public void Enable() {
+        this.gameObject.SetActive(true);
+    }
+
+    public void Disable() {
+        this.gameObject.SetActive(false);
+    }
+
+    public void ReturnToPool(){
+        this.StorageFunction((IStorable)this);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag != "Player") return;
@@ -28,6 +59,6 @@ public class Scrap : MonoBehaviour, ILoot
         if (ship == null) return;
         ship.ScrapPickUp(Value);
         Value = 0;
-        Destroy(gameObject, .1f);
+        this.ReturnToPool();
     }
 }

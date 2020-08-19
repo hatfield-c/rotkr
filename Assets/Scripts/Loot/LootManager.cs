@@ -17,11 +17,15 @@ public class LootManager
     protected Vector3 directionBuffer = new Vector3();
     protected Vector3 angleBuffer = new Vector3();
 
-    public void Init(GameObject waterplane){
-        this.ScrapFactory.Init(waterplane);
+    protected List<ILoot> listBuffer = new List<ILoot>();
 
+    public void Init(Warehouse lootWarehouse){
+        this.ScrapFactory.Init(lootWarehouse);
+    }
+
+    public void EnableLoot(){
+        this.LootList.Clear();
         this.GenerateLoot(this.ScrapFactory);
-
 
         GameObject objectBuffer;
         foreach(ILoot iloot in this.LootList){
@@ -31,6 +35,14 @@ public class LootManager
             objectBuffer.transform.position = this.LootSpawn.position;
             objectBuffer.SetActive(false);
         }
+    }
+
+    public void DisableLoot(){
+        foreach(ILoot iloot in this.LootList){
+            iloot.ReturnToPool();
+        }
+
+        this.LootList.Clear();
     }
 
     public void DropLoot(){
@@ -49,16 +61,21 @@ public class LootManager
             
             bodyBuffer.AddForce(this.GetRandomDirection() * this.DropForce);
         }
+
+        this.LootList.Clear();
+    }
+
+    public List<IStorable> GetPossibleLoot(){
+        List<IStorable> prefabList = new List<IStorable>();
+
+        prefabList.Add((IStorable)ScrapFactory.GetPrefab());
+
+        return prefabList;
     }
 
     protected void GenerateLoot(ILootFactory lootFactory){
-        List<ILoot> loot = lootFactory.CreateLoot();
-
-        if(loot.Count < 0){
-            return;
-        }
-
-        this.LootList.AddRange(loot);
+        this.listBuffer = lootFactory.GetLoot();
+        this.LootList.AddRange(listBuffer);
     }
 
     protected Vector3 GetRandomDirection(){
@@ -73,4 +90,5 @@ public class LootManager
             ) * this.directionBuffer
         ).normalized;
     }
+
 }
