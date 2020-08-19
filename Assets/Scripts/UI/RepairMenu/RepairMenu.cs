@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,13 +13,18 @@ public class RepairMenu : AView
     [SerializeField] Button BTN_DecreaseHunkRepair = null;
     [SerializeField] Button BTN_Repair = null;
     [SerializeField] List<RepairHunkCell> hunkCells = null;
+    [SerializeField] TextMeshProUGUI RepairPriceTag = null;
     #endregion
 
     #region variables
+    public int PricePerRepairCell = 7;
+
     float hunkIntegrityRatio = 0;
     float newIntegrityRatio = 0;
     int cellsToFill = 0;
     int cellsToRepair = 0;
+
+    ShipData data;
     #endregion
 
 
@@ -26,6 +32,7 @@ public class RepairMenu : AView
     new void Start() { base.Start(); }
     public void Init(ShipData data, List<Hunk> deletedHunks, Action callback = null)
     {
+        this.data = data;
         if (callback != null)
         {
             BTN_Confirm.onClick.AddListener(() =>
@@ -53,13 +60,13 @@ public class RepairMenu : AView
         else
         {
             BTN_IncreaseHunkRepair.interactable = true;
-            BTN_Repair.onClick.AddListener(() => HunkRepair(deletedHunks));
-            BTN_IncreaseHunkRepair.onClick.AddListener(() => IncreaseHunkRepair(deletedHunks));
-            BTN_DecreaseHunkRepair.onClick.AddListener(() => DecreaseHunkRepair(deletedHunks));
+            BTN_Repair.onClick.AddListener(() => hunkRepair(deletedHunks));
+            BTN_IncreaseHunkRepair.onClick.AddListener(() => increaseHunkRepair());
+            BTN_DecreaseHunkRepair.onClick.AddListener(() => decreaseHunkRepair());
         }
 
         hunkIntegrityRatio = 1 - ((float)deletedHunks.Count / data.HunkDatum.Count);
-        UpdateHunkRepairDisplay(hunkIntegrityRatio, true);
+        updateHunkRepairDisplay(hunkIntegrityRatio, true);
     }
     public override void Show()
     {
@@ -82,10 +89,14 @@ public class RepairMenu : AView
     //    BTN_RepairAll.interactable = false;
     //}
 
-    void UpdateHunkRepairDisplay(float hunkRatio, bool instantUpdate = false)
+    void updateRepairPriceTag(int cellsToRepair)
+    {
+        RepairPriceTag.text = (cellsToRepair * PricePerRepairCell).ToString();
+    }
+
+    void updateHunkRepairDisplay(float hunkRatio, bool instantUpdate = false)
     {
         cellsToFill = Mathf.FloorToInt(hunkCells.Count * hunkRatio);
-        Debug.Log($"UpdateHunkRepairDisplay, cellsToFill: {cellsToFill}");
         for(int i = 0; i < hunkCells.Count; i++)
         {
             if (i < cellsToFill)
@@ -97,40 +108,53 @@ public class RepairMenu : AView
                 hunkCells[i].Fill(false);
             }
         }
+        updateRepairPriceTag(cellsToRepair);
     }
-    void HunkRepair(List<Hunk> deletedHunks)
+    void hunkRepair(List<Hunk> deletedHunks)
     {
-        hunkIntegrityRatio = newIntegrityRatio;
-        cellsToRepair = 0;
-        for (int i = 0; i < cellsToRepair; i++)
+        int hunksToRepair = Mathf.CeilToInt((float)cellsToRepair / hunkCells.Count * data.HunkDatum.Count);
+        hunksToRepair = (hunksToRepair > deletedHunks.Count) ? deletedHunks.Count : hunksToRepair;
+        for (int i = 0; i < hunksToRepair; i++)
         {
             Hunk repairedHunk = deletedHunks[0].Repair();
             deletedHunks.Remove(repairedHunk);
         }
-        UpdateHunkRepairDisplay(hunkIntegrityRatio);
-        UpdateRepairButtons();
-        //HighlightCellsToRepair();
+
+        // Use the scrap to repair
+        data.ScrapData.UseScrap(cellsToRepair * PricePerRepairCell);
+
+        // Update Displays
+        hunkIntegrityRatio = newIntegrityRatio;
+        cellsToRepair = 0;
+        updateHunkRepairDisplay(hunkIntegrityRatio);
+        updateRepairButtons();
     }
-    void IncreaseHunkRepair(List<Hunk> deletedHunks)
+    void increaseHunkRepair()
     {
         if(hunkIntegrityRatio < 1)
         {
-            cellsToRepair++;
+            // If we can afford it
+            if (IsThisAffordable(cellsToRepair + 1))
+            {
+                cellsToRepair++;
+                updateRepairPriceTag(cellsToRepair);
+            }
         }
         else
         {
             hunkIntegrityRatio = 1;
             BTN_IncreaseHunkRepair.interactable = false;
         }
-        UpdateRepairButtons();
+        updateRepairButtons();
     }
-    void DecreaseHunkRepair(List<Hunk> deletedHunks)
+    void decreaseHunkRepair()
     {
         cellsToRepair--;
-        UpdateRepairButtons();
+        updateRepairPriceTag(cellsToRepair);
+        updateRepairButtons();
     }
 
-    void UpdateRepairButtons()
+    void updateRepairButtons()
     {
         if (cellsToRepair > 0)
         {
@@ -147,11 +171,11 @@ public class RepairMenu : AView
         newIntegrityRatio = hunkIntegrityRatio + ((float)cellsToRepair / hunkCells.Count);
         BTN_IncreaseHunkRepair.interactable = (newIntegrityRatio < 1);
         BTN_Repair.interactable = (hunkIntegrityRatio < 1);
-        Debug.Log($"newIntegrityRatio: {newIntegrityRatio}, hunkIntegrityRatio: {hunkIntegrityRatio}");
+        //Debug.Log($"newIntegrityRatio: {newIntegrityRatio}, hunkIntegrityRatio: {hunkIntegrityRatio}");
 
-        HighlightCellsToRepair();
+        highlightCellsToRepair();
     }
-    void HighlightCellsToRepair()
+    void highlightCellsToRepair()
     {
         int highlightStartIndex = cellsToFill;
 
@@ -162,5 +186,13 @@ public class RepairMenu : AView
             else
                 hunkCells[i].Fill(false);
         }
+    }
+
+    bool IsThisAffordable(int cellsToRepair)
+    {
+        if (cellsToRepair * PricePerRepairCell > data.ScrapData.GetScrap())
+            return false;
+        else
+            return true;
     }
 }
