@@ -1012,7 +1012,7 @@ MonoBehaviour:
       Prefab: {fileID: 6543409132240106010, guid: 8d78e4f2b7b09984fb44fcdf57d6178c,
         type: 3}
       MaxInstances: 4
-      MinInstances: 4
+      MinInstances: 1
       MaxTotalValue: 20
       MinTotalValue: 5
     DropForce: 750
@@ -1034,8 +1034,8 @@ MonoBehaviour:
       useGravity: 0
     hunkDespawnTime: 7
   healthManager:
-    DeathDelay: 20
-    DeathPercent: 50
+    DeathDelay: 10
+    DeathPercent: 75
   equipmentManager:
     gunList:
     - {fileID: 6510809364275453742}
@@ -1074,6 +1074,7 @@ MonoBehaviour:
   shipAgent: {fileID: 1023798357278870125}
   shipMovement: {fileID: 5083262999978021595}
   buoyancyManager: {fileID: 8836518297980304642}
+  actorShipReference: {fileID: 5027622040037258879}
 --- !u!114 &8836518297980304642
 MonoBehaviour:
   m_ObjectHideFlags: 0

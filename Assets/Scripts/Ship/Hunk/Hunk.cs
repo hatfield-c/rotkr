@@ -99,18 +99,6 @@ public class Hunk : MonoBehaviour
         this.transform.position = this.jointParameters.origin.transform.TransformPoint(this.origPosition);
         this.transform.localRotation = this.origRotation;
         this.CreateJoint();
-
-        Sequence sequence = DOTween.Sequence();
-        sequence.SetAutoKill(false);
-        sequence.Pause();
-        currentSequence = sequence.InsertCallback(0.01f, () => {
-            this.gameObject.SetActive(false);
-            this.gameObject.SetActive(true);    
-        });
-        currentSequence.Play();
-
-        //this.gameObject.SetActive(false);
-        //this.gameObject.SetActive(true);
     }
 
     public void DisableHunk(){
