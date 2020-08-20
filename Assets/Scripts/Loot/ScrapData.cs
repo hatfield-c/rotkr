@@ -1,10 +1,12 @@
-﻿public class ScrapData
+﻿using System;
+
+public class ScrapData
 {
     public ScrapData(int initialScrapCount)
     {
         scrapCount = initialScrapCount;
     }
-
+    public Action ScrapUpdated;
     int scrapCount;
 
     public int GetScrap()
@@ -13,11 +15,14 @@
     }
     public int AddScrap(int value)
     {
-        return scrapCount += value;
+        scrapCount += value;
+        ScrapUpdated?.Invoke();
+        return scrapCount;
     }
     public int UseScrap(int expendedScrap)
     {
         scrapCount -= expendedScrap;
+        ScrapUpdated?.Invoke();
         return scrapCount;
     }
 }
