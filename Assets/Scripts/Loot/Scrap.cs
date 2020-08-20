@@ -57,7 +57,7 @@ public class Scrap : MonoBehaviour, ILoot, IStorable
         if (other.tag != "Player") return;
         ShipManager ship = other.GetComponentInParent<ShipManager>();
         if (ship == null) return;
-        ship.ScrapPickUp(Value);
+        ship.AddScrap(Value);
         Value = 0;
         this.ReturnToPool();
     }

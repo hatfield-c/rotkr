@@ -44,6 +44,11 @@ public class ShipManager : MonoBehaviour {
         buoyancyManager.Init(waterPlane);
         hunkManager.Init(data.HunkDatum);
         ratGroupManager.Init(data, shipReferences, waterPlane, ratHealthGroup, allDeadCallback);
+
+        this.data.ScrapData.ScrapUpdated = UpdateScrapDisplay;
+
+        // Update Scrap Display
+        UpdateScrapDisplay();
     }
     public ShipData GetData()
     {
@@ -59,11 +64,15 @@ public class ShipManager : MonoBehaviour {
         return hunkManager.GetDeletedHunks();
     }
 
-    public void ScrapPickUp(int value)
+    public void AddScrap(int value)
     {
         data.ScrapData.AddScrap(value);
         if (scrapDisplay == null) return;
         scrapDisplay.text = data.ScrapData.GetScrap().ToString();
     }
-
+    void UpdateScrapDisplay()
+    {
+        if (scrapDisplay == null) return;
+            scrapDisplay.text = data.ScrapData.GetScrap().ToString();
+    }
 }

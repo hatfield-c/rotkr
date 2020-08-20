@@ -114,6 +114,7 @@ public class RepairMenu : AView
     {
         int hunksToRepair = Mathf.CeilToInt((float)cellsToRepair / hunkCells.Count * data.HunkDatum.Count);
         hunksToRepair = (hunksToRepair > deletedHunks.Count) ? deletedHunks.Count : hunksToRepair;
+
         for (int i = 0; i < hunksToRepair; i++)
         {
             Hunk repairedHunk = deletedHunks[0].Repair();
@@ -134,7 +135,7 @@ public class RepairMenu : AView
         if(hunkIntegrityRatio < 1)
         {
             // If we can afford it
-            if (IsThisAffordable(cellsToRepair + 1))
+            if (isThisAffordable(cellsToRepair + 1))
             {
                 cellsToRepair++;
                 updateRepairPriceTag(cellsToRepair);
@@ -188,7 +189,7 @@ public class RepairMenu : AView
         }
     }
 
-    bool IsThisAffordable(int cellsToRepair)
+    bool isThisAffordable(int cellsToRepair)
     {
         if (cellsToRepair * PricePerRepairCell > data.ScrapData.GetScrap())
             return false;
