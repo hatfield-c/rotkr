@@ -98,6 +98,8 @@ public class Hunk : MonoBehaviour
         this.rigidbody.velocity = Vector3.zero;
         this.transform.position = this.jointParameters.origin.transform.TransformPoint(this.origPosition);
         this.transform.localRotation = this.origRotation;
+        
+        this.data.Deleted = false;
         this.CreateJoint();
     }
 
@@ -109,7 +111,6 @@ public class Hunk : MonoBehaviour
         Destroy(this.Joint);
         this.Joint = null;
 
-        this.data.Deleted = false;
         FixedJoint fixedJoint = gameObject.AddComponent<FixedJoint>();
 
         if (this.Predecessor != null) {
