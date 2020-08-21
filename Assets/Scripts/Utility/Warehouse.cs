@@ -23,7 +23,7 @@ public class Warehouse : MonoBehaviour
     }
     
     public void StockItem(IStorable item){
-        if(!this.Shelves.ContainsKey(item.GetArchetype())){
+        if(!this.HasShelf(item.GetArchetype())){
             return;
         }
 
@@ -33,7 +33,7 @@ public class Warehouse : MonoBehaviour
     }
 
     public IStorable FetchItem(string archetype){
-        if(!this.Shelves.ContainsKey(archetype)){
+        if(!this.HasShelf(archetype)){
             return null;
         }
 

@@ -62,7 +62,7 @@ public class EnemyFactory : MonoBehaviour
         Transform layer = this.GetSpawnLayer();
 
         if(layer == null){
-            Debug.Log($"<color=red>No valid layer found! Set EnemyFactory.LayerContainer, or increase EnemyFactory.SpawnTime delay.</color>");
+            Debug.LogError($"<color=red>No valid layer found! Set EnemyFactory.LayerContainer, or increase EnemyFactory.SpawnTime delay.</color>");
         }
 
         Vector3 point = this.GetSpawnPoint(layer);
@@ -167,11 +167,7 @@ public class EnemyFactory : MonoBehaviour
 
         GameObject objectBuffer;
         List<IStorable> possibleLoot = this.GetPossibleLoot();
-        foreach(IStorable storable in possibleLoot){
-            if(this.LootWarehouse.HasShelf(storable.GetArchetype())){
-                continue;
-            }
-            
+        foreach(IStorable storable in possibleLoot){            
             this.LootWarehouse.AddShelf(storable);
 
             for(int i = 0; i < 8; i++){

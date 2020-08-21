@@ -30,7 +30,7 @@ public class ScrapFactory : ILootFactory
     public List<ILoot> GetLoot(){
         this.ScrapList.Clear();
 
-        int instanceCount = this.GetInstanceCount();//
+        int instanceCount = this.GetInstanceCount();
 
         if(instanceCount < 1){
             return this.ScrapList;
