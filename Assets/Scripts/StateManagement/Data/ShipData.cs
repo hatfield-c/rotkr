@@ -11,5 +11,10 @@ public class ShipData
     public List<HunkData> HunkDatum = null;
     public List<RatData> RatDatum = null;
     public ScrapData ScrapData = null;
-    public int MaxRatCount = 5;
+    int maxRatCount = 5;
+
+    public int GetMaxRatCount()
+    {
+        return maxRatCount;
+    }
 }

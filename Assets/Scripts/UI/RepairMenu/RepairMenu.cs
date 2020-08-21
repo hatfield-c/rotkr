@@ -7,24 +7,28 @@ using UnityEngine.UI;
 public class RepairMenu : AView
 {
     #region references
-    [SerializeField] Button BTN_Confirm = null;
-
-    [SerializeField] Button BTN_IncreaseHunkRepair = null;
-    [SerializeField] Button BTN_DecreaseHunkRepair = null;
-    [SerializeField] Button BTN_Repair = null;
+    [SerializeField] Button btn_Confirm = null;
+    [SerializeField] Button btn_IncreaseHunkRepair = null;
+    [SerializeField] Button btn_DecreaseHunkRepair = null;
+    [SerializeField] Button btn_Repair = null;
+    [SerializeField] Button btn_Recruit = null;
     [SerializeField] List<RepairHunkCell> hunkCells = null;
-    [SerializeField] TextMeshProUGUI RepairPriceTag = null;
+    [SerializeField] TextMeshProUGUI ratCountDisplay = null;
+    [SerializeField] TextMeshProUGUI repairPriceTag = null;
+    [SerializeField] TextMeshProUGUI recruitPriceTag = null;
     #endregion
 
     #region variables
     public int PricePerRepairCell = 7;
+    public int PricePerRecruit = 50;
+    ShipData data;
 
     float hunkIntegrityRatio = 0;
     float newIntegrityRatio = 0;
     int cellsToFill = 0;
     int cellsToRepair = 0;
 
-    ShipData data;
+    
     #endregion
 
 
@@ -35,38 +39,57 @@ public class RepairMenu : AView
         this.data = data;
         if (callback != null)
         {
-            BTN_Confirm.onClick.AddListener(() =>
+            btn_Confirm.onClick.AddListener(() =>
             {
                 callback.Invoke();
 
-                BTN_Confirm.onClick.RemoveAllListeners();
-                BTN_Repair.onClick.RemoveAllListeners();
-                BTN_IncreaseHunkRepair.onClick.RemoveAllListeners();
-                BTN_DecreaseHunkRepair.onClick.RemoveAllListeners();
+                btn_Confirm.onClick.RemoveAllListeners();
+                btn_Repair.onClick.RemoveAllListeners();
+                btn_Recruit.onClick.RemoveAllListeners();
+                btn_IncreaseHunkRepair.onClick.RemoveAllListeners();
+                btn_DecreaseHunkRepair.onClick.RemoveAllListeners();
 
-                BTN_Confirm.interactable = false;
-                BTN_Repair.interactable = false;
-                BTN_IncreaseHunkRepair.interactable = false;
-                BTN_DecreaseHunkRepair.interactable = false;
+                btn_Confirm.interactable = false;
+                btn_Repair.interactable = false;
+                btn_Recruit.interactable = false;
+                btn_IncreaseHunkRepair.interactable = false;
+                btn_DecreaseHunkRepair.interactable = false;
             });
         }
 
+        // Repair
         if(deletedHunks == null || deletedHunks.Count < 1)
         {
-            BTN_Repair.interactable = false;
-            BTN_IncreaseHunkRepair.interactable = false;
-            BTN_DecreaseHunkRepair.interactable = false;
+            btn_Repair.interactable = false;
+            btn_IncreaseHunkRepair.interactable = false;
+            btn_DecreaseHunkRepair.interactable = false;
         }
         else
         {
-            BTN_IncreaseHunkRepair.interactable = true;
-            BTN_Repair.onClick.AddListener(() => hunkRepair(deletedHunks));
-            BTN_IncreaseHunkRepair.onClick.AddListener(() => increaseHunkRepair());
-            BTN_DecreaseHunkRepair.onClick.AddListener(() => decreaseHunkRepair());
+            btn_IncreaseHunkRepair.interactable = true;
+            btn_Repair.onClick.AddListener(() => hunkRepair(deletedHunks));
+            btn_IncreaseHunkRepair.onClick.AddListener(() => increaseHunkRepair());
+            btn_DecreaseHunkRepair.onClick.AddListener(() => decreaseHunkRepair());
         }
 
         hunkIntegrityRatio = 1 - ((float)deletedHunks.Count / data.HunkDatum.Count);
         updateHunkRepairDisplay(hunkIntegrityRatio, true);
+
+        // Recruitment
+        if (canRecruit())
+        {
+            btn_Recruit.interactable = true;
+            btn_Recruit.onClick.AddListener(() =>
+            {
+                addRat();
+                btn_Recruit.interactable = canRecruit();
+            });
+        }
+        else
+        {
+            btn_Recruit.interactable = false;
+        }
+        updateRatCountDisplay();
     }
     public override void Show()
     {
@@ -91,7 +114,7 @@ public class RepairMenu : AView
 
     void updateRepairPriceTag(int cellsToRepair)
     {
-        RepairPriceTag.text = (cellsToRepair * PricePerRepairCell).ToString();
+        repairPriceTag.text = (cellsToRepair * PricePerRepairCell).ToString();
     }
 
     void updateHunkRepairDisplay(float hunkRatio, bool instantUpdate = false)
@@ -135,7 +158,7 @@ public class RepairMenu : AView
         if(hunkIntegrityRatio < 1)
         {
             // If we can afford it
-            if (isThisAffordable(cellsToRepair + 1))
+            if (isThisRepairAffordable(cellsToRepair + 1))
             {
                 cellsToRepair++;
                 updateRepairPriceTag(cellsToRepair);
@@ -144,7 +167,7 @@ public class RepairMenu : AView
         else
         {
             hunkIntegrityRatio = 1;
-            BTN_IncreaseHunkRepair.interactable = false;
+            btn_IncreaseHunkRepair.interactable = false;
         }
         updateRepairButtons();
     }
@@ -159,19 +182,19 @@ public class RepairMenu : AView
     {
         if (cellsToRepair > 0)
         {
-            BTN_Repair.interactable = true;
-            BTN_DecreaseHunkRepair.interactable = true;
+            btn_Repair.interactable = true;
+            btn_DecreaseHunkRepair.interactable = true;
         }
         else
         {
             cellsToRepair = 0;
-            BTN_Repair.interactable = false;
-            BTN_DecreaseHunkRepair.interactable = false;
+            btn_Repair.interactable = false;
+            btn_DecreaseHunkRepair.interactable = false;
         }
 
         newIntegrityRatio = hunkIntegrityRatio + ((float)cellsToRepair / hunkCells.Count);
-        BTN_IncreaseHunkRepair.interactable = (newIntegrityRatio < 1);
-        BTN_Repair.interactable = (hunkIntegrityRatio < 1);
+        btn_IncreaseHunkRepair.interactable = (newIntegrityRatio < 1);
+        btn_Repair.interactable = (hunkIntegrityRatio < 1);
         //Debug.Log($"newIntegrityRatio: {newIntegrityRatio}, hunkIntegrityRatio: {hunkIntegrityRatio}");
 
         highlightCellsToRepair();
@@ -189,11 +212,41 @@ public class RepairMenu : AView
         }
     }
 
-    bool isThisAffordable(int cellsToRepair)
+    bool isThisRepairAffordable(int cellsToRepair)
     {
         if (cellsToRepair * PricePerRepairCell > data.ScrapData.GetScrap())
             return false;
         else
             return true;
+    }
+
+    bool canRecruit()
+    {
+        return data.RatDatum.Count < data.GetMaxRatCount();
+    }
+    bool canAffordRecruit()
+    {
+        return data.ScrapData.GetScrap() >= PricePerRecruit;
+    }
+    bool addRat()
+    {
+        if (!canRecruit() || !canAffordRecruit()) return false;
+
+        string name = $"Joe {data.RatDatum.Count}";
+        data.RatDatum.Add(new RatData(name));
+        data.ScrapData.UseScrap(PricePerRecruit);
+        updateRatCountDisplay();
+        return true;
+    }
+
+    void updateRatCountDisplay()
+    {
+        ratCountDisplay.text = data.RatDatum.Count.ToString();
+        updateRecruitPriceTag();
+    }
+
+    void updateRecruitPriceTag()
+    {
+        recruitPriceTag.text = PricePerRecruit.ToString();
     }
 }
