@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class RatGroupManager : MonoBehaviour
 {
     [SerializeField] GameObject ratPrefab = null;
-    [SerializeField] Transform ratSpawnPoint = null;
+    [SerializeField] List<Transform> ratSpawnPoints = null;
     [SerializeField] Transform steeragePoint = null;
     [SerializeField] Transform harpoonPoint = null;
     [SerializeField] List<Transform> cannonPoints = null;
@@ -19,8 +19,6 @@ public class RatGroupManager : MonoBehaviour
 
     List<RatStateManager> rats = null;
     public int NewCurrentRatCount = 1;
-    public int NewRatHealth = 100;
-    int maxRatCount;
     Action allDeadCallback = null;
     void Start()
     {
@@ -35,26 +33,25 @@ public class RatGroupManager : MonoBehaviour
     {
         this.ratHealthGroup = ratHealthGroup;
         this.allDeadCallback = allDeadCallback;
-        maxRatCount = shipData.MaxRatCount;
-        NewCurrentRatCount = (NewCurrentRatCount > maxRatCount) ? maxRatCount : NewCurrentRatCount;
+        NewCurrentRatCount = (NewCurrentRatCount > shipData.GetMaxRatCount()) ? shipData.GetMaxRatCount() : NewCurrentRatCount;
         rats = new List<RatStateManager>();
         // Spawn the rats from the shipData. If the ship didn't have any rats, make new ones.
         if (shipData.RatDatum.Count > 0)
         {
-            foreach (RatData data in shipData.RatDatum)
+            for (int i = 0; i < shipData.RatDatum.Count; i++)
             {
-                RatStateManager rat = SpawnRat(data, shipReferences, waterPlane);
+                RatStateManager rat = SpawnRat(shipData.RatDatum[i], shipReferences, waterPlane, i);
                 rats.Add(rat);
-                CreateRatStatusNode(data, rat);
+                CreateRatStatusNode(shipData.RatDatum[i], rat);
             }
         }
         else
         {
             for(int i = 0; i < NewCurrentRatCount; i++)
             {
-                RatData data = new RatData(NewRatHealth, NewRatHealth, ("Joe " + i));
+                RatData data = new RatData(("Joe " + i));
                 shipData.RatDatum.Add(data);
-                RatStateManager rat = SpawnRat(data, shipReferences, waterPlane);
+                RatStateManager rat = SpawnRat(data, shipReferences, waterPlane, i);
                 rats.Add(rat);
                 CreateRatStatusNode(data, rat);
             }
@@ -69,9 +66,9 @@ public class RatGroupManager : MonoBehaviour
     #endregion
 
     #region private functions
-    RatStateManager SpawnRat(RatData data, ShipReferences shipReferences,  GameObject waterPlane)
+    RatStateManager SpawnRat(RatData data, ShipReferences shipReferences,  GameObject waterPlane, int spawnIndex)
     {
-        GameObject GO = Instantiate(ratPrefab, ratSpawnPoint.position, Quaternion.identity);
+        GameObject GO = Instantiate(ratPrefab, ratSpawnPoints[spawnIndex].position, Quaternion.identity);
         RatStateManager rat = GO.GetComponent<RatStateManager>();
         if (rat == null)
         {
