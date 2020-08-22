@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 835308950328377424}
   m_Layer: 13
   m_Name: top_carton
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 456919726691211667}
   m_Layer: 13
   m_Name: top_left
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -195,7 +195,7 @@ GameObject:
   - component: {fileID: 7068625337835496473}
   m_Layer: 13
   m_Name: top_mid
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -258,6 +258,67 @@ Transform:
   m_Father: {fileID: 4111500262633832839}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1781190802789859621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1839167366291802998}
+  - component: {fileID: 8524291423170168999}
+  m_Layer: 13
+  m_Name: Obstacle Sensor Horizontal Back
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1839167366291802998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781190802789859621}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 3.71, z: -5.617}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &8524291423170168999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781190802789859621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: ObstacleSensor_Horizontal_Back
+  m_DetectableTags:
+  - Player
+  - Untagged
+  - ship_deck
+  - enemy
+  m_RaysPerDirection: 8
+  m_MaxRayDegrees: 101
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 65331
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: -4.3
 --- !u!1 &1784993435034419194
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +428,67 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &2107634934369083533
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 294685414264762794}
+  - component: {fileID: 5654110391433871290}
+  m_Layer: 13
+  m_Name: Obstacle Sensor Vertical
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &294685414264762794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107634934369083533}
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 3.22, z: -0.53}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 90}
+--- !u!114 &5654110391433871290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2107634934369083533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: ObstacleSensor_Vertical
+  m_DetectableTags:
+  - Player
+  - Untagged
+  - ship_deck
+  - enemy
+  m_RaysPerDirection: 2
+  m_MaxRayDegrees: 80
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &2309347217506192644
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +501,7 @@ GameObject:
   - component: {fileID: 1288434540806084918}
   m_Layer: 13
   m_Name: top_right
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -424,7 +546,7 @@ GameObject:
   - component: {fileID: 6666268575611908428}
   m_Layer: 13
   m_Name: front_carton
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -596,6 +718,66 @@ Transform:
   m_Father: {fileID: 4111500262633832839}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3112163889476892236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2582086271375406880}
+  - component: {fileID: 2748456423553223440}
+  m_Layer: 13
+  m_Name: Cannon Sensor (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2582086271375406880
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3112163889476892236}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -3.73, y: 3.14, z: 2.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &2748456423553223440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3112163889476892236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: CannonSensor4
+  m_DetectableTags:
+  - Player
+  - hunk
+  - ship_deck
+  m_RaysPerDirection: 1
+  m_MaxRayDegrees: 3
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &3135658193947411183
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,7 +899,7 @@ GameObject:
   - component: {fileID: 2066650105771572023}
   m_Layer: 13
   m_Name: back_carton
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -865,12 +1047,12 @@ GameObject:
   - component: {fileID: 8836518297980304642}
   - component: {fileID: 5083262999978021595}
   - component: {fileID: 1023798357278870125}
+  - component: {fileID: 2313340173101243456}
   - component: {fileID: 5121133252248034136}
   - component: {fileID: 817490660182164536}
-  - component: {fileID: 1843232652029876816}
   m_Layer: 13
   m_Name: poki_Agent
-  m_TagString: Player
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -897,6 +1079,7 @@ Transform:
   - {fileID: 7657423702474976445}
   - {fileID: 4111500262633832839}
   - {fileID: 8907107650927663768}
+  - {fileID: 7300360223650370900}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1139,9 +1322,26 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4312528073176205863}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70376450b26225a49b53bb5d80f70531, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  shipManager: {fileID: 3942272117582753456}
+--- !u!114 &2313340173101243456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4312528073176205863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2af3a02cb35349548aca2c1c87838102, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentParameters:
@@ -1187,24 +1387,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
---- !u!114 &1843232652029876816
+--- !u!1 &4640755358622327401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7525386540908157673}
+  - component: {fileID: 7671955100986939976}
+  m_Layer: 13
+  m_Name: Cannon Sensor (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7525386540908157673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4640755358622327401}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -3.73, y: 3.14, z: -3.14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &7671955100986939976
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4312528073176205863}
+  m_GameObject: {fileID: 4640755358622327401}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: RayPerceptionSensor
-  m_DetectableTags: []
-  m_RaysPerDirection: 3
-  m_MaxRayDegrees: 70
+  m_SensorName: CannonSensor3
+  m_DetectableTags:
+  - Player
+  - hunk
+  - ship_deck
+  m_RaysPerDirection: 1
+  m_MaxRayDegrees: 3
   m_SphereCastRadius: 0.5
-  m_RayLength: 20
+  m_RayLength: 60
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 4294967291
@@ -1462,6 +1696,66 @@ Transform:
   m_Father: {fileID: 4312528073176205867}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6070263983155482647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7608583718829102599}
+  - component: {fileID: 3990442044979453750}
+  m_Layer: 13
+  m_Name: Cannon Sensor (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7608583718829102599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6070263983155482647}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 3.73, y: 3.14, z: 2.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &3990442044979453750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6070263983155482647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: CannonSensor2
+  m_DetectableTags:
+  - Player
+  - hunk
+  - ship_deck
+  m_RaysPerDirection: 1
+  m_MaxRayDegrees: 3
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &6610078613827789586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1524,6 +1818,67 @@ Transform:
   m_Father: {fileID: 4312528073176205867}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6815067358686397757
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 49184715339500323}
+  - component: {fileID: 9154746406049197838}
+  m_Layer: 13
+  m_Name: Obstacle Sensor Horizontal Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &49184715339500323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815067358686397757}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.48, z: 5.34}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9154746406049197838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815067358686397757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: ObstacleSensor_Horizontal_Front
+  m_DetectableTags:
+  - Player
+  - Untagged
+  - ship_deck
+  - enemy
+  m_RaysPerDirection: 8
+  m_MaxRayDegrees: 128
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 65331
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: -4.3
 --- !u!1 &7011777206486430639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +1910,66 @@ Transform:
   m_Father: {fileID: 4312528073176205867}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8375331440260620620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8441579936440796868}
+  - component: {fileID: 7857178493827009472}
+  m_Layer: 13
+  m_Name: Cannon Sensor (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8441579936440796868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375331440260620620}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 3.73, y: 3.14, z: -3.14}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7300360223650370900}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &7857178493827009472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8375331440260620620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: CannonSensor1
+  m_DetectableTags:
+  - Player
+  - hunk
+  - ship_deck
+  m_RaysPerDirection: 1
+  m_MaxRayDegrees: 3
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &8890726228283459471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1567,7 +1982,7 @@ GameObject:
   - component: {fileID: 3128704593515947869}
   m_Layer: 13
   m_Name: bottom_carton
-  m_TagString: ship_deck
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1599,6 +2014,43 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.78, y: 0.3, z: 11.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &9011374190272863030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7300360223650370900}
+  m_Layer: 13
+  m_Name: Sensors
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7300360223650370900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9011374190272863030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 49184715339500323}
+  - {fileID: 1839167366291802998}
+  - {fileID: 294685414264762794}
+  - {fileID: 8441579936440796868}
+  - {fileID: 7608583718829102599}
+  - {fileID: 7525386540908157673}
+  - {fileID: 2582086271375406880}
+  m_Father: {fileID: 4312528073176205867}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9094958326427280604
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,17 +2269,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!54 &4795123942491647923 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 130974084533684460}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2045561915112093224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 130974084533684460}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &4795123942491647923 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 130974084533684460}
   m_PrefabAsset: {fileID: 0}
@@ -1917,6 +2384,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
@@ -2011,6 +2493,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f39ee173f6577204a99a6c5decad8073, type: 3}
+--- !u!4 &1568563149582751878 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 273970338399091750, guid: f39ee173f6577204a99a6c5decad8073,
+    type: 3}
+  m_PrefabInstance: {fileID: 1588065658818569376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5691093631312108148 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6409504957539040980, guid: f39ee173f6577204a99a6c5decad8073,
@@ -2023,12 +2511,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f0e70d9e8f47d44a15b86c483c0ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1568563149582751878 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 273970338399091750, guid: f39ee173f6577204a99a6c5decad8073,
-    type: 3}
-  m_PrefabInstance: {fileID: 1588065658818569376}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2104225197463193625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2116,17 +2598,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!54 &6803063573309206342 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 2104225197463193625}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &36501785342588637 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2104225197463193625}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &6803063573309206342 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 2104225197463193625}
   m_PrefabAsset: {fileID: 0}
@@ -2216,6 +2713,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
@@ -2318,6 +2830,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
 --- !u!54 &7058922817142362403 stripped
@@ -2418,6 +2945,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
@@ -2520,17 +3062,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!54 &7712754208933455360 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 2905902559286149471}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3882610296784502683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2905902559286149471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &7712754208933455360 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 2905902559286149471}
   m_PrefabAsset: {fileID: 0}
@@ -2620,6 +3177,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle (12)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
@@ -2819,6 +3391,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
 --- !u!54 &1146273071759773658 stripped
@@ -2919,6 +3506,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
@@ -3021,17 +3623,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!54 &1952069507100527815 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 6362960867228625816}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5043992788126192988 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 6362960867228625816}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1952069507100527815 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 6362960867228625816}
   m_PrefabAsset: {fileID: 0}
@@ -3207,17 +3824,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!4 &5134350191754206954 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 6553577273462399022}
-  m_PrefabAsset: {fileID: 0}
 --- !u!54 &1848754187140745073 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 6553577273462399022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5134350191754206954 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 6553577273462399022}
   m_PrefabAsset: {fileID: 0}
@@ -3400,17 +4032,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!4 &9205616386293119769 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7093997144587060701}
-  m_PrefabAsset: {fileID: 0}
 --- !u!54 &2389180754127594114 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7093997144587060701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9205616386293119769 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 7093997144587060701}
   m_PrefabAsset: {fileID: 0}
@@ -3585,12 +4232,6 @@ PrefabInstance:
       objectReference: {fileID: 7536325206428219620}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abdb19834ec18e34eb7ed4caf4a05122, type: 3}
---- !u!4 &7208605124978356823 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 642831796900464924, guid: abdb19834ec18e34eb7ed4caf4a05122,
-    type: 3}
-  m_PrefabInstance: {fileID: 7845780956487170891}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6510809364275453742 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3943704842783810661, guid: abdb19834ec18e34eb7ed4caf4a05122,
@@ -3603,6 +4244,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7950ac823f055704aaad3e64bf6fa6f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &7208605124978356823 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 642831796900464924, guid: abdb19834ec18e34eb7ed4caf4a05122,
+    type: 3}
+  m_PrefabInstance: {fileID: 7845780956487170891}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7968133168924909085
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3782,17 +4429,32 @@ PrefabInstance:
       propertyPath: m_Name
       value: popsicle (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
---- !u!54 &3190343087490428208 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 8006419162643270255}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8263709810722141355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2139803031858544324, guid: 827939c6335043b4aacc77f3e4abe0e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8006419162643270255}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &3190343087490428208 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 4853442157795010399, guid: 827939c6335043b4aacc77f3e4abe0e4,
     type: 3}
   m_PrefabInstance: {fileID: 8006419162643270255}
   m_PrefabAsset: {fileID: 0}
@@ -3882,6 +4544,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
@@ -3983,6 +4660,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: popsicle (14)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803031858544328, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032106619480, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139803032554131385, guid: 827939c6335043b4aacc77f3e4abe0e4,
+        type: 3}
+      propertyPath: m_TagString
+      value: enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 827939c6335043b4aacc77f3e4abe0e4, type: 3}
