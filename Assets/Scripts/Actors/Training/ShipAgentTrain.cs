@@ -5,9 +5,9 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 
-public class ShipAgent : Agent
+public class ShipAgentTrain : Agent
 {
-    [SerializeField] ActorShipManager shipManager = null;
+    public ActorShipManager shipManager = null;
 
     protected Brain brain;
 

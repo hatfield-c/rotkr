@@ -6,6 +6,8 @@ TagManager:
   tags:
   - ship_deck
   - hunk
+  - terrain
+  - enemy
   layers:
   - Default
   - TransparentFX
