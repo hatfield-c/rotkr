@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HunkTrain : MonoBehaviour {
+public class TargetRat : MonoBehaviour
+{
     public ShipAgentTrain agent;
 
     protected float breakForce;
     protected float hitReward;
     protected float breakReward;
 
-    public void TrainInit(ShipAgentTrain agent, float breakForce, int hunkCount){
+    public void TrainInit(ShipAgentTrain agent, float breakForce, int ratCount){
         this.agent = agent;
         this.breakForce = breakForce;
 
-        this.hitReward = RewardParameters.REWARD_HitHunk / hunkCount;
-        this.breakReward = RewardParameters.REWARD_BreakHunk / hunkCount;
+        this.hitReward = RewardParameters.REWARD_HitRat / ratCount;
+        this.breakReward = RewardParameters.REWARD_BreakRat / ratCount;
     }
-
+    
     public void Reset(){
         this.gameObject.SetActive(true);
     }
