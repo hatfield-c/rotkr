@@ -37,7 +37,7 @@ public class ShipAgentTrain : ShipAgent
             return;
         }
 
-        if(tag == "player"){
+        if(tag == "Player" || tag == "ship_deck"){
             this.AddReward(RewardParameters.PUNISH_PlayerCollide);
             this.resetFunction();
             return;
@@ -78,10 +78,6 @@ public class ShipAgentTrain : ShipAgent
 
     public override void OnEpisodeBegin(){
         Debug.Log("Episode begin.");
-    }
-
-    public override void CollectObservations(VectorSensor sensor){
-        sensor.AddObservation(0);
     }
 
     public override void Heuristic(float[] actionsOut){
