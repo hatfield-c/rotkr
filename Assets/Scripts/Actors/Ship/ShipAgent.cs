@@ -12,9 +12,9 @@ public class ShipAgent : Agent
     [SerializeField] protected Rigidbody shipBody = null;
 
     [Header("Normalization Parameters")]
-    [SerializeField] float OperationalDistance;
-    [SerializeField] float MaxSpeed;
-    [SerializeField] float MaxAngularSpeed; 
+    [SerializeField] float OperationalDistance = 0;
+    [SerializeField] float MaxSpeed = 0;
+    [SerializeField] float MaxAngularSpeed = 0; 
 
     protected Brain brain;
     protected GameObject playerObject;

@@ -9,6 +9,7 @@ TagManager:
   - terrain
   - enemy
   - projectile
+  - rat
   layers:
   - Default
   - TransparentFX

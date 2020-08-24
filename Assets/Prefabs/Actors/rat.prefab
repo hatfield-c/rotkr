@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 932185148106664754}
   m_Layer: 0
   m_Name: damage_collider
-  m_TagString: Untagged
+  m_TagString: rat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 5218751123386759517}
   m_Layer: 0
   m_Name: ship_collider
-  m_TagString: Untagged
+  m_TagString: rat
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -577,7 +577,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   MaxHealth: 100
-  DrowningPeriod: 1
   DrowningDamage: 5
 --- !u!114 &3459839313841820526
 MonoBehaviour:
@@ -599,6 +598,7 @@ MonoBehaviour:
     floatMin: -0.1
     deadMax: 0.005
     deadMin: -0.05
+    stabilizingForce: -18
   parameters:
     force: 1
     forceRatio: 1
@@ -611,6 +611,8 @@ MonoBehaviour:
   friction:
     maxForce: 10
     rate: 1
+  sinkAmount: 30
+  sinkForce: 0.1
 --- !u!54 &5867579568298927403
 Rigidbody:
   m_ObjectHideFlags: 0

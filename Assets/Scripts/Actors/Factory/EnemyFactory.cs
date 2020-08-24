@@ -23,7 +23,6 @@ public class EnemyFactory : MonoBehaviour
     [SerializeField] GameObject WaterPlane = null;
 
     [Header("Spawn Parameters")]
-    [SerializeField] bool DEBUG = false;
     [SerializeField] float DesiredSpawnDepth = 2f;
     [SerializeField] int MaxCost = 1;
     [SerializeField] float InitialSpawnDelay = 5;
