@@ -35,6 +35,7 @@ public class WyeState : AGameState
     GameObject player;
     ShipData shipData;
     ShipManager ship;
+    EnemyFactory enemyFactory;
 
     List<HunkData> hunkDatum;
     #endregion
@@ -70,6 +71,14 @@ public class WyeState : AGameState
                 UnsubscribeAll();
                 ExecuteComplete?.Invoke();
             });
+
+            enemyFactory = refs.EnemyFactory;
+            enemyFactory.Init(
+                EnemyFactory.GameDifficulty.Easy,
+                refs.WaterPlane,
+                player,
+                5
+            );
         }
         else
             Debug.LogError($"Tried to spawn the player but there is no prefab");
