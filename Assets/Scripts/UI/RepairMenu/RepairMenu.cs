@@ -12,15 +12,21 @@ public class RepairMenu : AView
     [SerializeField] Button btn_DecreaseHunkRepair = null;
     [SerializeField] Button btn_Repair = null;
     [SerializeField] Button btn_Recruit = null;
+    [SerializeField] Button btn_UpgradeHardenedGlue = null;
+    [SerializeField] Button btn_UpgradeReloadSpeed = null;
     [SerializeField] List<RepairHunkCell> hunkCells = null;
     [SerializeField] TextMeshProUGUI ratCountDisplay = null;
     [SerializeField] TextMeshProUGUI repairPriceTag = null;
     [SerializeField] TextMeshProUGUI recruitPriceTag = null;
+    [SerializeField] TextMeshProUGUI hardenedGluePriceTag = null;
+    [SerializeField] TextMeshProUGUI reloadSpeedPriceTag = null;
     #endregion
 
     #region variables
     public int PricePerRepairCell = 7;
     public int PricePerRecruit = 50;
+    public int PricePerHardenedGlueUpgrade = 30;
+    public int PricePerReloadSpeedUpgrade = 30;
     ShipData data;
 
     float hunkIntegrityRatio = 0;
@@ -45,15 +51,19 @@ public class RepairMenu : AView
 
                 btn_Confirm.onClick.RemoveAllListeners();
                 btn_Repair.onClick.RemoveAllListeners();
-                btn_Recruit.onClick.RemoveAllListeners();
                 btn_IncreaseHunkRepair.onClick.RemoveAllListeners();
                 btn_DecreaseHunkRepair.onClick.RemoveAllListeners();
+                btn_Recruit.onClick.RemoveAllListeners();
+                btn_UpgradeHardenedGlue.onClick.RemoveAllListeners();
+                btn_UpgradeReloadSpeed.onClick.RemoveAllListeners();
 
                 btn_Confirm.interactable = false;
                 btn_Repair.interactable = false;
-                btn_Recruit.interactable = false;
                 btn_IncreaseHunkRepair.interactable = false;
                 btn_DecreaseHunkRepair.interactable = false;
+                btn_Recruit.interactable = false;
+                btn_UpgradeHardenedGlue.interactable = false;
+                btn_UpgradeReloadSpeed.interactable = false;
             });
         }
 
