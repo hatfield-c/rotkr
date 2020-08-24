@@ -106,7 +106,7 @@ public class BuoyancyManager : MonoBehaviour {
 
         float force = this.parameters.buoyantForce(depth);
 
-        if(force > this.parameters.maxForce){
+        if(force > this.parameters.maxForce || Double.IsNaN(force)){
             force = this.parameters.maxForce;
         }
 

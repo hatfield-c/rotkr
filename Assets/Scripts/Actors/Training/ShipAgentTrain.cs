@@ -5,33 +5,34 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 
-public class ShipAgentTrain : Agent
+public class ShipAgentTrain : ShipAgent
 {
-    public ActorShipManager shipManager = null;
 
-    protected Brain brain;
+    [Header("Blackboard")]
+    public float minDistPunish;
+    public float maxDistPunish;
 
-    public void Init(Brain brain){
-        if(!this.enabled){
-            return;
-        }
+    public void ResetAgent(){
+        Debug.Log("Agent Reset");
 
-        this.brain = brain;
-
-        NNBehaviour patrol = brain.PatrolBehavior;
-
-        this.SetModel(
-            patrol.name,
-            patrol.neuralNetwork,
-            patrol.inferenceDevice
+        this.shipBody.velocity = Vector3.zero;
+        this.shipBody.angularVelocity = Vector3.zero;
+        this.transform.eulerAngles = new Vector3(
+            0,
+            Random.Range(0f, 360f),
+            0
         );
-    }
 
+        this.shipManager.DisableSubsystems();
+        this.shipManager.EnableSubsystems();
+    }
+ 
     //***
     //***   vectorAction:
     //***       0 : Acceleration
     //***       1 : Turn Direction
     //***       2 : Shoot
+    //***
     public override void OnActionReceived(float[] vectorAction){
 
         ShipAgentActions actions = new ShipAgentActions(
@@ -44,7 +45,7 @@ public class ShipAgentTrain : Agent
     }
 
     public override void OnEpisodeBegin(){
-
+        Debug.Log("Episode begin.");
     }
 
     public override void CollectObservations(VectorSensor sensor){
@@ -54,4 +55,6 @@ public class ShipAgentTrain : Agent
     public override void Heuristic(float[] actionsOut){
 
     }
+
+    public void EmptyReset() {}
 }

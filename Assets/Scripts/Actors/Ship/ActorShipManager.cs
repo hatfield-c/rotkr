@@ -19,12 +19,13 @@ public class ActorShipManager : MonoBehaviour {
 
     public void Init(
         Warehouse lootWarehouse, 
+        GameObject playerObject,
         GameObject waterPlane, 
         EnemyFactory.GameDifficulty Difficulty,
         Warehouse.StorageFunction storageFunction
     ){
         ShipData shipData = new ShipData();
-        Brain brain = this.ChooseBrain(Difficulty);
+        Brain brain = this.GetBrain(Difficulty);
         this.StorageFunction = storageFunction;
 
         lootManager.Init(lootWarehouse);
@@ -32,7 +33,7 @@ public class ActorShipManager : MonoBehaviour {
         healthManager.Init(hunkManager.GetHunkCount());
 
         equipmentManager.Init();
-        shipAgent.Init(brain);
+        shipAgent.Init(brain, playerObject);
         shipMovement.Init(waterPlane);
         buoyancyManager.Init(waterPlane);
     }
@@ -67,6 +68,10 @@ public class ActorShipManager : MonoBehaviour {
 
     public void EnableShip(){
         this.gameObject.SetActive(true);
+        this.EnableSubsystems();
+    }
+
+    public void EnableSubsystems(){
         lootManager.EnableLoot();
         hunkManager.EnableHunks();
         healthManager.Enable();
@@ -74,15 +79,18 @@ public class ActorShipManager : MonoBehaviour {
     }
 
     public void DisableShip(){
+        this.DisableSubsystems();
+        this.gameObject.SetActive(false);
+    }
+
+    public void DisableSubsystems(){
         lootManager.DisableLoot();
         hunkManager.DisableHunks();
         healthManager.Disable();
         buoyancyManager.Disable();
+    }   
 
-        this.gameObject.SetActive(false);
-    }
-
-    protected Brain ChooseBrain(EnemyFactory.GameDifficulty difficulty){
+    public Brain GetBrain(EnemyFactory.GameDifficulty difficulty){
         foreach(Brain brain in this.BrainList){
             if(brain.GetDifficulty() == difficulty){
                 return brain;
