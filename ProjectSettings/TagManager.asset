@@ -8,6 +8,7 @@ TagManager:
   - hunk
   - terrain
   - enemy
+  - projectile
   layers:
   - Default
   - TransparentFX

@@ -7,13 +7,14 @@ public class ActorEquipment
 {
     public Cannon[] gunList;
     public Transform ammunitionStorage;
+    public float activationThreshold = 0.5f;
 
     public void Init(){
         this.ammunitionStorage.parent = null;
     }
 
     public void Activate(float shoot){
-        if(shoot < 0.5f){
+        if(shoot < this.activationThreshold){
             return;
         }
 
