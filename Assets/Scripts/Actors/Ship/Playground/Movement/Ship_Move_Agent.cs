@@ -7,7 +7,7 @@ using Unity.MLAgents.Sensors;
 
 public class Ship_Move_Agent : Agent
 {
-    /*public Ship_Move_Area shipArea;
+/*    public Ship_Move_Area shipArea;
 
     public ActorShipMovement moveControl;
     public ActorShipManager shipManager;

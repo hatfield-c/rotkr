@@ -37,11 +37,31 @@ public class WyeSinker : MonoBehaviour
 
             // Check to see if we're sunk
             if(this.position.y - this.endPosition <= sinkTolerance){
-                WyeCompletelySunk?.Invoke();
                 sunk = true;
+                WyeCompletelySunk?.Invoke();
             }
         }
         else
             return;
+    }
+
+    public void Reset(){
+        this.progress = 0;
+        this.sunk = false;
+        
+        this.position.y = this.startPosition;
+        this.transform.position = this.position;
+    }
+
+    public bool IsSunk(){
+        return this.sunk;
+    }
+
+    public float GetSinkTime(){
+        return this.sinkTime;
+    }
+
+    public float GetProgress(){
+        return this.progress;
     }
 }
