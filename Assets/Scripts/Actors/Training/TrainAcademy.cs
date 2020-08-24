@@ -22,7 +22,7 @@ public class TrainAcademy : MonoBehaviour
     protected float framePunish;
     protected float minDistPunish;
 
-    private List<Vector3> spawnBuffer;
+    private List<Vector3> spawnBuffer = new List<Vector3>();
 
     public void ResetAcademy(){
         Debug.Log("Academy reset.");

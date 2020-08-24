@@ -36,7 +36,7 @@ public class ShipAgentTrain : ShipAgent
             this.resetFunction();
             return;
         }
-        
+
         if(tag == "player"){
             this.AddReward(RewardParameters.PUNISH_PlayerCollide);
             this.resetFunction();
@@ -85,7 +85,25 @@ public class ShipAgentTrain : ShipAgent
     }
 
     public override void Heuristic(float[] actionsOut){
+        actionsOut[0] = 0f;
+        actionsOut[1] = 0f;
+        actionsOut[2] = 0f;
 
+        if(Input.GetKey(KeyCode.W)){
+            actionsOut[0] = 1f;
+        } else if(Input.GetKey(KeyCode.S)){
+            actionsOut[0] = -1f;
+        }
+
+        if(Input.GetKey(KeyCode.A)){
+            actionsOut[1] = -1f;
+        } else if(Input.GetKey(KeyCode.D)){
+            actionsOut[1] = 1f;
+        }
+
+        if(Input.GetKey(KeyCode.Space)){
+            actionsOut[2] = 0.75f;   
+        }
     }
 
     public void EmptyReset() {}
