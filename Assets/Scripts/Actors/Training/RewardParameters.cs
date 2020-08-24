@@ -35,10 +35,10 @@ public class RewardParameters
         REWARD_HitRat = this.HitRat / 100;
         REWARD_BreakRat = this.BreakRat / 100;
 
-        PUNISH_Frame = this.Frame / 100;
-        PUNISH_MaxDistance = this.MaxDistance / 100;
-        PUNISH_MinDistance = this.MinDistance / 100;
-        PUNISH_TerrainCollide = this.TerrainCollide / 100;
-        PUNISH_PlayerCollide = this.PlayerCollide / 100;
+        PUNISH_Frame = -this.Frame / 100;
+        PUNISH_MaxDistance = -this.MaxDistance / 100;
+        PUNISH_MinDistance = -this.MinDistance / 100;
+        PUNISH_TerrainCollide = -this.TerrainCollide / 100;
+        PUNISH_PlayerCollide = -this.PlayerCollide / 100;
     }
 }

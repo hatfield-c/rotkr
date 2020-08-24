@@ -6,6 +6,7 @@ public class TargetShip : MonoBehaviour
 {
     [Header("References")]
     public List<HunkTrain> hunkList = new List<HunkTrain>();
+    public List<TargetRat> ratList = new List<TargetRat>();
     public Rigidbody rb;
     public TransformFloat destinationObject;
     public BuoyancyManager buoyancyManager;
@@ -30,6 +31,7 @@ public class TargetShip : MonoBehaviour
     [Header("Parameters")]
     public float targetDistance = 3f;
     public float breakForce = 3000f;
+    public float ratBreakForce = 10f;
     public float waterCutoff = 0.5f;
 
     protected int speedDir = 1;
@@ -61,7 +63,11 @@ public class TargetShip : MonoBehaviour
         this.spawnPoints = spawnPoints;
 
         foreach(HunkTrain hunk in this.hunkList){
-            hunk.TrainInit(this.agent, this.breakForce);
+            hunk.TrainInit(this.agent, this.breakForce, this.hunkList.Count);
+        }
+
+        foreach(TargetRat rat in this.ratList){
+            rat.TrainInit(this.agent, this.ratBreakForce, this.ratList.Count);
         }
 
         this.transform.eulerAngles = new Vector3(

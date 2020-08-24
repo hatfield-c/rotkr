@@ -22,6 +22,8 @@ public class TrainAcademy : MonoBehaviour
     protected float framePunish;
     protected float minDistPunish;
 
+    private List<Vector3> spawnBuffer;
+
     public void ResetAcademy(){
         Debug.Log("Academy reset.");
         this.SpawnPoints.parent = this.transform;
@@ -29,12 +31,12 @@ public class TrainAcademy : MonoBehaviour
         this.SpawnPoints.parent = null;
         this.Sinker.Reset();
  
-        List<Vector3> spawnPoints = this.AvailablePoints();
+        this.spawnBuffer = this.AvailablePoints();
      
-        this.Agent.transform.position = this.ChooseSpawnPoint(spawnPoints);
+        this.Agent.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.Agent.ResetAgent();   
 
-        this.Target.transform.position = this.ChooseSpawnPoint(spawnPoints);
+        this.Target.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.Target.Reset();
     }
   
@@ -53,6 +55,7 @@ public class TrainAcademy : MonoBehaviour
             EnemyFactory.GameDifficulty.Easy,
             this.EmptyStore
         );
+        this.Agent.resetFunction = this.EndEpisode;
         this.Agent.minDistPunish = (RewardParameters.PUNISH_MinDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
         this.Agent.maxDistPunish = (RewardParameters.PUNISH_MaxDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
         
@@ -81,13 +84,13 @@ public class TrainAcademy : MonoBehaviour
     }
 
     protected List<Vector3> AvailablePoints(){
-        List<Vector3> points = new List<Vector3>();
+        this.spawnBuffer.Clear();
 
         foreach(Transform point in this.SpawnPoints){
-            points.Add(point.position);
+            this.spawnBuffer.Add(point.position);
         }
 
-        return points;
+        return this.spawnBuffer;
     }
 
     protected Vector3 ChooseSpawnPoint(List<Vector3> points){

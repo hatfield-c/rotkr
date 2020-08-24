@@ -7,10 +7,42 @@ using Unity.MLAgents.Sensors;
 
 public class ShipAgentTrain : ShipAgent
 {
+    public delegate void ResetFunction();
+
+    [Header("Train Parameters")]
+    public float minDistance;
+    public float maxDistance;
 
     [Header("Blackboard")]
     public float minDistPunish;
     public float maxDistPunish;
+    public ResetFunction resetFunction;
+
+    void FixedUpdate(){
+        float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
+
+        if(distance <= this.minDistance){
+            this.AddReward(minDistPunish);
+        } else if(distance >= this.maxDistance){
+            this.AddReward(maxDistPunish);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision){
+        string tag = collision.gameObject.tag;
+
+        if(tag == "terrain"){
+            this.AddReward(RewardParameters.PUNISH_TerrainCollide);
+            this.resetFunction();
+            return;
+        }
+        
+        if(tag == "player"){
+            this.AddReward(RewardParameters.PUNISH_PlayerCollide);
+            this.resetFunction();
+            return;
+        }
+    }
 
     public void ResetAgent(){
         Debug.Log("Agent Reset");

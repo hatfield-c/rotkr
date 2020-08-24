@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
+    public GameObject owner;
     public float despawnTime = 7f;
 
     protected KatinTimer despawnTimer;
