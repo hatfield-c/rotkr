@@ -657,6 +657,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c0f26028f975114a97749be6221fde3, type: 3}
+--- !u!114 &844261374 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3865272896218654024, guid: 3c0f26028f975114a97749be6221fde3,
+    type: 3}
+  m_PrefabInstance: {fileID: 844261373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c91e6cbb594be524db1835072356ebd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &916796623
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1480,6 +1492,11 @@ PrefabInstance:
       propertyPath: ScrapDisplay
       value: 
       objectReference: {fileID: 1048896959}
+    - target: {fileID: 6137520725397624954, guid: ecfcdf7c2eb2ed54db4fbb02979c2c9d,
+        type: 3}
+      propertyPath: EnemyFactory
+      value: 
+      objectReference: {fileID: 844261374}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecfcdf7c2eb2ed54db4fbb02979c2c9d, type: 3}
 --- !u!4 &2028754784 stripped

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Academy : MonoBehaviour
+public class TrainAcademy : MonoBehaviour
 {
     [Header("References")]
     public WyeSinker Sinker;
@@ -12,58 +12,72 @@ public class Academy : MonoBehaviour
     public TargetShip TargetPrefab;
     public ShipAgentTrain AgentPrefab;
 
+    public RewardParameters RewardParameters;
 
     [Header("Parameters")]
     public float spawnScale = 0.05f;
 
     protected ShipAgentTrain Agent;
     protected TargetShip Target;
+    protected float framePunish;
+    protected float minDistPunish;
 
-    public void Reset(){
+    public void ResetAcademy(){
+        Debug.Log("Academy reset.");
+        this.SpawnPoints.parent = this.transform;
+        this.SpawnPoints.localScale = Vector3.one;
+        this.SpawnPoints.parent = null;
+        this.Sinker.Reset();
+ 
         List<Vector3> spawnPoints = this.AvailablePoints();
-
-        Destroy(this.Agent);
-        this.Agent = Instantiate(this.AgentPrefab);
+     
         this.Agent.transform.position = this.ChooseSpawnPoint(spawnPoints);
+        this.Agent.ResetAgent();   
+
+        this.Target.transform.position = this.ChooseSpawnPoint(spawnPoints);
+        this.Target.Reset();
+    }
+  
+    void Start(){
+        this.RewardParameters.Init();
+        this.framePunish = (RewardParameters.PUNISH_Frame / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
+
+        Debug.Log("Academy start.");
+        this.Agent = Instantiate(this.AgentPrefab);
+        this.Target = Instantiate(this.TargetPrefab);
+
         this.Agent.shipManager.Init(
             this.Warehouse,
+            this.Target.gameObject,
             this.WaterLevel,
             EnemyFactory.GameDifficulty.Easy,
             this.EmptyStore
         );
-
-        Destroy(this.Target);
-        this.Target = Instantiate(this.TargetPrefab);
-        this.Target.transform.position = this.ChooseSpawnPoint(spawnPoints);
+        this.Agent.minDistPunish = (RewardParameters.PUNISH_MinDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
+        this.Agent.maxDistPunish = (RewardParameters.PUNISH_MaxDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
+        
         this.Target.Init(
-            this.Agent, 
+            this.Agent,
             this.WaterLevel,
             this.SpawnPoints,
             new List<Collider>()
         );
 
-        this.SpawnPoints.parent = this.transform;
-        this.SpawnPoints.localScale = Vector3.one;
-
-        this.SpawnPoints.parent = null;
-        this.Sinker.Reset();
-    }
-
-    void Start(){
-        this.Reset();
+        this.Sinker.WyeCompletelySunk += this.EndEpisode;
+        this.ResetAcademy();
     }
 
     void FixedUpdate(){
         float scaleLerp = Mathf.Lerp(1f, this.spawnScale, this.Sinker.GetProgress());
-        //this.SpawnPoints.localScale = scaleLerp * Vector3.one;
+        this.SpawnPoints.localScale = scaleLerp * Vector3.one;
+
+        this.Agent.AddReward(this.framePunish);
     }
 
-    void OnEnable(){
-        this.Sinker.WyeCompletelySunk += this.Reset;
-    }
-
-    void OnDisable(){
-        this.Sinker.WyeCompletelySunk -= this.Reset;
+    protected void EndEpisode(){
+        Debug.Log("Episode End");
+        this.Agent.EndEpisode();
+        this.ResetAcademy();
     }
 
     protected List<Vector3> AvailablePoints(){

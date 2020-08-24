@@ -38,7 +38,7 @@ public class TargetShip : MonoBehaviour
 
     protected WaterCalculator waterCalculator;
     protected Transform spawnPoints;
-    protected Vector3 destination;
+    protected Transform destination;
 
     Vector3 horizontalScale = new Vector3(1, 0, 1);
     protected Vector3 forwardBuffer;
@@ -64,9 +64,30 @@ public class TargetShip : MonoBehaviour
             hunk.TrainInit(this.agent, this.breakForce);
         }
 
+        this.transform.eulerAngles = new Vector3(
+            0,
+            Random.Range(0f, 360f),
+            0
+        );
+
         this.destinationObject.transform.parent = null;
         this.NewDestination();
         this.IgnoreCollisions(colliders);
+    }
+
+    public void Reset(){
+        foreach(HunkTrain hunk in this.hunkList){
+            hunk.Reset();
+        }
+
+        this.rb.velocity = Vector3.zero;
+        this.transform.eulerAngles = new Vector3(
+            0,
+            Random.Range(0f, 360f),
+            0
+        );
+
+        this.NewDestination();
     }
 
     public void AddSpeed(){
@@ -105,8 +126,8 @@ public class TargetShip : MonoBehaviour
 
     public void TurnToLookAt(){
         Vector2 targetDirection = new Vector2(
-            this.destination.x - this.transform.position.x,
-            this.destination.z - this.transform.position.z
+            this.destination.position.x - this.transform.position.x,
+            this.destination.position.z - this.transform.position.z
         );
 
         float angle = Vector2.SignedAngle(
@@ -137,19 +158,20 @@ public class TargetShip : MonoBehaviour
 
     public void NewDestination(){
         this.destination = this.choosePosition();
-        this.destinationObject.transform.position = this.destination;
     }
 
-    public Vector3 choosePosition(){
+    public Transform choosePosition(){
         int point = Random.Range(0, this.spawnPoints.childCount);
 
-        return this.spawnPoints.GetChild(point).position;
+        return this.spawnPoints.GetChild(point);
     }
 
     protected void UpdateDestination(){
         if(Vector3.Distance(this.transform.position, this.destinationObject.transform.position) <= this.targetDistance){
             this.NewDestination();
         }
+
+        this.destinationObject.transform.position = this.destination.position;
     }
 
     protected void IgnoreCollisions(List<Collider> colliders){

@@ -30,13 +30,20 @@ public class EnemyFactory : MonoBehaviour
 
     protected List<ActorShip> ActiveShips = new List<ActorShip>();
     protected EnemyFactory.GameDifficulty Difficulty;
+    protected GameObject PlayerObject;
     protected int MaxChallengeRating;
     protected int CurrentCost = 0;
     protected int CurrentChallengeRating = 0;
 
-    public void Init(EnemyFactory.GameDifficulty Difficulty, GameObject WaterPlane, int MaxChallengeRating){
+    public void Init(
+        EnemyFactory.GameDifficulty Difficulty, 
+        GameObject WaterPlane,
+        GameObject PlayerObject,
+        int MaxChallengeRating
+    ){
         this.Difficulty = Difficulty;
         this.WaterPlane = WaterPlane;
+        this.PlayerObject = PlayerObject;
         this.MaxChallengeRating = MaxChallengeRating;
 
         this.EnemyWarehouse.Init(this.Prefabs.Cast<IStorable>().ToList());
@@ -140,6 +147,7 @@ public class EnemyFactory : MonoBehaviour
         ActorShip instance = Instantiate<ActorShip>(blueprint);
         instance.ShipManager.Init(
             this.LootWarehouse,
+            this.PlayerObject,
             this.WaterPlane,
             this.Difficulty,
             this.StoreShip
@@ -239,12 +247,6 @@ public class EnemyFactory : MonoBehaviour
         }
 
         return false;
-    }
-
-    void Start(){
-        if(DEBUG){
-            this.Init(EnemyFactory.GameDifficulty.Easy, this.WaterPlane, 100);
-        }
     }
 
 }

@@ -128,6 +128,7 @@ Transform:
   - {fileID: 2072720196818970958}
   - {fileID: 2072720197802609556}
   - {fileID: 1120468353646205396}
+  - {fileID: 4798438597065898863}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -143,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f84bb3ef6261f0a498dc58e0baf5c66c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sinkAmount: 465
+  sinkAmount: 300
   sinkTolerance: 1
   sinkTime: 60
 --- !u!114 &4556549272429793560
@@ -161,11 +162,21 @@ MonoBehaviour:
   Sinker: {fileID: 522837474}
   SpawnPoints: {fileID: 1120468353646205396}
   WaterLevel: {fileID: 0}
-  Warehouse: {fileID: 0}
+  Warehouse: {fileID: 1573437025086960120}
   TargetPrefab: {fileID: 1966802934607039069, guid: 3fb6c2decf88050479cc658d7c0a52e8,
     type: 3}
-  AgentPrefab: {fileID: 2313340173101243456, guid: 48ec3e33112bda643810f817b5d51390,
+  AgentPrefab: {fileID: 6859014772596621656, guid: 48ae5dec1b4555c459b49b4ff030597c,
     type: 3}
+  RewardParameters:
+    HitHunk: 5
+    BreakHunk: 10
+    HitRat: 20
+    BreakRat: 65
+    Frame: 10
+    MaxDistance: 15
+    MinDistance: 20
+    TerrainCollide: 25
+    PlayerCollide: 30
   spawnScale: 0.05
 --- !u!1 &2072720197269150064
 GameObject:
@@ -539,6 +550,49 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &4647109430770397286
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4798438597065898863}
+  - component: {fileID: 1573437025086960120}
+  m_Layer: 0
+  m_Name: Warehouse
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4798438597065898863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4647109430770397286}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2072720197237506531}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1573437025086960120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4647109430770397286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74421975f0029c34db79195a7c9503a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7672780947988961173
 PrefabInstance:
   m_ObjectHideFlags: 0
