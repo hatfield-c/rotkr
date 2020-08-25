@@ -13,6 +13,7 @@ public class ShipAgent : Agent
     public ResetFunction resetFunction = EmptyReset;
 
     [SerializeField] protected Rigidbody shipBody = null;
+    [SerializeField] WaterSampler waterSampler;
 
     [Header("Normalization Parameters")]
     [SerializeField] float OperationalDistance = 0;
@@ -22,12 +23,17 @@ public class ShipAgent : Agent
     protected Brain brain;
     protected GameObject playerObject;
     protected Rigidbody playerBody;
+    protected WaterCalculator waterCalculator;
 
     protected Vector3 vectorBuffer;
     protected Vector2 vector2BufferA;
     protected Vector2 vector2BufferB;
 
-    public void Init(Brain brain, GameObject playerObject){
+    public void Init(
+        Brain brain, 
+        GameObject playerObject,
+        WaterCalculator waterCalculator
+        ){
         if(!this.enabled){
             return;
         }
@@ -35,6 +41,7 @@ public class ShipAgent : Agent
         this.brain = brain;
         this.playerObject = playerObject;
         this.playerBody = playerObject.GetComponent<Rigidbody>();
+        this.waterCalculator = waterCalculator;
 
         NNBehaviour patrol = brain.PatrolBehavior;
 
@@ -79,6 +86,7 @@ public class ShipAgent : Agent
     //***       Angle between front of agent and the player
     //***       Angle between right side of agent and the player
     //***       Angle between left side of agent and the player
+    //***       8 sample points of the water level surrounding the ship
     //***
     public override void CollectObservations(VectorSensor sensor){
         this.vectorBuffer.x = this.playerObject.transform.position.x - this.transform.position.x;
@@ -135,6 +143,24 @@ public class ShipAgent : Agent
             this.transform.forward
         );
         sensor.AddObservation(angle / 180);
+
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(0);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(1);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(2);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(3);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(4);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(5);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(6);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(7);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+
     }
 
     public override void Heuristic(float[] actionsOut){
