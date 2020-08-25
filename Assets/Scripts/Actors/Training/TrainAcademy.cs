@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TrainAcademy : MonoBehaviour
 {
@@ -9,23 +10,28 @@ public class TrainAcademy : MonoBehaviour
     public Transform SpawnPoints;
     public GameObject WaterLevel;
     public Warehouse Warehouse;
+    public PermutationManager PermutationManager;
+    public TextMeshPro RewardText;
     public TargetShip TargetPrefab;
     public ShipAgentTrain AgentPrefab;
 
     public RewardParameters RewardParameters;
+
+    public static float TIME_Elapsed = 0;
 
     [Header("Parameters")]
     public float spawnScale = 0.05f;
 
     protected ShipAgentTrain Agent;
     protected TargetShip Target;
-    protected float framePunish;
-    protected float minDistPunish;
 
     private List<Vector3> spawnBuffer = new List<Vector3>();
+    private List<Collider> terrainColliders = new List<Collider>();
+    private Collider colliderBuffer;
 
     public void ResetAcademy(){
-        Debug.Log("Academy reset.");
+        TIME_Elapsed = 0;
+
         this.SpawnPoints.parent = this.transform;
         this.SpawnPoints.localScale = Vector3.one;
         this.SpawnPoints.parent = null;
@@ -36,15 +42,17 @@ public class TrainAcademy : MonoBehaviour
         this.Agent.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.Agent.ResetAgent();   
 
+        this.PermutationManager.Reset();
+
         this.Target.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
-        this.Target.Reset();
+        this.ExtractTerrainColliders();
+        this.Target.Reset(this.terrainColliders);
     }
   
     void Start(){
-        this.RewardParameters.Init();
-        this.framePunish = (RewardParameters.PUNISH_Frame / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
+        this.RewardText.transform.parent = null;
+        this.RewardParameters.Init(this.Sinker.GetSinkTime());
 
-        Debug.Log("Academy start.");
         this.Agent = Instantiate(this.AgentPrefab);
         this.Target = Instantiate(this.TargetPrefab);
 
@@ -56,14 +64,11 @@ public class TrainAcademy : MonoBehaviour
             this.EmptyStore
         );
         this.Agent.resetFunction = this.EndEpisode;
-        this.Agent.minDistPunish = (RewardParameters.PUNISH_MinDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
-        this.Agent.maxDistPunish = (RewardParameters.PUNISH_MaxDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
         
         this.Target.Init(
             this.Agent,
             this.WaterLevel,
-            this.SpawnPoints,
-            new List<Collider>()
+            this.SpawnPoints
         );
 
         this.Sinker.WyeCompletelySunk += this.EndEpisode;
@@ -71,14 +76,16 @@ public class TrainAcademy : MonoBehaviour
     }
 
     void FixedUpdate(){
+        TIME_Elapsed += Time.fixedDeltaTime;
+
         float scaleLerp = Mathf.Lerp(1f, this.spawnScale, this.Sinker.GetProgress());
         this.SpawnPoints.localScale = scaleLerp * Vector3.one;
 
-        this.Agent.AddReward(this.framePunish);
+        this.Agent.AddReward(RewardParameters.PUNISH_Frame);
+        this.RewardText.text = this.Agent.GetCumulativeReward().ToString();
     }
 
     protected void EndEpisode(){
-        Debug.Log("Episode End");
         this.Agent.EndEpisode();
         this.ResetAcademy();
     }
@@ -105,6 +112,23 @@ public class TrainAcademy : MonoBehaviour
         points.RemoveAt(listIndex);
 
         return point;
+    }
+
+    protected void ExtractTerrainColliders(){
+        this.terrainColliders.Clear();
+        this.ExtractTerrainColliders(this.transform);
+    }
+
+    protected void ExtractTerrainColliders(Transform parent){
+        this.colliderBuffer = parent.gameObject.GetComponent<Collider>();
+
+        if(this.colliderBuffer != null){
+            this.terrainColliders.Add(this.colliderBuffer);
+        }
+
+        foreach(Transform child in parent){
+            this.ExtractTerrainColliders(child);
+        }
     }
 
     protected void EmptyStore(IStorable iStorable){}

@@ -44,6 +44,7 @@ public class TargetShip : MonoBehaviour
 
     Vector3 horizontalScale = new Vector3(1, 0, 1);
     protected Vector3 forwardBuffer;
+    protected List<Collider> terrainColliders;
 
     void FixedUpdate(){
         this.UpdateDestination();
@@ -53,8 +54,7 @@ public class TargetShip : MonoBehaviour
     public void Init(
         ShipAgentTrain agent,
         GameObject waterLevel,
-        Transform spawnPoints, 
-        List<Collider> colliders
+        Transform spawnPoints
     ){
         this.agent = agent;
         this.waterCalculator = waterLevel.GetComponent<WaterCalculator>();
@@ -77,11 +77,9 @@ public class TargetShip : MonoBehaviour
         );
 
         this.destinationObject.transform.parent = null;
-        this.NewDestination();
-        this.IgnoreCollisions(colliders);
     }
 
-    public void Reset(){
+    public void Reset(List<Collider> colliders = null){
         foreach(HunkTrain hunk in this.hunkList){
             hunk.Reset();
         }
@@ -94,6 +92,10 @@ public class TargetShip : MonoBehaviour
         );
 
         this.NewDestination();
+
+        this.IgnoreCollisions(false);
+        this.terrainColliders = colliders;
+        this.IgnoreCollisions(true);
     }
 
     public void AddSpeed(){
@@ -180,14 +182,14 @@ public class TargetShip : MonoBehaviour
         this.destinationObject.transform.position = this.destination.position;
     }
 
-    protected void IgnoreCollisions(List<Collider> colliders){
-        if(colliders == null || colliders.Count < 1){
+    protected void IgnoreCollisions(bool ignore){
+        if(this.terrainColliders == null || this.terrainColliders.Count < 1){
             return;
         }
 
         foreach(Collider myCollider in this.myColliders){
-            foreach(Collider collider in colliders){
-                Physics.IgnoreCollision(myCollider, collider);
+            foreach(Collider collider in this.terrainColliders){
+                Physics.IgnoreCollision(myCollider, collider, ignore);
             }
         }
     }

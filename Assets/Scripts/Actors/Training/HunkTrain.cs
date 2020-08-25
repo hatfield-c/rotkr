@@ -21,7 +21,7 @@ public class HunkTrain : MonoBehaviour {
         this.gameObject.SetActive(true);
     }
 
-    void OnCollision(Collision collision){
+    void OnCollisionEnter(Collision collision){
         float force = collision.impulse.magnitude / Time.fixedDeltaTime;
 
         if(collision.gameObject.tag != "projectile"){

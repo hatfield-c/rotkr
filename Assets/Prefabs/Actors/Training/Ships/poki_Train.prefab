@@ -18,11 +18,12 @@ MonoBehaviour:
   MaxStep: 0
   shipManager: {fileID: 455034955177654430}
   shipBody: {fileID: 1506679935985738540}
+  waterSampler: {fileID: 3006488403416698800}
   OperationalDistance: 5000
   MaxSpeed: 100
   MaxAngularSpeed: 10
-  minDistPunish: 0
-  maxDistPunish: 0
+  minDistance: 25
+  maxDistance: 150
 --- !u!1001 &3523319572680513070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -120,5 +121,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 399e1eefa798b4a4081d263ff5bae761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3006488403416698800 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1827451263767697822, guid: 48ec3e33112bda643810f817b5d51390,
+    type: 3}
+  m_PrefabInstance: {fileID: 3523319572680513070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abbe4d3940098b4baaaae4f1f6165ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

@@ -7,9 +7,13 @@ using Unity.MLAgents.Sensors;
 
 public class ShipAgent : Agent
 {
+    public delegate void ResetFunction();
+
     public ActorShipManager shipManager = null;
+    public ResetFunction resetFunction = EmptyReset;
 
     [SerializeField] protected Rigidbody shipBody = null;
+    [SerializeField] WaterSampler waterSampler = null;
 
     [Header("Normalization Parameters")]
     [SerializeField] float OperationalDistance = 0;
@@ -19,12 +23,17 @@ public class ShipAgent : Agent
     protected Brain brain;
     protected GameObject playerObject;
     protected Rigidbody playerBody;
+    protected WaterCalculator waterCalculator;
 
-    protected Vector3 vectorBuffer;
-    protected Vector2 vector2BufferA;
-    protected Vector2 vector2BufferB;
+    protected Vector3 vectorBuffer = new Vector3();
+    protected Vector2 vector2BufferA = new Vector2();
+    protected Vector2 vector2BufferB = new Vector2();
 
-    public void Init(Brain brain, GameObject playerObject){
+    public void Init(
+        Brain brain, 
+        GameObject playerObject,
+        WaterCalculator waterCalculator
+        ){
         if(!this.enabled){
             return;
         }
@@ -32,13 +41,14 @@ public class ShipAgent : Agent
         this.brain = brain;
         this.playerObject = playerObject;
         this.playerBody = playerObject.GetComponent<Rigidbody>();
+        this.waterCalculator = waterCalculator;
 
-        NNBehaviour patrol = brain.PatrolBehavior;
+        NNBehaviour combat = brain.CombatBehavior;
 
         this.SetModel(
-            patrol.name,
-            patrol.neuralNetwork,
-            patrol.inferenceDevice
+            combat.name,
+            combat.neuralNetwork,
+            combat.inferenceDevice
         );
     }
 
@@ -59,7 +69,7 @@ public class ShipAgent : Agent
     }
 
     public override void OnEpisodeBegin(){
-        Debug.Log("Agent: Episode begin.");
+        
     }
 
     //***
@@ -76,13 +86,18 @@ public class ShipAgent : Agent
     //***       Angle between front of agent and the player
     //***       Angle between right side of agent and the player
     //***       Angle between left side of agent and the player
+    //***       8 sample points of the water level surrounding the ship
     //***
     public override void CollectObservations(VectorSensor sensor){
-        sensor.AddObservation((this.playerObject.transform.position.x - this.transform.position.x) / this.OperationalDistance);
-        sensor.AddObservation((this.playerObject.transform.position.y - this.transform.position.y) / this.OperationalDistance);
-        sensor.AddObservation((this.playerObject.transform.position.z - this.transform.position.z) / this.OperationalDistance);
+        this.vectorBuffer.x = this.playerObject.transform.position.x - this.transform.position.x;
+        this.vectorBuffer.y = this.playerObject.transform.position.y - this.transform.position.y;
+        this.vectorBuffer.z = this.playerObject.transform.position.z - this.transform.position.z;
 
-        sensor.AddObservation(Vector3.Distance(this.transform.position, this.playerObject.transform.position) / this.OperationalDistance);
+        sensor.AddObservation(this.vectorBuffer.x / this.OperationalDistance);
+        sensor.AddObservation(this.vectorBuffer.y / this.OperationalDistance);
+        sensor.AddObservation(this.vectorBuffer.z / this.OperationalDistance);
+
+        sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
 
         sensor.AddObservation(this.playerBody.velocity.x / this.MaxSpeed);
         sensor.AddObservation(this.playerBody.velocity.y / this.MaxSpeed);
@@ -108,41 +123,49 @@ public class ShipAgent : Agent
         sensor.AddObservation(this.shipBody.angularVelocity.y / this.MaxAngularSpeed);
         sensor.AddObservation(this.shipBody.angularVelocity.z / this.MaxAngularSpeed);
 
-        this.vector2BufferA.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vector2BufferA.y = this.playerObject.transform.position.z - this.transform.position.z;
-
-        this.vector2BufferB.x = this.transform.forward.x;
-        this.vector2BufferB.y = this.transform.forward.z;
-        float angle = Vector2.SignedAngle(
-            this.vector2BufferB,
-            this.vector2BufferA
+        float angle = Vector3.SignedAngle(
+            this.transform.forward,
+            this.vectorBuffer,
+            Vector3.up
         );
         sensor.AddObservation(angle / 180);
 
-        this.vector2BufferA.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vector2BufferA.y = this.playerObject.transform.position.y - this.transform.position.y;
+        angle = Vector3.SignedAngle(
+            this.transform.right,
+            this.vectorBuffer,
+            this.transform.forward
+        );
+        sensor.AddObservation(angle / 180); 
 
-        this.vector2BufferB.x = this.vector2BufferA.x;
-        this.vector2BufferB.y = this.transform.right.y;
-        angle = Vector2.SignedAngle(
-            this.vector2BufferB,
-            this.vector2BufferA
+        angle = Vector3.SignedAngle(
+            -this.transform.right,
+            this.vectorBuffer,
+            this.transform.forward
         );
         sensor.AddObservation(angle / 180);
 
-        this.vector2BufferA.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vector2BufferA.y = this.playerObject.transform.position.y - this.transform.position.y;
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(0);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(1);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(2);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(3);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(4);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(5);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(6);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        this.vectorBuffer = this.waterSampler.GetSamplePoint(7);
+        sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
 
-        this.vector2BufferB.x = this.vector2BufferA.x;
-        this.vector2BufferB.y = -this.transform.right.y;
-        angle = Vector2.SignedAngle(
-            this.vector2BufferB,
-            this.vector2BufferA
-        );
-        sensor.AddObservation(angle / 180);
     }
 
     public override void Heuristic(float[] actionsOut){
 
     }
+
+    public static void EmptyReset() {}
 }

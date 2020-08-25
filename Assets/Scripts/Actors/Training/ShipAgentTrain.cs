@@ -7,46 +7,37 @@ using Unity.MLAgents.Sensors;
 
 public class ShipAgentTrain : ShipAgent
 {
-    public delegate void ResetFunction();
-
     [Header("Train Parameters")]
     public float minDistance;
     public float maxDistance;
-
-    [Header("Blackboard")]
-    public float minDistPunish;
-    public float maxDistPunish;
-    public ResetFunction resetFunction;
 
     void FixedUpdate(){
         float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
 
         if(distance <= this.minDistance){
-            this.AddReward(minDistPunish);
+            this.AddReward(RewardParameters.PUNISH_MinDistance);
         } else if(distance >= this.maxDistance){
-            this.AddReward(maxDistPunish);
+            this.AddReward(RewardParameters.PUNISH_MaxDistance);
         }
     }
 
     void OnCollisionEnter(Collision collision){
         string tag = collision.gameObject.tag;
 
-        if(tag == "terrain"){
-            this.AddReward(RewardParameters.PUNISH_TerrainCollide);
+        if(tag == "Player" || tag == "ship_deck"){
+            this.AddReward(RewardParameters.GetTerrainPunishment(TrainAcademy.TIME_Elapsed));
             this.resetFunction();
             return;
         }
 
-        if(tag == "Player" || tag == "ship_deck"){
-            this.AddReward(RewardParameters.PUNISH_PlayerCollide);
+        if(tag == "terrain"){
+            this.AddReward(RewardParameters.GetPlayerPunishment(TrainAcademy.TIME_Elapsed));
             this.resetFunction();
             return;
         }
     }
 
     public void ResetAgent(){
-        Debug.Log("Agent Reset");
-
         this.shipBody.velocity = Vector3.zero;
         this.shipBody.angularVelocity = Vector3.zero;
         this.transform.eulerAngles = new Vector3(
@@ -77,7 +68,7 @@ public class ShipAgentTrain : ShipAgent
     }
 
     public override void OnEpisodeBegin(){
-        Debug.Log("Episode begin.");
+
     }
 
     public override void Heuristic(float[] actionsOut){
@@ -102,5 +93,5 @@ public class ShipAgentTrain : ShipAgent
         }
     }
 
-    public void EmptyReset() {}
+
 }
