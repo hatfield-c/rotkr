@@ -27,6 +27,7 @@ public class ActorShipMovement : AShipMovement
     public void SetCanMove(bool move){
         if(move){
             this.canMove = 1;
+            return;
         }
 
         this.canMove = 0;

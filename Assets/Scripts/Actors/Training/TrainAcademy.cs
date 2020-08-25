@@ -30,7 +30,6 @@ public class TrainAcademy : MonoBehaviour
     private Collider colliderBuffer;
 
     public void ResetAcademy(){
-        Debug.Log("Academy reset.");
         this.SpawnPoints.parent = this.transform;
         this.SpawnPoints.localScale = Vector3.one;
         this.SpawnPoints.parent = null;
@@ -52,7 +51,6 @@ public class TrainAcademy : MonoBehaviour
         this.RewardParameters.Init();
         this.framePunish = (RewardParameters.PUNISH_Frame / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
 
-        Debug.Log("Academy start.");
         this.Agent = Instantiate(this.AgentPrefab);
         this.Target = Instantiate(this.TargetPrefab);
 
@@ -86,7 +84,6 @@ public class TrainAcademy : MonoBehaviour
     }
 
     protected void EndEpisode(){
-        Debug.Log("Episode End");
         this.Agent.EndEpisode();
         this.ResetAcademy();
     }

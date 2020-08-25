@@ -7,8 +7,6 @@ using Unity.MLAgents.Sensors;
 
 public class ShipAgentTrain : ShipAgent
 {
-    public delegate void ResetFunction();
-
     [Header("Train Parameters")]
     public float minDistance;
     public float maxDistance;
@@ -16,7 +14,6 @@ public class ShipAgentTrain : ShipAgent
     [Header("Blackboard")]
     public float minDistPunish;
     public float maxDistPunish;
-    public ResetFunction resetFunction;
 
     void FixedUpdate(){
         float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
@@ -45,8 +42,6 @@ public class ShipAgentTrain : ShipAgent
     }
 
     public void ResetAgent(){
-        Debug.Log("Agent Reset");
-
         this.shipBody.velocity = Vector3.zero;
         this.shipBody.angularVelocity = Vector3.zero;
         this.transform.eulerAngles = new Vector3(
@@ -77,7 +72,7 @@ public class ShipAgentTrain : ShipAgent
     }
 
     public override void OnEpisodeBegin(){
-        Debug.Log("Episode begin.");
+
     }
 
     public override void Heuristic(float[] actionsOut){
@@ -102,5 +97,5 @@ public class ShipAgentTrain : ShipAgent
         }
     }
 
-    public void EmptyReset() {}
+
 }
