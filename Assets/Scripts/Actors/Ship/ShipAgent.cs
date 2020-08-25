@@ -13,7 +13,7 @@ public class ShipAgent : Agent
     public ResetFunction resetFunction = EmptyReset;
 
     [SerializeField] protected Rigidbody shipBody = null;
-    [SerializeField] WaterSampler waterSampler;
+    [SerializeField] WaterSampler waterSampler = null;
 
     [Header("Normalization Parameters")]
     [SerializeField] float OperationalDistance = 0;
@@ -25,9 +25,9 @@ public class ShipAgent : Agent
     protected Rigidbody playerBody;
     protected WaterCalculator waterCalculator;
 
-    protected Vector3 vectorBuffer;
-    protected Vector2 vector2BufferA;
-    protected Vector2 vector2BufferB;
+    protected Vector3 vectorBuffer = new Vector3();
+    protected Vector2 vector2BufferA = new Vector2();
+    protected Vector2 vector2BufferB = new Vector2();
 
     public void Init(
         Brain brain, 

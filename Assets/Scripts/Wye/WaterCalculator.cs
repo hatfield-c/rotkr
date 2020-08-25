@@ -25,7 +25,7 @@ public class WaterCalculator : MonoBehaviour
     protected float vertScale;
     protected float vertOffset;
 
-    void Start()
+    void Awake()
     {
         MeshFilter mf = this.GetComponent<MeshFilter>();
         this.waterMat = this.GetComponent<Renderer>().material;
