@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TrainAcademy : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class TrainAcademy : MonoBehaviour
     public Transform SpawnPoints;
     public GameObject WaterLevel;
     public Warehouse Warehouse;
+    public PermutationManager PermutationManager;
+    public TextMeshPro RewardText;
     public TargetShip TargetPrefab;
     public ShipAgentTrain AgentPrefab;
 
@@ -23,6 +26,8 @@ public class TrainAcademy : MonoBehaviour
     protected float minDistPunish;
 
     private List<Vector3> spawnBuffer = new List<Vector3>();
+    private List<Collider> terrainColliders = new List<Collider>();
+    private Collider colliderBuffer;
 
     public void ResetAcademy(){
         Debug.Log("Academy reset.");
@@ -36,8 +41,11 @@ public class TrainAcademy : MonoBehaviour
         this.Agent.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.Agent.ResetAgent();   
 
+        this.PermutationManager.Reset();
+
         this.Target.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
-        this.Target.Reset();
+        this.ExtractTerrainColliders();
+        this.Target.Reset(this.terrainColliders);
     }
   
     void Start(){
@@ -62,8 +70,7 @@ public class TrainAcademy : MonoBehaviour
         this.Target.Init(
             this.Agent,
             this.WaterLevel,
-            this.SpawnPoints,
-            new List<Collider>()
+            this.SpawnPoints
         );
 
         this.Sinker.WyeCompletelySunk += this.EndEpisode;
@@ -75,6 +82,7 @@ public class TrainAcademy : MonoBehaviour
         this.SpawnPoints.localScale = scaleLerp * Vector3.one;
 
         this.Agent.AddReward(this.framePunish);
+        this.RewardText.text = this.Agent.GetCumulativeReward().ToString();
     }
 
     protected void EndEpisode(){
@@ -105,6 +113,23 @@ public class TrainAcademy : MonoBehaviour
         points.RemoveAt(listIndex);
 
         return point;
+    }
+
+    protected void ExtractTerrainColliders(){
+        this.terrainColliders.Clear();
+        this.ExtractTerrainColliders(this.transform);
+    }
+
+    protected void ExtractTerrainColliders(Transform parent){
+        this.colliderBuffer = parent.gameObject.GetComponent<Collider>();
+
+        if(this.colliderBuffer != null){
+            this.terrainColliders.Add(this.colliderBuffer);
+        }
+
+        foreach(Transform child in parent){
+            this.ExtractTerrainColliders(child);
+        }
     }
 
     protected void EmptyStore(IStorable iStorable){}
