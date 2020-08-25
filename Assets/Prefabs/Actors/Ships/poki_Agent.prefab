@@ -1648,7 +1648,8 @@ MonoBehaviour:
       inferenceDevice: 0
     CombatBehavior:
       name: poki_Agent
-      neuralNetwork: {fileID: 0}
+      neuralNetwork: {fileID: 5022602860645237092, guid: c1c1e0a4a45da73468429d48146ea175,
+        type: 3}
       inferenceDevice: 0
   - Difficulty: 1
     PatrolBehavior:

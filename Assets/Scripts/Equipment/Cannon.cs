@@ -13,7 +13,7 @@ public class Cannon : MonoBehaviour, IEquipment
     public float minDelay = 0f;
 
     protected bool loaded = true;
-    protected KatinTimer fuseTimer;
+    protected KatinTimer fuseTimer = new KatinTimer();
     protected KatinTimer reloadTimer = new KatinTimer();
     protected InputMaster controls = null;
 
