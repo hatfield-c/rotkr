@@ -21,6 +21,8 @@ MonoBehaviour:
   OperationalDistance: 5000
   MaxSpeed: 100
   MaxAngularSpeed: 10
+  minDistance: 5
+  maxDistance: 150
   minDistPunish: 0
   maxDistPunish: 0
 --- !u!1001 &3523319572680513070
@@ -93,6 +95,11 @@ PrefabInstance:
     - target: {fileID: 4312528073176205867, guid: 48ec3e33112bda643810f817b5d51390,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121133252248034136, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_BehaviorType
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

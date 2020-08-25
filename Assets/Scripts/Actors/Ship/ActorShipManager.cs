@@ -46,7 +46,7 @@ public class ActorShipManager : MonoBehaviour {
 
         this.equipmentManager.Activate(actions.GetShoot());
     }
-
+ 
     public void KillThisShip(){
         if(buoyancyManager.IsSinking())
             return;
@@ -60,6 +60,7 @@ public class ActorShipManager : MonoBehaviour {
             this.StorageFunction(this.actorShipReference);
         });
         deathSequence.Play();
+        this.shipAgent.resetFunction();
     }
 
     public List<IStorable> GetPossibleLoot(){
@@ -72,6 +73,7 @@ public class ActorShipManager : MonoBehaviour {
     }
 
     public void EnableSubsystems(){
+        shipMovement.SetCanMove(true);
         lootManager.EnableLoot();
         hunkManager.EnableHunks();
         healthManager.Enable();

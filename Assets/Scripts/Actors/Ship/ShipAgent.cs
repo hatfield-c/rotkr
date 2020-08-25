@@ -7,7 +7,10 @@ using Unity.MLAgents.Sensors;
 
 public class ShipAgent : Agent
 {
+    public delegate void ResetFunction();
+
     public ActorShipManager shipManager = null;
+    public ResetFunction resetFunction = EmptyReset;
 
     [SerializeField] protected Rigidbody shipBody = null;
 
@@ -59,7 +62,7 @@ public class ShipAgent : Agent
     }
 
     public override void OnEpisodeBegin(){
-        Debug.Log("Agent: Episode begin.");
+        
     }
 
     //***
@@ -137,4 +140,6 @@ public class ShipAgent : Agent
     public override void Heuristic(float[] actionsOut){
 
     }
+
+    public static void EmptyReset() {}
 }
