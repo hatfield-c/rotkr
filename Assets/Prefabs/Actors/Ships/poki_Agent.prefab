@@ -1647,7 +1647,7 @@ MonoBehaviour:
       neuralNetwork: {fileID: 0}
       inferenceDevice: 0
     CombatBehavior:
-      name: 
+      name: poki_Agent
       neuralNetwork: {fileID: 0}
       inferenceDevice: 0
   - Difficulty: 1

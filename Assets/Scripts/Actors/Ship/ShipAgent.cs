@@ -43,12 +43,12 @@ public class ShipAgent : Agent
         this.playerBody = playerObject.GetComponent<Rigidbody>();
         this.waterCalculator = waterCalculator;
 
-        NNBehaviour patrol = brain.PatrolBehavior;
+        NNBehaviour combat = brain.CombatBehavior;
 
         this.SetModel(
-            patrol.name,
-            patrol.neuralNetwork,
-            patrol.inferenceDevice
+            combat.name,
+            combat.neuralNetwork,
+            combat.inferenceDevice
         );
     }
 

@@ -19,6 +19,7 @@ public class WyeSinker : MonoBehaviour
     protected Vector3 position;
 
     void Start() {
+        this.position = this.transform.position;
         this.startPosition = this.transform.position.y;
         this.endPosition = this.startPosition - sinkAmount;
         this.progress = 0;
