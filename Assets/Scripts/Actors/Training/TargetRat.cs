@@ -22,7 +22,7 @@ public class TargetRat : MonoBehaviour
         this.gameObject.SetActive(true);
     }
 
-    void OnCollision(Collision collision){
+    void OnCollisionEnter(Collision collision){
         float force = collision.impulse.magnitude / Time.fixedDeltaTime;
 
         if(collision.gameObject.tag != "projectile"){
@@ -37,6 +37,7 @@ public class TargetRat : MonoBehaviour
             this.gameObject.SetActive(false);
 
             owner.AddReward(this.breakReward);
+            owner.resetFunction();
         }
     }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7988328729453156993}
   m_Layer: 0
   m_Name: box
-  m_TagString: Untagged
+  m_TagString: terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 4061747847104833900}
   m_Layer: 0
   m_Name: box (1)
-  m_TagString: Untagged
+  m_TagString: terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

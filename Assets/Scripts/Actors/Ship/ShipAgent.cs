@@ -78,11 +78,15 @@ public class ShipAgent : Agent
     //***       Angle between left side of agent and the player
     //***
     public override void CollectObservations(VectorSensor sensor){
-        sensor.AddObservation((this.playerObject.transform.position.x - this.transform.position.x) / this.OperationalDistance);
-        sensor.AddObservation((this.playerObject.transform.position.y - this.transform.position.y) / this.OperationalDistance);
-        sensor.AddObservation((this.playerObject.transform.position.z - this.transform.position.z) / this.OperationalDistance);
+        this.vectorBuffer.x = this.playerObject.transform.position.x - this.transform.position.x;
+        this.vectorBuffer.y = this.playerObject.transform.position.y - this.transform.position.y;
+        this.vectorBuffer.z = this.playerObject.transform.position.z - this.transform.position.z;
 
-        sensor.AddObservation(Vector3.Distance(this.transform.position, this.playerObject.transform.position) / this.OperationalDistance);
+        sensor.AddObservation(this.vectorBuffer.x / this.OperationalDistance);
+        sensor.AddObservation(this.vectorBuffer.y / this.OperationalDistance);
+        sensor.AddObservation(this.vectorBuffer.z / this.OperationalDistance);
+
+        sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
 
         sensor.AddObservation(this.playerBody.velocity.x / this.MaxSpeed);
         sensor.AddObservation(this.playerBody.velocity.y / this.MaxSpeed);
@@ -108,36 +112,24 @@ public class ShipAgent : Agent
         sensor.AddObservation(this.shipBody.angularVelocity.y / this.MaxAngularSpeed);
         sensor.AddObservation(this.shipBody.angularVelocity.z / this.MaxAngularSpeed);
 
-        this.vector2BufferA.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vector2BufferA.y = this.playerObject.transform.position.z - this.transform.position.z;
-
-        this.vector2BufferB.x = this.transform.forward.x;
-        this.vector2BufferB.y = this.transform.forward.z;
-        float angle = Vector2.SignedAngle(
-            this.vector2BufferB,
-            this.vector2BufferA
+        float angle = Vector3.SignedAngle(
+            this.transform.forward,
+            this.vectorBuffer,
+            Vector3.up
         );
         sensor.AddObservation(angle / 180);
 
-        this.vector2BufferA.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vector2BufferA.y = this.playerObject.transform.position.y - this.transform.position.y;
-
-        this.vector2BufferB.x = this.vector2BufferA.x;
-        this.vector2BufferB.y = this.transform.right.y;
-        angle = Vector2.SignedAngle(
-            this.vector2BufferB,
-            this.vector2BufferA
+        angle = Vector3.SignedAngle(
+            this.transform.right,
+            this.vectorBuffer,
+            this.transform.forward
         );
-        sensor.AddObservation(angle / 180);
+        sensor.AddObservation(angle / 180); 
 
-        this.vector2BufferA.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vector2BufferA.y = this.playerObject.transform.position.y - this.transform.position.y;
-
-        this.vector2BufferB.x = this.vector2BufferA.x;
-        this.vector2BufferB.y = -this.transform.right.y;
-        angle = Vector2.SignedAngle(
-            this.vector2BufferB,
-            this.vector2BufferA
+        angle = Vector3.SignedAngle(
+            -this.transform.right,
+            this.vectorBuffer,
+            this.transform.forward
         );
         sensor.AddObservation(angle / 180);
     }
