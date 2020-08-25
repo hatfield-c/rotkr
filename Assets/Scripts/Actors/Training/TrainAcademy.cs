@@ -17,19 +17,21 @@ public class TrainAcademy : MonoBehaviour
 
     public RewardParameters RewardParameters;
 
+    public static float TIME_Elapsed = 0;
+
     [Header("Parameters")]
     public float spawnScale = 0.05f;
 
     protected ShipAgentTrain Agent;
     protected TargetShip Target;
-    protected float framePunish;
-    protected float minDistPunish;
 
     private List<Vector3> spawnBuffer = new List<Vector3>();
     private List<Collider> terrainColliders = new List<Collider>();
     private Collider colliderBuffer;
 
     public void ResetAcademy(){
+        TIME_Elapsed = 0;
+
         this.SpawnPoints.parent = this.transform;
         this.SpawnPoints.localScale = Vector3.one;
         this.SpawnPoints.parent = null;
@@ -48,8 +50,8 @@ public class TrainAcademy : MonoBehaviour
     }
   
     void Start(){
-        this.RewardParameters.Init();
-        this.framePunish = (RewardParameters.PUNISH_Frame / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
+        this.RewardText.transform.parent = null;
+        this.RewardParameters.Init(this.Sinker.GetSinkTime());
 
         this.Agent = Instantiate(this.AgentPrefab);
         this.Target = Instantiate(this.TargetPrefab);
@@ -62,8 +64,6 @@ public class TrainAcademy : MonoBehaviour
             this.EmptyStore
         );
         this.Agent.resetFunction = this.EndEpisode;
-        this.Agent.minDistPunish = (RewardParameters.PUNISH_MinDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
-        this.Agent.maxDistPunish = (RewardParameters.PUNISH_MaxDistance / this.Sinker.GetSinkTime()) * Time.fixedDeltaTime;
         
         this.Target.Init(
             this.Agent,
@@ -76,10 +76,12 @@ public class TrainAcademy : MonoBehaviour
     }
 
     void FixedUpdate(){
+        TIME_Elapsed += Time.fixedDeltaTime;
+
         float scaleLerp = Mathf.Lerp(1f, this.spawnScale, this.Sinker.GetProgress());
         this.SpawnPoints.localScale = scaleLerp * Vector3.one;
 
-        this.Agent.AddReward(this.framePunish);
+        this.Agent.AddReward(RewardParameters.PUNISH_Frame);
         this.RewardText.text = this.Agent.GetCumulativeReward().ToString();
     }
 
