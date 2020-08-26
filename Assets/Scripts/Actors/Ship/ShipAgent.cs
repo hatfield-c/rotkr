@@ -86,6 +86,8 @@ public class ShipAgent : Agent
     //***       Angle between front of agent and the player
     //***       Angle between right side of agent and the player
     //***       Angle between left side of agent and the player
+    //***       Angle between the agent movement direction and the player
+    //***       Angle between player's movement direction and the agent
     //***       8 sample points of the water level surrounding the ship
     //***
     public override void CollectObservations(VectorSensor sensor){
@@ -144,6 +146,20 @@ public class ShipAgent : Agent
         );
         sensor.AddObservation(angle / 180);
 
+        angle = Vector3.SignedAngle(
+            this.shipBody.velocity,
+            this.vectorBuffer,
+            Vector3.up
+        );
+        sensor.AddObservation(angle / 180);
+
+        angle = Vector3.SignedAngle(
+            this.playerBody.velocity,
+            -this.vectorBuffer,
+            Vector3.up
+        );
+        sensor.AddObservation(angle / 180);
+
         this.vectorBuffer = this.waterSampler.GetSamplePoint(0);
         sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
         this.vectorBuffer = this.waterSampler.GetSamplePoint(1);
@@ -161,6 +177,19 @@ public class ShipAgent : Agent
         this.vectorBuffer = this.waterSampler.GetSamplePoint(7);
         sensor.AddObservation(this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
 
+    }
+
+    public void ResetAgent() {
+        this.shipBody.velocity = Vector3.zero;
+        this.shipBody.angularVelocity = Vector3.zero;
+        this.transform.eulerAngles = new Vector3(
+            0,
+            Random.Range(0f, 360f),
+            0
+        );
+
+        this.shipManager.DisableSubsystems();
+        this.shipManager.EnableSubsystems();
     }
 
     public override void Heuristic(float[] actionsOut){

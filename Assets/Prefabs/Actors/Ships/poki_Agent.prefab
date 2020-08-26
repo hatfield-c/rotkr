@@ -1648,8 +1648,7 @@ MonoBehaviour:
       inferenceDevice: 0
     CombatBehavior:
       name: poki_Agent
-      neuralNetwork: {fileID: 5022602860645237092, guid: c1c1e0a4a45da73468429d48146ea175,
-        type: 3}
+      neuralNetwork: {fileID: 0}
       inferenceDevice: 0
   - Difficulty: 1
     PatrolBehavior:
@@ -1765,8 +1764,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 32
-    NumStackedVectorObservations: 5
+    VectorObservationSize: 34
+    NumStackedVectorObservations: 4
     VectorActionSize: 03000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
