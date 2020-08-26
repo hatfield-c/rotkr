@@ -60,7 +60,8 @@ public class ActorShipManager : MonoBehaviour {
             this.StorageFunction(this.actorShipReference);
         });
         deathSequence.Play();
-        this.shipAgent.resetFunction();
+
+        this.shipAgent.ResetAgent();
     }
 
     public List<IStorable> GetPossibleLoot(){

@@ -11,7 +11,10 @@ public class ShipAgentTrain : ShipAgent
     public float minDistance;
     public float maxDistance;
 
+    protected bool hasCollided = false;
+
     void FixedUpdate(){
+        this.hasCollided = false;
         float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
 
         if(distance <= this.minDistance){
@@ -22,32 +25,24 @@ public class ShipAgentTrain : ShipAgent
     }
 
     void OnCollisionEnter(Collision collision){
+        if (this.hasCollided) {
+            return;
+        }
+
+        this.hasCollided = true;
         string tag = collision.gameObject.tag;
 
         if(tag == "Player" || tag == "ship_deck"){
-            this.AddReward(RewardParameters.GetTerrainPunishment(TrainAcademy.TIME_Elapsed));
+            this.AddReward(RewardParameters.GetPlayerPunishment(TrainAcademy.TIME_Elapsed));
             this.resetFunction();
             return;
         }
 
         if(tag == "terrain"){
-            this.AddReward(RewardParameters.GetPlayerPunishment(TrainAcademy.TIME_Elapsed));
+            this.AddReward(RewardParameters.GetTerrainPunishment(TrainAcademy.TIME_Elapsed));
             this.resetFunction();
             return;
         }
-    }
-
-    public void ResetAgent(){
-        this.shipBody.velocity = Vector3.zero;
-        this.shipBody.angularVelocity = Vector3.zero;
-        this.transform.eulerAngles = new Vector3(
-            0,
-            Random.Range(0f, 360f),
-            0
-        );
-
-        this.shipManager.DisableSubsystems();
-        this.shipManager.EnableSubsystems();
     }
  
     //***
