@@ -1691,8 +1691,8 @@ MonoBehaviour:
   - {fileID: 2436928801800836592}
   - {fileID: 6268022071723312015}
   floatzone:
-    floatMax: 0.8
-    floatMin: -0.2
+    floatMax: 0.6
+    floatMin: -0.3
     deadMax: 0.1
     deadMin: -0.15
     stabilizingForce: -18

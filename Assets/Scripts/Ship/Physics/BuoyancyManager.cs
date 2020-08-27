@@ -77,6 +77,7 @@ public class BuoyancyManager : MonoBehaviour {
 
     public void Init(GameObject waterPlane) {
         this.waterLevel = waterPlane.GetComponent<WaterCalculator>();
+        this.floatzone.Init();
     }
 
     public void Enable(){

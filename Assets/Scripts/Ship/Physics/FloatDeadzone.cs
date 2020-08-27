@@ -13,7 +13,7 @@ public class FloatDeadzone {
     
     protected FloatZoneParameters origParameters = new FloatZoneParameters(); 
 
-    public FloatDeadzone(){
+    public void Init(){
         this.origParameters.SetParameters(
             this.floatMax,
             this.floatMin,
