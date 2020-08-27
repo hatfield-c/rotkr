@@ -40,5 +40,12 @@ public class KatinTimer
         this.callback = this.empty;
     }
 
+    public void disable() {
+        this.active = false;
+        this.elapsedTime = 0;
+        this.length = 0;
+        this.callback = this.empty;
+    }
+
     public void empty(){ }
 }

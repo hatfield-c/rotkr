@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class CannonBall : MonoBehaviour
 {
+    [SerializeField] Rigidbody physicsBody = null;
     public GameObject owner;
     public float despawnTime = 7f;
 
-    protected KatinTimer despawnTimer;
-    protected Rigidbody physicsBody;
-
-    void Awake()
-    {
-        this.physicsBody = this.GetComponent<Rigidbody>();
-        this.despawnTimer = new KatinTimer();
-    }
+    protected KatinTimer despawnTimer = new KatinTimer();
 
     void FixedUpdate(){
         this.despawnTimer.update();
@@ -27,6 +21,10 @@ public class CannonBall : MonoBehaviour
 
     public void deactivate(){
         this.physicsBody.velocity = Vector3.zero;
+        this.physicsBody.angularVelocity = Vector3.zero;
+        this.transform.eulerAngles = Vector3.zero;
+
+        this.despawnTimer.disable();
         this.gameObject.SetActive(false);
     }
 

@@ -79,6 +79,7 @@ public class ActorShipManager : MonoBehaviour {
         hunkManager.EnableHunks();
         healthManager.Enable();
         buoyancyManager.Enable();
+        equipmentManager.Enable();
     }
 
     public void DisableShip(){
@@ -91,6 +92,7 @@ public class ActorShipManager : MonoBehaviour {
         hunkManager.DisableHunks();
         healthManager.Disable();
         buoyancyManager.Disable();
+        equipmentManager.Disable();
     }   
 
     public Brain GetBrain(EnemyFactory.GameDifficulty difficulty){

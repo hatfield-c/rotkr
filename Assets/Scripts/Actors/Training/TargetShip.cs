@@ -84,6 +84,10 @@ public class TargetShip : MonoBehaviour
             hunk.Reset();
         }
 
+        foreach(TargetRat rat in this.ratList) {
+            rat.Reset();
+        }
+
         this.rb.velocity = Vector3.zero;
         this.transform.eulerAngles = new Vector3(
             0,
