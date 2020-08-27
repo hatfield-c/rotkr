@@ -41,7 +41,7 @@ public class TrainAcademy : MonoBehaviour
         this.Sinker.Reset();
  
         this.spawnBuffer = this.AvailablePoints();
-     
+        
         this.Agent.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.Agent.ResetAgent();   
 
@@ -85,7 +85,6 @@ public class TrainAcademy : MonoBehaviour
         float scaleLerp = Mathf.Lerp(1f, this.spawnScale, this.Sinker.GetProgress());
         this.SpawnPoints.localScale = scaleLerp * Vector3.one;
 
-        this.Agent.AddReward(RewardParameters.PUNISH_Frame);
         this.curReward = this.Agent.GetCumulativeReward().ToString();
         this.RewardText.text = "Current : " + this.curReward;
     }

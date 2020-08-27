@@ -13,6 +13,7 @@ public class RewardParameters
 
     [Header("Punishments")]
     public float Frame;
+    public float Rotation;
     public float MaxDistance;
     public float MinDistance;
     public float TerrainCollide;
@@ -27,6 +28,7 @@ public class RewardParameters
     public static float REWARD_BreakRat;
     
     public static float PUNISH_Frame;
+    public static float PUNISH_Rotation;
     public static float PUNISH_MaxDistance;
     public static float PUNISH_MinDistance;
     public static float PUNISH_TerrainCollide;
@@ -50,6 +52,7 @@ public class RewardParameters
         REWARD_BreakRat = this.BreakRat / 100;
 
         PUNISH_Frame = ((-this.Frame / 100) / TIME_Length) * Time.fixedDeltaTime;
+        PUNISH_Rotation = ((-this.Rotation / 100) / TIME_Length) * Time.fixedDeltaTime;
         PUNISH_MaxDistance = ((-this.MaxDistance / 100) / TIME_Length) * Time.fixedDeltaTime;
         PUNISH_MinDistance = ((-this.MinDistance / 100) / TIME_Length) * Time.fixedDeltaTime;
         PUNISH_TerrainCollide = -this.TerrainCollide / 100;

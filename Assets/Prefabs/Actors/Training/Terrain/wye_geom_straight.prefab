@@ -379,14 +379,15 @@ MonoBehaviour:
     type: 3}
   RewardParameters:
     HitHunk: 5
-    BreakHunk: 10
-    HitRat: 20
-    BreakRat: 65
+    BreakHunk: 20
+    HitRat: 25
+    BreakRat: 50
     Frame: 5
-    MaxDistance: 5
+    Rotation: 10
+    MaxDistance: 7
     MinDistance: 15
-    TerrainCollide: 50
-    PlayerCollide: 75
+    TerrainCollide: 45
+    PlayerCollide: 70
     MinValue: 0.00001
   spawnScale: 0.05
 --- !u!114 &8304936273929454710

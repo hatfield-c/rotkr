@@ -17,11 +17,15 @@ public class ShipAgentTrain : ShipAgent
         this.hasCollided = false;
         float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
 
-        if(distance <= this.minDistance){
+        if (distance <= this.minDistance) {
             this.AddReward(RewardParameters.PUNISH_MinDistance);
-        } else if(distance >= this.maxDistance){
+        } else if (distance >= this.maxDistance) {
             this.AddReward(RewardParameters.PUNISH_MaxDistance);
+        } else {
+            this.AddReward(RewardParameters.PUNISH_Frame);
         }
+
+        this.AddReward(RewardParameters.PUNISH_Rotation * (this.shipBody.angularVelocity.y / this.MaxAngularSpeed));
     }
 
     void OnCollisionEnter(Collision collision){
@@ -44,23 +48,6 @@ public class ShipAgentTrain : ShipAgent
             return;
         }
     }
- 
-    //***
-    //***   vectorAction:
-    //***       0 : Acceleration
-    //***       1 : Turn Direction
-    //***       2 : Shoot
-    //***
-    public override void OnActionReceived(float[] vectorAction){
-
-        ShipAgentActions actions = new ShipAgentActions(
-            vectorAction[0],
-            vectorAction[1],
-            vectorAction[2]
-        );
-
-        this.shipManager.TakeAction(actions);
-    }
 
     public override void OnEpisodeBegin(){
 
@@ -74,17 +61,17 @@ public class ShipAgentTrain : ShipAgent
         if(Input.GetKey(KeyCode.W)){
             actionsOut[0] = 1f;
         } else if(Input.GetKey(KeyCode.S)){
-            actionsOut[0] = -1f;
+            actionsOut[0] = 3f;
         }
 
         if(Input.GetKey(KeyCode.A)){
-            actionsOut[1] = -1f;
+            actionsOut[1] = 3f;
         } else if(Input.GetKey(KeyCode.D)){
             actionsOut[1] = 1f;
         }
 
         if(Input.GetKey(KeyCode.Space)){
-            actionsOut[2] = 0.75f;   
+            actionsOut[2] = 1f;   
         }
     }
 
