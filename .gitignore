@@ -60,5 +60,6 @@ crashlytics-build.properties
 
 # Custom ignores
 Assets/ML-Agents/Timers/*
+Assets/ML-Agents/Demonstrations/*
 ML-Cache/*
 !ML-Cache/cache.txt
