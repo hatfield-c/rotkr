@@ -12,11 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   Record: 0
-=======
-  Record: 1
->>>>>>> 9ce23383d036bbc1eccb55f5f9ced6fdb3d0a5dd
   DemonstrationName: BasicDemo
   DemonstrationDirectory: Assets/ML-Agents/Demonstrations
 --- !u!114 &6859014772596621656
@@ -38,19 +34,11 @@ MonoBehaviour:
   shipManager: {fileID: 455034955177654430}
   shipBody: {fileID: 1506679935985738540}
   waterSampler: {fileID: 3006488403416698800}
-<<<<<<< HEAD
   OperationalDistance: 2000
   MaxSpeed: 75
   MaxAngularSpeed: 6
   minDistance: 27
   maxDistance: 80
-=======
-  OperationalDistance: 5000
-  MaxSpeed: 100
-  MaxAngularSpeed: 10
-  minDistance: 27
-  maxDistance: 170
->>>>>>> 9ce23383d036bbc1eccb55f5f9ced6fdb3d0a5dd
 --- !u!1001 &3523319572680513070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -123,14 +111,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-=======
-    - target: {fileID: 5121133252248034136, guid: 48ec3e33112bda643810f817b5d51390,
-        type: 3}
-      propertyPath: m_BehaviorType
-      value: 1
-      objectReference: {fileID: 0}
->>>>>>> 9ce23383d036bbc1eccb55f5f9ced6fdb3d0a5dd
     - target: {fileID: 8836518297980304642, guid: 48ec3e33112bda643810f817b5d51390,
         type: 3}
       propertyPath: floatPoints.Array.size
