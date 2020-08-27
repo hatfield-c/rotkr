@@ -18,6 +18,7 @@ behaviors:
       vis_encode_type: simple
 
     reward_signals:
+
  #     curiosity:
  #       strength: 0.1
  #       gamma: 0.995
