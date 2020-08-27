@@ -123,4 +123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f0e70d9e8f47d44a15b86c483c0ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  physicsBody: {fileID: 1910017893047442589}
+  owner: {fileID: 0}
   despawnTime: 7

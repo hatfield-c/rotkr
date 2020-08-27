@@ -71,6 +71,14 @@ public class Cannon : MonoBehaviour, IEquipment
         this.loaded = true;
     }
 
+    public void Enable() {
+        
+    }
+
+    public void Disable() {
+        this.projectile.deactivate();
+    }
+
     public void registerInput(InputMaster controls){
         this.controls = controls;
         controls.Player.Shoot.performed += context => this.lightFuse();

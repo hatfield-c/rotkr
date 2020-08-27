@@ -14,8 +14,8 @@ public class TargetRat : MonoBehaviour
         this.agent = agent;
         this.breakForce = breakForce;
 
-        this.hitReward = RewardParameters.REWARD_HitRat / ratCount;
-        this.breakReward = RewardParameters.REWARD_BreakRat / ratCount;
+        this.hitReward = RewardParameters.REWARD_HitRat;
+        this.breakReward = RewardParameters.REWARD_BreakRat;
     }
     
     public void Reset(){

@@ -23,6 +23,18 @@ public class ActorEquipment
         }
     }
 
+    public void Enable() {
+        foreach(Cannon gun in this.gunList) {
+            gun.Enable();
+        }
+    }
+
+    public void Disable() {
+        foreach (Cannon gun in this.gunList) {
+            gun.Disable();
+        }
+    }
+
     public void DestroyEquipment(){
         if(this.ammunitionStorage == null)
             return;
