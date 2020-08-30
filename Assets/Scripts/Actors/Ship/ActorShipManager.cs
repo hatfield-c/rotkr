@@ -41,7 +41,8 @@ public class ActorShipManager : MonoBehaviour {
     public void TakeAction(ShipAgentActions actions){
         this.shipMovement.ApplyControls(
             actions.GetAcceleration(),
-            actions.GetTurnDirection()
+            actions.GetTurnDirection(),
+            actions.GetBrake()
         );
 
         this.equipmentManager.Activate(actions.GetShoot());
@@ -103,6 +104,10 @@ public class ActorShipManager : MonoBehaviour {
         }
 
         return this.BrainList[0];
+    }
+
+    public bool CanShoot() {
+        return this.equipmentManager.CanShoot();
     }
 
     void OnEnable(){

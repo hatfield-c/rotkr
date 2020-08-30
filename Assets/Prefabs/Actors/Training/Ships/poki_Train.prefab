@@ -36,9 +36,11 @@ MonoBehaviour:
   waterSampler: {fileID: 3006488403416698800}
   OperationalDistance: 2000
   MaxSpeed: 75
-  MaxAngularSpeed: 6
-  minDistance: 27
-  maxDistance: 80
+  MaxAngularSpeed: 2
+  minDistance: 30
+  desiredDistance: 70
+  distancePadding: 20
+  aimPadding: 0.2
 --- !u!1001 &3523319572680513070
 PrefabInstance:
   m_ObjectHideFlags: 0

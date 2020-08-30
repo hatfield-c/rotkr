@@ -71,6 +71,10 @@ public class Cannon : MonoBehaviour, IEquipment
         this.loaded = true;
     }
 
+    public bool IsLoaded() {
+        return this.loaded;
+    }
+
     public void Enable() {
         
     }

@@ -378,17 +378,13 @@ MonoBehaviour:
   AgentPrefab: {fileID: 6859014772596621656, guid: 48ae5dec1b4555c459b49b4ff030597c,
     type: 3}
   RewardParameters:
-    HitHunk: 5
-    BreakHunk: 20
-    HitRat: 25
-    BreakRat: 50
-    Frame: 5
-    Rotation: 10
-    MaxDistance: 7
-    MinDistance: 15
-    TerrainCollide: 45
-    PlayerCollide: 70
-    MinValue: 0.00001
+    HitHunk: 40
+    HitRat: 60
+    Proximity: 20
+    Aimed: 20
+    Frame: 30
+    MinDistance: 50
+    TerrainCollide: 40
   spawnScale: 0.05
 --- !u!114 &8304936273929454710
 MonoBehaviour:

@@ -16,7 +16,7 @@ public class ShipAgent : Agent
     [SerializeField] WaterSampler waterSampler = null;
 
     [Header("Normalization Parameters")]
-    [SerializeField] float OperationalDistance = 0;
+    [SerializeField] protected float OperationalDistance = 0;
     [SerializeField] float MaxSpeed = 0;
     [SerializeField] protected float MaxAngularSpeed = 0; 
 
@@ -26,8 +26,6 @@ public class ShipAgent : Agent
     protected WaterCalculator waterCalculator;
 
     protected Vector3 vectorBuffer = new Vector3();
-    protected Vector2 vector2BufferA = new Vector2();
-    protected Vector2 vector2BufferB = new Vector2();
 
     public void Init(
         Brain brain, 
@@ -74,27 +72,28 @@ public class ShipAgent : Agent
         float accel = 0f;
         float turn = 0f;
         float shoot = 0f;
+        float brake = 0f;
 
         int action0 = Mathf.FloorToInt(vectorAction[0]);
         int action1 = Mathf.FloorToInt(vectorAction[1]);
         int action2 = Mathf.FloorToInt(vectorAction[2]);
+        int action3 = Mathf.FloorToInt(vectorAction[3]);
 
         if (action0 == 1) { accel = 1f; }
-        if (action0 == 2) { accel = 0.5f; }
-        if (action0 == 3) { accel = -1f; }
-        if (action0 == 4) { accel = -0.5f; }
+        if (action0 == 2) { accel = -1f; }
 
         if (action1 == 1) { turn = 1f; }
-        if (action1 == 2) { turn = 0.5f; }
-        if (action1 == 3) { turn = -1f; }
-        if (action1 == 4) { turn = -0.5f; }
+        if (action1 == 2) { turn = -1f; }
 
         if (action2 == 1) { shoot = 1f; }
+
+        if(action3 == 1) { brake = 1f; }
 
         ShipAgentActions actions = new ShipAgentActions(
             accel,
             turn,
-            shoot
+            shoot,
+            brake
         );
 
         this.shipManager.TakeAction(actions);
@@ -106,45 +105,87 @@ public class ShipAgent : Agent
 
     //***
     //***   observations:
-    //***       agent.forward *DOT* direction to player
-    //***       agent.right *DOT* direction to player
-    //***       agent.left *DOT* direction to player
-    //***       player.forward *DOT* direction to agent
-    //***       player.forward *DOT* agent.forward
-    //***       distance from agent to player (normalized)
-    //***       speed of the agent (normalized)
-    //***       speed of the player (normalized)
-    //***       8 sample points of the water level surrounding the ship
-    //***       
+    //***       1 : agent.forward *DOT* direction to player
+    //***       1 : agent.right *DOT* direction to player
+    //***       1 : player.velocity *DOT* direction to agent
+    //***       1 : agent velocity *DOT* direction to player
+    //**        3 : agent velocity (normalized)
+    //***       1 : distance from agent to player (normalized)
+    //***       1 : speed of the agent (normalized)
+    //***       1 : speed of the player (normalized)
+    //**        1 : turn speed of agent (normalized)
+    //***       8 : sample points of the water level surrounding the ship
+    //***      19
     public override void CollectObservations(VectorSensor sensor){
-        this.vectorBuffer.x = this.playerObject.transform.position.x - this.transform.position.x;
-        this.vectorBuffer.y = this.playerObject.transform.position.y - this.transform.position.y;
-        this.vectorBuffer.z = this.playerObject.transform.position.z - this.transform.position.z;
+        this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
 
+        /*/ transform.forward * direction to player
         float dotResult = Vector3.Dot(this.transform.forward, this.vectorBuffer.normalized);
         sensor.AddObservation(dotResult);
 
+        // transform.right * direction to player
         dotResult = Vector3.Dot(this.transform.right, this.vectorBuffer.normalized);
         sensor.AddObservation(dotResult);
 
-        dotResult = Vector3.Dot(-this.transform.right, this.vectorBuffer.normalized);
+        // player.velocity * direction to agent (from player)
+        dotResult = Vector3.Dot(
+            this.playerObject.transform.InverseTransformVector(this.playerBody.velocity).normalized, 
+            this.playerObject.transform.InverseTransformPoint(this.transform.position).normalized
+        );
         sensor.AddObservation(dotResult);
 
-        dotResult = Vector3.Dot(this.playerObject.transform.forward , -this.vectorBuffer.normalized);
+        // velocity * direction to player
+        dotResult = Vector3.Dot(
+            this.transform.InverseTransformVector(this.shipBody.velocity.normalized), 
+            this.vectorBuffer.normalized
+        );
         sensor.AddObservation(dotResult);
 
-        dotResult = Vector3.Dot(this.transform.forward, this.playerObject.transform.forward);
-        sensor.AddObservation(dotResult);
+        // velocity components (x, y, z)
+        sensor.AddObservation(
+            this.transform.InverseTransformVector(this.shipBody.velocity).normalized
+        );
 
+        // distance to player
         sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
 
+        // speed of agent
         sensor.AddObservation(this.shipBody.velocity.magnitude / this.MaxSpeed);
 
+        // speed of player
         sensor.AddObservation(this.playerBody.velocity.magnitude / this.MaxSpeed);
 
-        sensor.AddObservation(this.shipBody.angularVelocity.y / this.MaxAngularSpeed);
+        // turn rate of agent
+        sensor.AddObservation(this.shipBody.angularVelocity.y / this.MaxAngularSpeed);*/
 
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(0);
+        // 8
+        // direction to player
+        sensor.AddObservation(this.vectorBuffer.normalized);
+
+        // velocity components (x, y, z)
+        sensor.AddObservation(
+            this.transform.InverseTransformVector(this.shipBody.velocity).normalized
+        );
+
+        // transform.forward * direction to player
+        float angle = Vector3.SignedAngle(Vector3.forward.normalized, this.vectorBuffer.normalized, Vector3.up);
+        sensor.AddObservation(angle / 180);
+
+        // angle between agent y and player y
+        angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.forward);
+        sensor.AddObservation(angle / 180);
+
+        // velocity * direction to player
+        angle = Vector3.Dot(
+            this.transform.InverseTransformVector(this.shipBody.velocity.normalized),
+            this.vectorBuffer.normalized
+        );
+        sensor.AddObservation(angle);
+
+        // distance to player
+        sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
+
+        /*this.vectorBuffer = this.waterSampler.GetSamplePoint(0);
         sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
         this.vectorBuffer = this.waterSampler.GetSamplePoint(1);
         sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
@@ -159,7 +200,7 @@ public class ShipAgent : Agent
         this.vectorBuffer = this.waterSampler.GetSamplePoint(6);
         sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
         this.vectorBuffer = this.waterSampler.GetSamplePoint(7);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
+        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));*/
 
     }
 

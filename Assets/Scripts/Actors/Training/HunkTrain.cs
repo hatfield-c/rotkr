@@ -5,16 +5,10 @@ using UnityEngine;
 public class HunkTrain : MonoBehaviour {
     public ShipAgentTrain agent;
 
-    protected float breakForce;
     protected float hitReward;
-    protected float breakReward;
 
-    public void TrainInit(ShipAgentTrain agent, float breakForce, int hunkCount){
+    public void TrainInit(ShipAgentTrain agent, int hunkCount){
         this.agent = agent;
-        this.breakForce = breakForce;
-
-        this.hitReward = RewardParameters.REWARD_HitHunk / hunkCount;
-        this.breakReward = RewardParameters.REWARD_BreakHunk / hunkCount;
     }
 
     public void Reset(){
@@ -22,20 +16,18 @@ public class HunkTrain : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision collision){
-        float force = collision.impulse.magnitude / Time.fixedDeltaTime;
+        if (!this.gameObject.activeSelf) {
+            return;
+        }
 
-        if(collision.gameObject.tag != "projectile"){
+        if (collision.gameObject.tag != "projectile"){
             return;
         }
 
         CannonBall projectile = collision.gameObject.GetComponent<CannonBall>();
         ShipAgentTrain owner = projectile.owner.GetComponent<ShipAgentTrain>();
-        owner.AddReward(this.hitReward);
+        owner.AddReward(RewardParameters.REWARD_HitHunk);
 
-        if(force >= this.breakForce){
-            this.gameObject.SetActive(false);
-
-            owner.AddReward(this.breakReward);
-        }
+        this.gameObject.SetActive(false);
     }
 }

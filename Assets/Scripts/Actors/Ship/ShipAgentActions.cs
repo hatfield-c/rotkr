@@ -7,11 +7,13 @@ public class ShipAgentActions
     protected float acceleration;
     protected float turnDirection;
     protected float shoot;
+    protected float brake;
 
-    public ShipAgentActions(float acceleration, float turnDirection, float shoot){
+    public ShipAgentActions(float acceleration, float turnDirection, float shoot, float brake){
         this.acceleration = acceleration;
         this.turnDirection = turnDirection;
         this.shoot = shoot;
+        this.brake = brake;
     }
 
     public float GetAcceleration(){
@@ -24,5 +26,9 @@ public class ShipAgentActions
 
     public float GetShoot(){
         return this.shoot;
+    }
+
+    public float GetBrake() {
+        return this.brake;
     }
 }

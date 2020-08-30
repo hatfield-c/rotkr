@@ -6,9 +6,12 @@ using UnityEngine;
 
 public class ActorShipMovement : AShipMovement
 {
+    [SerializeField] float maxTurn = 2f;
+    [SerializeField] float brakeAmount = 0.98f;
     protected int canMove = 1;
     protected float acceleration = 0f;
     protected float turnAngle = 0f;
+    protected float brake = 0f;
 
     protected Vector3 forwardBuffer;
     protected Vector3 horizontalScale = new Vector3(1, 0, 1);
@@ -18,10 +21,11 @@ public class ActorShipMovement : AShipMovement
         waterCalculator = waterPlane.GetComponent<WaterCalculator>();
     }
 
-    public void ApplyControls(float acceleration, float turnAngle)
+    public void ApplyControls(float acceleration, float turnAngle, float brake)
     {
         this.acceleration = acceleration;
         this.turnAngle = turnAngle;
+        this.brake = brake;
     }
 
     public void SetCanMove(bool move){
@@ -38,7 +42,9 @@ public class ActorShipMovement : AShipMovement
         float steer = 0f;
         steer = 1 * this.turnAngle * this.canMove;
 
-        Rigidbody.AddTorque(steer * this.transform.up * this.steerPower);
+        if (this.Rigidbody.angularVelocity.y < this.maxTurn) {
+            Rigidbody.AddTorque(steer * this.transform.up * this.steerPower);
+        }
 
         if(CanAccelerate()){
             forwardBuffer = Vector3.Scale(horizontalScale, transform.forward);
@@ -51,6 +57,16 @@ public class ActorShipMovement : AShipMovement
             forwardBuffer * maxSpeed * this.acceleration, 
             power
         );
+
+        if(this.brake > 0f) {
+            this.Rigidbody.velocity = (
+                Vector3.Scale(this.Rigidbody.velocity, this.horizontalScale) * this.brakeAmount
+            ) + Vector3.Scale(this.Rigidbody.velocity, Vector3.up);
+
+            this.Rigidbody.angularVelocity = (
+                Vector3.Scale(this.Rigidbody.angularVelocity, Vector3.up) * this.brakeAmount
+            ) + Vector3.Scale(this.Rigidbody.angularVelocity, this.horizontalScale);
+        }
     }
 
     bool CanAccelerate(){

@@ -18,9 +18,23 @@ public class ActorEquipment
             return;
         }
 
+        if (!this.CanShoot()) {
+            return;
+        }
+
         foreach(Cannon gun in this.gunList){
             gun.lightFuse();
         }
+    }
+
+    public bool CanShoot() {
+        foreach(Cannon gun in this.gunList) {
+            if (!gun.IsLoaded()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void Enable() {
