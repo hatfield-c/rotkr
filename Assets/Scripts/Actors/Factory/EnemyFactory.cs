@@ -13,6 +13,7 @@ public class EnemyFactory : MonoBehaviour
         Hard
     }
 
+    [SerializeField] bool debug = false;
     [Header("Possible Ships")]
     [SerializeField] List<ActorShip> Prefabs = new List<ActorShip>();
     
@@ -21,6 +22,7 @@ public class EnemyFactory : MonoBehaviour
     [SerializeField] Warehouse LootWarehouse = null;
     [SerializeField] Transform LayersContainer = null;
     [SerializeField] GameObject WaterPlane = null;
+    [SerializeField] GameObject PlayerObject = null;
 
     [Header("Spawn Parameters")]
     [SerializeField] float DesiredSpawnDepth = 2f;
@@ -29,7 +31,6 @@ public class EnemyFactory : MonoBehaviour
 
     protected List<ActorShip> ActiveShips = new List<ActorShip>();
     protected EnemyFactory.GameDifficulty Difficulty;
-    protected GameObject PlayerObject;
     protected int MaxChallengeRating;
     protected int CurrentCost = 0;
     protected int CurrentChallengeRating = 0;
@@ -248,4 +249,14 @@ public class EnemyFactory : MonoBehaviour
         return false;
     }
 
+    void Start() {
+        if (this.debug) {
+            this.Init(
+                EnemyFactory.GameDifficulty.Easy,
+                this.WaterPlane,
+                this.PlayerObject,
+                10
+            );
+        }
+    }
 }

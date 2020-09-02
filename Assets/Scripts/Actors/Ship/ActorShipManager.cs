@@ -33,7 +33,7 @@ public class ActorShipManager : MonoBehaviour {
         healthManager.Init(hunkManager.GetHunkCount());
 
         equipmentManager.Init();
-        shipAgent.Init(brain, playerObject, waterPlane.GetComponent<WaterCalculator>());
+        shipAgent.Init(brain, playerObject);
         shipMovement.Init(waterPlane);
         buoyancyManager.Init(waterPlane);
     }

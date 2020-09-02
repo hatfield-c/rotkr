@@ -12,8 +12,9 @@ public class ShipAgent : Agent
     public ActorShipManager shipManager = null;
     public ResetFunction resetFunction = EmptyReset;
 
+    [Header("References")]
     [SerializeField] protected Rigidbody shipBody = null;
-    [SerializeField] WaterSampler waterSampler = null;
+    [SerializeField] protected List<ASensor> sensors = null;
 
     [Header("Normalization Parameters")]
     [SerializeField] protected float OperationalDistance = 0;
@@ -26,11 +27,11 @@ public class ShipAgent : Agent
     protected WaterCalculator waterCalculator;
 
     protected Vector3 vectorBuffer = new Vector3();
+    protected List<bool> sensorsBuffer;
 
     public void Init(
         Brain brain, 
-        GameObject playerObject,
-        WaterCalculator waterCalculator
+        GameObject playerObject
         ){
         if(!this.enabled){
             return;
@@ -39,7 +40,8 @@ public class ShipAgent : Agent
         this.brain = brain;
         this.playerObject = playerObject;
         this.playerBody = playerObject.GetComponent<Rigidbody>();
-        this.waterCalculator = waterCalculator;
+
+        this.OrderSensors();
 
         NNBehaviour combat = brain.CombatBehavior;
 
@@ -171,9 +173,9 @@ public class ShipAgent : Agent
         float angle = Vector3.SignedAngle(Vector3.forward.normalized, this.vectorBuffer.normalized, Vector3.up);
         sensor.AddObservation(angle / 180);
 
-        // angle between agent y and player y
+        /*/ angle between agent y and player y
         angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.forward);
-        sensor.AddObservation(angle / 180);
+        sensor.AddObservation(angle / 180);*/
 
         // velocity * direction to player
         angle = Vector3.Dot(
@@ -185,22 +187,13 @@ public class ShipAgent : Agent
         // distance to player
         sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
 
-        /*this.vectorBuffer = this.waterSampler.GetSamplePoint(0);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(1);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(2);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(3);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(4);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(5);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(6);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));
-        this.vectorBuffer = this.waterSampler.GetSamplePoint(7);
-        sensor.AddObservation(0);//this.waterCalculator.calculateHeight(this.vectorBuffer.x, this.vectorBuffer.z));*/
+        foreach(ASensor raySensor in this.sensors) {
+            this.sensorsBuffer = raySensor.ReadSensors();
+
+            foreach(bool result in this.sensorsBuffer) {
+                sensor.AddObservation(result);
+            }
+        }
 
     }
 
@@ -222,4 +215,27 @@ public class ShipAgent : Agent
     }
 
     public static void EmptyReset() {}
+
+    protected void OrderSensors() {
+        if(this.sensors.Count < 2) {
+            return;
+        }
+
+        ASensor buffer;
+        bool isSorted = false;
+
+        while (!isSorted) {
+            isSorted = true;
+
+            for(int i = 0; i < this.sensors.Count - 1; i++) {
+                if(this.sensors[i].GetId() > this.sensors[i + 1].GetId()) {
+                    buffer = this.sensors[i];
+                    this.sensors[i] = this.sensors[i + 1];
+                    this.sensors[i + 1] = buffer;
+
+                    isSorted = false;
+                }
+            }
+        }
+    }
 }
