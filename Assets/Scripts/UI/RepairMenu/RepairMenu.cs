@@ -303,7 +303,7 @@ public class RepairMenu : AView
     }
     void updateGlueLevelDisplay()
     {
-        glueLevelDisplay.text = data.UpgradeData.GetNewBreakForce().ToString();
+        glueLevelDisplay.text = "GlueForce: " + data.UpgradeData.GetNewBreakForce().ToString();
     }
     void updateGluePriceTag()
     {
@@ -311,7 +311,7 @@ public class RepairMenu : AView
     }
     void updateReloadSpeedDisplay()
     {
-        reloadSpeedDisplay.text = data.UpgradeData.GetNewReloadRatio().ToString();
+        reloadSpeedDisplay.text = "ReloadRatio: " + data.UpgradeData.GetNewReloadRatio().ToString();
     }
     void updateReloadSpeedPriceTag()
     {
