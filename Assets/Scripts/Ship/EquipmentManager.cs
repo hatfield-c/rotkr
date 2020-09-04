@@ -16,4 +16,12 @@ public class EquipmentManager
 
         this.ammunitionStorage.parent = null;
     }
+    public void UpdateCannonReloads(float newReloadRatio){
+        foreach (GameObject equipmentObject in this.equipmentList){
+            Cannon cannon = equipmentObject.GetComponent<Cannon>();
+            if (cannon == null)
+                continue;
+            cannon.UpdateReloadSpeed(newReloadRatio);
+        }
+    }
 }

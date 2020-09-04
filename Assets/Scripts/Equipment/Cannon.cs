@@ -9,6 +9,7 @@ public class Cannon : MonoBehaviour, IEquipment
     public float projectileAngle = 2.736f;
     public float projectileAcceleration = 10f;
     public float reloadTime = 1.5f;
+    public float BaseReloadTime = 1.5f;
     public float maxDelay = 0.5f;
     public float minDelay = 0f;
 
@@ -74,5 +75,9 @@ public class Cannon : MonoBehaviour, IEquipment
     public void registerInput(InputMaster controls){
         this.controls = controls;
         controls.Player.Shoot.performed += context => this.lightFuse();
+    }
+    public void UpdateReloadSpeed(float newReloadRatio)
+    {
+        reloadTime = BaseReloadTime * newReloadRatio;
     }
 }

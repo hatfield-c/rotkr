@@ -6,6 +6,7 @@ using UnityEngine;
 public class HunkManager
 {
     [SerializeField] Transform hunkGroup = null;
+    public float BaseBreakForce = 3000f;
     public HunkJointData jointData;
     public HunkRigidbodyData rigidBodyData;
     public float hunkDespawnTime = 7f;
@@ -14,7 +15,7 @@ public class HunkManager
     protected Transform origParent;
     protected List<Hunk> hunkList;
 
-    public void Init(List<HunkData> hunkDatum) {
+    public void Init(List<HunkData> hunkDatum){
         this.hunkList = buildFromData(hunkDatum);
 
         this.origParent = this.hunkGroup.parent;
@@ -95,6 +96,11 @@ public class HunkManager
             }
         }
         return hunks;
+    }
+
+    public void UpdateHunkBreakForce(float newBreakForce)
+    {
+        jointData.breakForce = newBreakForce;
     }
 
 }
