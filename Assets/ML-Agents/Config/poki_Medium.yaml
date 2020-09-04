@@ -18,12 +18,27 @@ behaviors:
       vis_encode_type: simple
 
     reward_signals:
+
+      curiosity:
+        strength: 0.005
+        gamma: 0.90
+
       extrinsic:
-        gamma: 0.99
+        gamma: 0.995
         strength: 1.0
 
+      gail:
+        demo_path: C:\Users\Cody\Documents\Unity\rotkr\Assets\ML-Agents\Demonstrations\BasicDemo.demo
+        strength: 0.05
+        gamma: 0.95
+
+    behavioral_cloning:
+        demo_path: C:\Users\Cody\Documents\Unity\rotkr\Assets\ML-Agents\Demonstrations\BasicDemo.demo
+        strength: 0.1
+        steps: 2000000
+
     keep_checkpoints: 5
-    max_steps: 500000
+    max_steps: 10000000
     time_horizon: 1000
     summary_freq: 50000
     threaded: true

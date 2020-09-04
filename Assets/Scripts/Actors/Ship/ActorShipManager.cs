@@ -33,7 +33,7 @@ public class ActorShipManager : MonoBehaviour {
         healthManager.Init(hunkManager.GetHunkCount());
 
         equipmentManager.Init();
-        shipAgent.Init(brain, playerObject, waterPlane.GetComponent<WaterCalculator>());
+        shipAgent.Init(brain, playerObject);
         shipMovement.Init(waterPlane);
         buoyancyManager.Init(waterPlane);
     }
@@ -41,7 +41,8 @@ public class ActorShipManager : MonoBehaviour {
     public void TakeAction(ShipAgentActions actions){
         this.shipMovement.ApplyControls(
             actions.GetAcceleration(),
-            actions.GetTurnDirection()
+            actions.GetTurnDirection(),
+            actions.GetBrake()
         );
 
         this.equipmentManager.Activate(actions.GetShoot());
@@ -60,7 +61,8 @@ public class ActorShipManager : MonoBehaviour {
             this.StorageFunction(this.actorShipReference);
         });
         deathSequence.Play();
-        this.shipAgent.resetFunction();
+
+        this.shipAgent.ResetAgent();
     }
 
     public List<IStorable> GetPossibleLoot(){
@@ -78,6 +80,7 @@ public class ActorShipManager : MonoBehaviour {
         hunkManager.EnableHunks();
         healthManager.Enable();
         buoyancyManager.Enable();
+        equipmentManager.Enable();
     }
 
     public void DisableShip(){
@@ -90,6 +93,7 @@ public class ActorShipManager : MonoBehaviour {
         hunkManager.DisableHunks();
         healthManager.Disable();
         buoyancyManager.Disable();
+        equipmentManager.Disable();
     }   
 
     public Brain GetBrain(EnemyFactory.GameDifficulty difficulty){
@@ -100,6 +104,10 @@ public class ActorShipManager : MonoBehaviour {
         }
 
         return this.BrainList[0];
+    }
+
+    public bool CanShoot() {
+        return this.equipmentManager.CanShoot();
     }
 
     void OnEnable(){

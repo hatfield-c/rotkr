@@ -471,16 +471,16 @@ MonoBehaviour:
   - {fileID: 7279950457001115578}
   - {fileID: 8406782163351325453}
   agent: {fileID: 0}
-  variedSpeed: 1
-  speedMod: 500
+  variedSpeed: 0
+  speedMod: 0
   maxSpeed: 40
   minSpeed: 10
   power: 50
   flipModifier: 6
   forwardBias: 0.005
   angleThreshold: 30
-  maxTurn: 40000
-  minTurn: 20000
+  maxTurn: 0
+  minTurn: 0
   oppositeChance: 0.3
   targetDistance: 20
   breakForce: 3000

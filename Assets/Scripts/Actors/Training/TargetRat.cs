@@ -6,16 +6,12 @@ public class TargetRat : MonoBehaviour
 {
     public ShipAgentTrain agent;
 
-    protected float breakForce;
     protected float hitReward;
-    protected float breakReward;
 
-    public void TrainInit(ShipAgentTrain agent, float breakForce, int ratCount){
+    public void TrainInit(ShipAgentTrain agent, int ratCount){
         this.agent = agent;
-        this.breakForce = breakForce;
 
-        this.hitReward = RewardParameters.REWARD_HitRat / ratCount;
-        this.breakReward = RewardParameters.REWARD_BreakRat / ratCount;
+        this.hitReward = RewardParameters.REWARD_HitRat;
     }
     
     public void Reset(){
@@ -23,7 +19,9 @@ public class TargetRat : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision){
-        float force = collision.impulse.magnitude / Time.fixedDeltaTime;
+        if (!this.gameObject.activeSelf) {
+            return;
+        }
 
         if(collision.gameObject.tag != "projectile"){
             return;
@@ -33,11 +31,8 @@ public class TargetRat : MonoBehaviour
         ShipAgentTrain owner = projectile.owner.GetComponent<ShipAgentTrain>();
         owner.AddReward(this.hitReward);
 
-        if(force >= this.breakForce){
-            this.gameObject.SetActive(false);
+        this.gameObject.SetActive(false);
 
-            owner.AddReward(this.breakReward);
-            owner.resetFunction();
-        }
+        owner.resetFunction();
     }
 }

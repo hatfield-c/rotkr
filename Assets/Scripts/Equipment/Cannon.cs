@@ -14,7 +14,7 @@ public class Cannon : MonoBehaviour, IEquipment
     public float minDelay = 0f;
 
     protected bool loaded = true;
-    protected KatinTimer fuseTimer;
+    protected KatinTimer fuseTimer = new KatinTimer();
     protected KatinTimer reloadTimer = new KatinTimer();
     protected InputMaster controls = null;
 
@@ -70,6 +70,18 @@ public class Cannon : MonoBehaviour, IEquipment
 
     public void reload(){
         this.loaded = true;
+    }
+
+    public bool IsLoaded() {
+        return this.loaded;
+    }
+
+    public void Enable() {
+        
+    }
+
+    public void Disable() {
+        this.projectile.deactivate();
     }
 
     public void registerInput(InputMaster controls){

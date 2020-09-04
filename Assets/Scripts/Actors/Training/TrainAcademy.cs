@@ -12,6 +12,7 @@ public class TrainAcademy : MonoBehaviour
     public Warehouse Warehouse;
     public PermutationManager PermutationManager;
     public TextMeshPro RewardText;
+    public TextMeshPro RewardTextPrevious;
     public TargetShip TargetPrefab;
     public ShipAgentTrain AgentPrefab;
 
@@ -28,9 +29,11 @@ public class TrainAcademy : MonoBehaviour
     private List<Vector3> spawnBuffer = new List<Vector3>();
     private List<Collider> terrainColliders = new List<Collider>();
     private Collider colliderBuffer;
+    protected string curReward = "";
 
     public void ResetAcademy(){
         TIME_Elapsed = 0;
+        this.RewardTextPrevious.text = "Previous: " + this.curReward;
 
         this.SpawnPoints.parent = this.transform;
         this.SpawnPoints.localScale = Vector3.one;
@@ -38,19 +41,20 @@ public class TrainAcademy : MonoBehaviour
         this.Sinker.Reset();
  
         this.spawnBuffer = this.AvailablePoints();
-     
+        
         this.Agent.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.Agent.ResetAgent();   
 
         this.PermutationManager.Reset();
 
-        this.Target.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
+        this.Target.transform.position = this.transform.position;//this.ChooseSpawnPoint(this.spawnBuffer);
         this.ExtractTerrainColliders();
         this.Target.Reset(this.terrainColliders);
     }
   
     void Start(){
         this.RewardText.transform.parent = null;
+        this.RewardTextPrevious.transform.parent = null;
         this.RewardParameters.Init(this.Sinker.GetSinkTime());
 
         this.Agent = Instantiate(this.AgentPrefab);
@@ -81,11 +85,13 @@ public class TrainAcademy : MonoBehaviour
         float scaleLerp = Mathf.Lerp(1f, this.spawnScale, this.Sinker.GetProgress());
         this.SpawnPoints.localScale = scaleLerp * Vector3.one;
 
-        this.Agent.AddReward(RewardParameters.PUNISH_Frame);
-        this.RewardText.text = this.Agent.GetCumulativeReward().ToString();
+        this.curReward = this.Agent.GetCumulativeReward().ToString();
+        this.RewardText.text = "Current : " + this.curReward;
     }
 
     protected void EndEpisode(){
+        this.curReward = this.Agent.GetCumulativeReward().ToString();
+
         this.Agent.EndEpisode();
         this.ResetAcademy();
     }
