@@ -11,7 +11,7 @@ public class ShipAgentTrain : ShipAgent
     public float minDistance;
     public float desiredDistance;
     public float distancePadding;
-    public float aimPadding;
+    public float minSpeed;
 
     protected bool hasCollided = false;
 
@@ -20,37 +20,19 @@ public class ShipAgentTrain : ShipAgent
         float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
 
         if (distance <= this.minDistance) {
-            this.SetReward(RewardParameters.PUNISH_MinDistance);
+            this.SetReward(RewardParameters.PUNISH_PlayerCollide);
             this.resetFunction();
             return;
         }
         
        if(distance < this.desiredDistance - this.distancePadding) {
-            this.AddReward(
-                RewardParameters.PUNISH_Frame * 
-                (1 - (
-                        Mathf.Clamp((this.desiredDistance - distancePadding - distance - this.minDistance), 0, 1) / (this.desiredDistance - this.distancePadding)
-                    )
-                )
-            );
-        } else if (distance > this.desiredDistance + this.distancePadding) {
-            this.AddReward(
-                RewardParameters.PUNISH_Frame *
-                (
-                    (distance - this.desiredDistance - distancePadding) / (distance)
-                )
-            );
+            this.AddReward(RewardParameters.PUNISH_TooClose);
         } else if(distance >= this.desiredDistance - this.distancePadding && distance <= this.desiredDistance + this.distancePadding) {
             this.AddReward(RewardParameters.REWARD_Proximity);
-
-            this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
-            float dotResult = Vector3.Dot(Vector3.forward.normalized, this.vectorBuffer.normalized);
-
-            if(dotResult >= -this.aimPadding && dotResult <= this.aimPadding) {
-                this.AddReward(RewardParameters.REWARD_Aimed);
-            }
+        } else{
+            this.AddReward(RewardParameters.PUNISH_Inaction);
         }
-
+        
     }
 
     void OnCollisionEnter(Collision collision){
@@ -68,6 +50,31 @@ public class ShipAgentTrain : ShipAgent
         }
     }
 
+    public override void OnActionReceived(float[] vectorAction) {
+        base.OnActionReceived(vectorAction);
+
+        
+        int action0 = Mathf.FloorToInt(vectorAction[0]);
+
+        if (action0 == 1) {
+            float angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.up);
+
+            float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
+
+            //if (Mathf.Abs(angle) < 90f && distance > this.minDistance + this.distancePadding) {
+            if (distance > this.minDistance + this.distancePadding) {
+                this.AddReward(RewardParameters.REWARD_Movement);
+            }
+        } else if(action0 == 3) {
+            float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
+
+            if (distance >= this.desiredDistance - this.distancePadding && distance <= this.desiredDistance + this.distancePadding) {
+                this.AddReward(RewardParameters.REWARD_Movement);
+            }
+        }
+
+    }
+
     public override void OnEpisodeBegin(){
 
     }
@@ -75,8 +82,6 @@ public class ShipAgentTrain : ShipAgent
     public override void Heuristic(float[] actionsOut){
         actionsOut[0] = 0f;
         actionsOut[1] = 0f;
-        actionsOut[2] = 0f;
-        actionsOut[3] = 0f;
 
         if (Input.GetKey(KeyCode.W)){
             actionsOut[0] = 1f;
@@ -84,18 +89,10 @@ public class ShipAgentTrain : ShipAgent
             actionsOut[0] = 2f;
         }
 
-        if(Input.GetKey(KeyCode.A)){
+        if (Input.GetKey(KeyCode.A)){
             actionsOut[1] = 2f;
         } else if(Input.GetKey(KeyCode.D)){
             actionsOut[1] = 1f;
-        }
-
-        if(Input.GetKey(KeyCode.Space)){
-            actionsOut[2] = 1f;   
-        }
-
-        if (Input.GetKey(KeyCode.LeftControl)) {
-            actionsOut[3] = 1f;
         }
     }
 

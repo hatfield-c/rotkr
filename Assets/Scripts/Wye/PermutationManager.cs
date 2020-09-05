@@ -28,6 +28,7 @@ public class PermutationManager : MonoBehaviour
             
             if(!(permuter is null)){
                 GameObject permutation = permuter.generate();
+                permutation.transform.position = this.transform.position;
                 permutation.transform.parent = this.transform;
 
                 this.objectList.Add(permutation);

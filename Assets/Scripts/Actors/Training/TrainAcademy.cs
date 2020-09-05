@@ -47,7 +47,7 @@ public class TrainAcademy : MonoBehaviour
 
         this.PermutationManager.Reset();
 
-        this.Target.transform.position = this.transform.position;//this.ChooseSpawnPoint(this.spawnBuffer);
+        this.Target.transform.position = this.ChooseSpawnPoint(this.spawnBuffer);
         this.ExtractTerrainColliders();
         this.Target.Reset(this.terrainColliders);
     }

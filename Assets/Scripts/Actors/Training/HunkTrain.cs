@@ -24,10 +24,10 @@ public class HunkTrain : MonoBehaviour {
             return;
         }
 
-        CannonBall projectile = collision.gameObject.GetComponent<CannonBall>();
-        ShipAgentTrain owner = projectile.owner.GetComponent<ShipAgentTrain>();
-        owner.AddReward(RewardParameters.REWARD_HitHunk);
+        //CannonBall projectile = collision.gameObject.GetComponent<CannonBall>();
+        //ShipAgentTrain owner = projectile.owner.GetComponent<ShipAgentTrain>();
+        //owner.AddReward(RewardParameters.REWARD_HitHunk);
 
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
     }
 }

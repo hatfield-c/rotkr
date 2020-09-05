@@ -11,7 +11,7 @@ public class TargetRat : MonoBehaviour
     public void TrainInit(ShipAgentTrain agent, int ratCount){
         this.agent = agent;
 
-        this.hitReward = RewardParameters.REWARD_HitRat;
+        //this.hitReward = RewardParameters.REWARD_HitRat;
     }
     
     public void Reset(){
@@ -27,12 +27,12 @@ public class TargetRat : MonoBehaviour
             return;
         }
 
-        CannonBall projectile = collision.gameObject.GetComponent<CannonBall>();
-        ShipAgentTrain owner = projectile.owner.GetComponent<ShipAgentTrain>();
-        owner.AddReward(this.hitReward);
+        //CannonBall projectile = collision.gameObject.GetComponent<CannonBall>();
+        //ShipAgentTrain owner = projectile.owner.GetComponent<ShipAgentTrain>();
+        //owner.AddReward(this.hitReward);
 
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
 
-        owner.resetFunction();
+        //owner.resetFunction();
     }
 }

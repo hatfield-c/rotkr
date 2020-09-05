@@ -4,10 +4,12 @@ using UnityEngine;
 
 public abstract class ASensor : MonoBehaviour
 {
-    [SerializeField] protected bool debug;
+    [SerializeField] protected bool debug = false;
+    [SerializeField] protected bool returnZero = false;
     [SerializeField] List<string> tagList = null;
     [SerializeField] int id = 0;
     [SerializeField] protected int sensorCount;
+    [SerializeField] protected int zones = 1;
     [SerializeField] protected float distance;
     [SerializeField] protected float sphereRadius;
 
@@ -15,9 +17,63 @@ public abstract class ASensor : MonoBehaviour
     protected Vector3 dirBuffer = new Vector3();
     protected RaycastHit hitBuffer = new RaycastHit();
 
-    protected List<bool> results = new List<bool>();
+    protected List<float> results = new List<float>();
 
-    public abstract List<bool> ReadSensors();
+    public abstract Vector3 GetStartPos(int rayIndex);
+
+    public abstract Vector3 GetDir(int rayIndex);
+
+    public List<float> ReadSensors() {
+        if (this.sensorCount < 1) {
+            return this.results;
+        }
+
+        this.results.Clear();
+
+        for (int i = 0; i < this.sensorCount; i++) {
+            this.startBuffer = this.GetStartPos(i);
+
+            this.dirBuffer = this.GetDir(i);
+
+            int hitZone = this.ReadSensor(
+                this.startBuffer,
+                this.dirBuffer
+            );
+
+            this.results.Add((float)hitZone / this.zones);
+
+            if (this.debug && hitZone > 0) {
+                Debug.Log($"Sensor ID {this.GetId()} hit ray {i} in zone {hitZone}.");
+            }
+        }
+
+        return this.results;
+    }
+
+    public float ReadSensorPool() {
+        float closestZone = 0f;
+
+        for (int i = 0; i < this.sensorCount; i++) {
+            this.startBuffer = this.GetStartPos(i);
+
+            this.dirBuffer = this.GetDir(i);
+
+            int hitZone = this.ReadSensor(
+                this.startBuffer,
+                this.dirBuffer
+            );
+
+            if (this.debug && hitZone > 0) {
+                Debug.Log($"Sensor ID {this.GetId()} hit ray {i} in zone {hitZone}.");
+            }
+
+            if (hitZone > 0 && hitZone > closestZone) {
+                closestZone = hitZone / this.zones;
+            }
+        }
+
+        return closestZone;
+    }
 
     public float GetSensorCount() {
         return this.sensorCount;
@@ -27,7 +83,7 @@ public abstract class ASensor : MonoBehaviour
         return this.id;
     }
 
-    protected bool ReadSensor(Vector3 origin, Vector3 direction) {
+    protected int ReadSensor(Vector3 origin, Vector3 direction) {
         bool hasHit = Physics.SphereCast(
             origin, 
             this.sphereRadius,
@@ -36,14 +92,42 @@ public abstract class ASensor : MonoBehaviour
             this.distance
         );
 
-        if (!hasHit) {
-            return false;
+        if (!hasHit || !this.IsReadableTag(this.hitBuffer.collider.tag)) {
+            return 0;
         }
 
-        return this.IsReadableTag(this.hitBuffer.collider.tag);
+        float zone = ( (this.distance - this.hitBuffer.distance) / (this.distance / this.zones) );
+        int result = Mathf.FloorToInt(zone) + 1;
+
+        return result * (this.returnZero ? 0 : 1);
     }
 
     protected bool IsReadableTag(string tag) {
         return this.tagList.Contains(tag);
+    }
+
+    void Awake() {
+        if (debug) {
+            GameObject rayObject;
+            BoxCollider collider;
+
+            for (int i = 0; i < this.sensorCount; i++) {
+                this.startBuffer = this.GetStartPos(i);
+
+                this.dirBuffer = this.GetDir(i);
+
+                rayObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                rayObject.transform.localScale = new Vector3(0.1f, 0.1f, this.distance);
+
+                collider = rayObject.GetComponent<BoxCollider>();
+                Destroy(collider);
+
+                rayObject.transform.position = this.startBuffer;
+                rayObject.transform.LookAt(this.dirBuffer * this.distance + this.startBuffer);
+                rayObject.transform.Translate(Vector3.forward * (this.distance / 2));
+                rayObject.transform.parent = this.transform;
+                rayObject.name = $"DebugRay{i}";
+            }
+        }
     }
 }

@@ -18,6 +18,8 @@ public class ShipAgent : Agent
 
     [Header("Normalization Parameters")]
     [SerializeField] protected float OperationalDistance = 0;
+    [SerializeField] protected int DistanceSteps = 1;
+    [SerializeField] protected int AngleSteps = 1;
     [SerializeField] float MaxSpeed = 0;
     [SerializeField] protected float MaxAngularSpeed = 0; 
 
@@ -27,7 +29,6 @@ public class ShipAgent : Agent
     protected WaterCalculator waterCalculator;
 
     protected Vector3 vectorBuffer = new Vector3();
-    protected List<bool> sensorsBuffer;
 
     public void Init(
         Brain brain, 
@@ -78,18 +79,13 @@ public class ShipAgent : Agent
 
         int action0 = Mathf.FloorToInt(vectorAction[0]);
         int action1 = Mathf.FloorToInt(vectorAction[1]);
-        int action2 = Mathf.FloorToInt(vectorAction[2]);
-        int action3 = Mathf.FloorToInt(vectorAction[3]);
 
         if (action0 == 1) { accel = 1f; }
         if (action0 == 2) { accel = -1f; }
+        if (action0 == 3) { brake = 1f; }
 
         if (action1 == 1) { turn = 1f; }
         if (action1 == 2) { turn = -1f; }
-
-        if (action2 == 1) { shoot = 1f; }
-
-        if(action3 == 1) { brake = 1f; }
 
         ShipAgentActions actions = new ShipAgentActions(
             accel,
@@ -119,6 +115,10 @@ public class ShipAgent : Agent
     //***       8 : sample points of the water level surrounding the ship
     //***      19
     public override void CollectObservations(VectorSensor sensor){
+        if(this.playerObject == null) {
+            return;
+        }
+
         this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
 
         /*/ transform.forward * direction to player
@@ -160,39 +160,48 @@ public class ShipAgent : Agent
         // turn rate of agent
         sensor.AddObservation(this.shipBody.angularVelocity.y / this.MaxAngularSpeed);*/
 
-        // 8
+        // 4
         // direction to player
-        sensor.AddObservation(this.vectorBuffer.normalized);
+        //sensor.AddObservation(this.vectorBuffer.normalized);
 
-        // velocity components (x, y, z)
+        /*// velocity components (x, y, z)
         sensor.AddObservation(
             this.transform.InverseTransformVector(this.shipBody.velocity).normalized
-        );
+        );*/
 
         // transform.forward * direction to player
-        float angle = Vector3.SignedAngle(Vector3.forward.normalized, this.vectorBuffer.normalized, Vector3.up);
-        sensor.AddObservation(angle / 180);
+        //float angle = Vector3.SignedAngle(Vector3.forward.normalized, this.vectorBuffer.normalized, Vector3.up);
+        //sensor.AddObservation(angle / 180);
 
         /*/ angle between agent y and player y
         angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.forward);
         sensor.AddObservation(angle / 180);*/
 
-        // velocity * direction to player
-        angle = Vector3.Dot(
+        /*/ velocity * direction to player
+        float angle = Vector3.Dot(
             this.transform.InverseTransformVector(this.shipBody.velocity.normalized),
             this.vectorBuffer.normalized
         );
+        sensor.AddObservation(angle);*/
+
+        // angle between player forward and target
+        float angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.up);
+        float angleSign = Mathf.Sign(angle);
+        angle = (180f - Mathf.Abs(angle)) / (180f / this.AngleSteps);
+        angle = Mathf.Floor(angle) / this.AngleSteps;
+        angle = angle * angleSign;
         sensor.AddObservation(angle);
 
         // distance to player
-        sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
+        float distanceZone = this.DiscreteDistance(
+            Vector3.Distance(this.transform.position, this.playerObject.transform.position)
+        ); 
+        sensor.AddObservation(distanceZone);
 
+        // 8
         foreach(ASensor raySensor in this.sensors) {
-            this.sensorsBuffer = raySensor.ReadSensors();
-
-            foreach(bool result in this.sensorsBuffer) {
-                sensor.AddObservation(result);
-            }
+            float zone = raySensor.ReadSensorPool();
+            sensor.AddObservation(zone);
         }
 
     }
@@ -215,6 +224,13 @@ public class ShipAgent : Agent
     }
 
     public static void EmptyReset() {}
+
+    protected float DiscreteDistance(float distance) {
+        float distanceZone = (this.OperationalDistance - distance) / (this.OperationalDistance / this.DistanceSteps);
+        distanceZone = (Mathf.Floor(distanceZone) + 1) / this.DistanceSteps;
+
+        return distanceZone;
+    }
 
     protected void OrderSensors() {
         if(this.sensors.Count < 2) {

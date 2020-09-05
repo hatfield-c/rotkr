@@ -6,27 +6,26 @@ using UnityEngine;
 public class RewardParameters
 {
     [Header("Rewards")]
-    public float HitHunk;
-    public float HitRat;
     public float Proximity;
-    public float Aimed;
+    public float Velocity;
+    public float Movement;
 
     [Header("Punishments")]
-    public float Frame;
-    public float MinDistance;
+    public float PlayerCollide;
     public float TerrainCollide;
+    public float TooClose;
+    public float Inaction;
 
     [Header("Parameters")]
 
-    public static float REWARD_HitHunk;
-    public static float REWARD_HitRat;
     public static float REWARD_Proximity;
-    public static float REWARD_Aimed;
-    
-    public static float PUNISH_Frame;
-    public static float PUNISH_Rotation;
-    public static float PUNISH_MinDistance;
+    public static float REWARD_Velocity;
+    public static float REWARD_Movement;
+
+    public static float PUNISH_PlayerCollide;
     public static float PUNISH_TerrainCollide;
+    public static float PUNISH_TooClose;
+    public static float PUNISH_Inaction;
 
     public static float TIME_Length;
     public static bool INITIALIZED = false;
@@ -38,14 +37,14 @@ public class RewardParameters
 
         TIME_Length = timeLength;
 
-        REWARD_HitHunk = this.HitHunk / 100;
-        REWARD_HitRat = this.HitRat / 100;
-        REWARD_Proximity = this.TimeScaled(this.Proximity);
-        REWARD_Aimed = this.TimeScaled(this.Aimed);
+        REWARD_Proximity = this.Proximity;
+        REWARD_Velocity = this.Velocity;
+        REWARD_Movement = this.Movement;
 
-        PUNISH_Frame = this.TimeScaled(-this.Frame);
-        PUNISH_MinDistance = -this.MinDistance / 100;
-        PUNISH_TerrainCollide = -this.TerrainCollide / 100;
+        PUNISH_PlayerCollide = -this.PlayerCollide;
+        PUNISH_TerrainCollide = -this.TerrainCollide;
+        PUNISH_TooClose = -this.TooClose;
+        PUNISH_Inaction = -this.Inaction;
 
         INITIALIZED = true;
     }
