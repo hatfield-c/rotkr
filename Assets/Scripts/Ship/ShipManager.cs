@@ -39,15 +39,20 @@ public class ShipManager : MonoBehaviour {
         this.data = data;
         this.controls = controls;
         this.scrapDisplay = scrapDisplay;
+
+        this.data.ScrapData.ScrapUpdated = UpdateScrapDisplay;
+        this.data.UpgradeData.GlueBreakForceUpdated = UpdateHardenedGlue;
+        this.data.UpgradeData.ReloadSpeedRatioUpdated = UpdateReloadSpeed;
+
+        UpdateHardenedGlue(this.data.UpgradeData.GetNewBreakForce());
+        UpdateReloadSpeed(this.data.UpgradeData.GetNewReloadRatio());
+
         equipmentManager.Init(controls);
         playerShipMovement.Init(controls, waterPlane);
         buoyancyManager.Init(waterPlane);
         hunkManager.Init(data.HunkDatum);
         ratGroupManager.Init(data, shipReferences, waterPlane, ratHealthGroup, allDeadCallback);
 
-        this.data.ScrapData.ScrapUpdated = UpdateScrapDisplay;
-
-        // Update Scrap Display
         UpdateScrapDisplay();
     }
     public ShipData GetData()
@@ -69,6 +74,14 @@ public class ShipManager : MonoBehaviour {
         data.ScrapData.AddScrap(value);
         if (scrapDisplay == null) return;
         scrapDisplay.text = data.ScrapData.GetScrap().ToString();
+    }
+    void UpdateHardenedGlue(float newBreakForce)
+    {
+        hunkManager.UpdateHunkBreakForce(newBreakForce);
+    }
+    void UpdateReloadSpeed(float newReloadRatio)
+    {
+        equipmentManager.UpdateCannonReloads(newReloadRatio);
     }
     void UpdateScrapDisplay()
     {

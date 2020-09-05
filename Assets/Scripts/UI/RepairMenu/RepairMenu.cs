@@ -18,6 +18,8 @@ public class RepairMenu : AView
     [SerializeField] TextMeshProUGUI ratCountDisplay = null;
     [SerializeField] TextMeshProUGUI repairPriceTag = null;
     [SerializeField] TextMeshProUGUI recruitPriceTag = null;
+    [SerializeField] TextMeshProUGUI glueLevelDisplay = null;
+    [SerializeField] TextMeshProUGUI reloadSpeedDisplay = null;
     [SerializeField] TextMeshProUGUI hardenedGluePriceTag = null;
     [SerializeField] TextMeshProUGUI reloadSpeedPriceTag = null;
     #endregion
@@ -100,6 +102,58 @@ public class RepairMenu : AView
             btn_Recruit.interactable = false;
         }
         updateRatCountDisplay();
+
+        // Glue Level.
+        if(this.data.UpgradeData.CanUpgradeGlue() && canAffordGlueUpgrade())
+        {
+            btn_UpgradeHardenedGlue.interactable = true;
+            btn_UpgradeHardenedGlue.onClick.AddListener(() =>
+            {
+                if(this.data.UpgradeData.CanUpgradeGlue() && canAffordGlueUpgrade())
+                {
+                    this.data.ScrapData.UseScrap(PricePerHardenedGlueUpgrade);
+                    this.data.UpgradeData.HardenedGlueLevel++;
+                    updateGlueLevelDisplay();
+                    updateGluePriceTag();
+                }
+                else
+                {
+                    btn_UpgradeHardenedGlue.interactable = false;
+                }
+            });
+        }
+        else
+        {
+            btn_UpgradeHardenedGlue.interactable = false;
+        }
+        updateGlueLevelDisplay();
+        updateGluePriceTag();
+
+        // Reload Speed.
+        if (this.data.UpgradeData.CanUpgradeReload() && canAffordReloadUpgrade())
+        {
+            btn_UpgradeReloadSpeed.interactable = true;
+            btn_UpgradeReloadSpeed.onClick.AddListener(() =>
+            {
+                if(this.data.UpgradeData.CanUpgradeReload() && canAffordReloadUpgrade())
+                {
+                    this.data.ScrapData.UseScrap(PricePerReloadSpeedUpgrade);
+                    this.data.UpgradeData.ReloadSpeedLevel++;
+                    updateReloadSpeedDisplay();
+                    updateReloadSpeedPriceTag();
+                }
+                else
+                {
+                    btn_UpgradeReloadSpeed.interactable = false;
+                }
+            });
+        }
+        else
+        {
+            btn_UpgradeReloadSpeed.interactable = false;
+        }
+        updateReloadSpeedDisplay();
+        updateReloadSpeedPriceTag();
     }
     public override void Show()
     {
@@ -109,18 +163,6 @@ public class RepairMenu : AView
     {
         base.Hide();
     }
-
-    //protected void RepairAll(List<Hunk> deletedHunks)
-    //{
-
-    //    while(deletedHunks.Count > 0)
-    //    {
-    //        Hunk repairedHunk = deletedHunks[0].Repair();
-    //        deletedHunks.Remove(repairedHunk);
-    //    }
-
-    //    BTN_RepairAll.interactable = false;
-    //}
 
     void updateRepairPriceTag(int cellsToRepair)
     {
@@ -258,5 +300,31 @@ public class RepairMenu : AView
     void updateRecruitPriceTag()
     {
         recruitPriceTag.text = PricePerRecruit.ToString();
+    }
+    void updateGlueLevelDisplay()
+    {
+        glueLevelDisplay.text = "GlueForce: " + data.UpgradeData.GetNewBreakForce().ToString();
+    }
+    void updateGluePriceTag()
+    {
+        hardenedGluePriceTag.text = PricePerHardenedGlueUpgrade.ToString();
+    }
+    void updateReloadSpeedDisplay()
+    {
+        reloadSpeedDisplay.text = "ReloadRatio: " + data.UpgradeData.GetNewReloadRatio().ToString();
+    }
+    void updateReloadSpeedPriceTag()
+    {
+        reloadSpeedPriceTag.text = PricePerReloadSpeedUpgrade.ToString();
+    }
+    bool canAffordGlueUpgrade()
+    {
+        if (data.ScrapData.GetScrap() >= PricePerHardenedGlueUpgrade) return true;
+        return false;
+    }
+    bool canAffordReloadUpgrade()
+    {
+        if (data.ScrapData.GetScrap() >= PricePerReloadSpeedUpgrade) return true;
+        return false;
     }
 }
