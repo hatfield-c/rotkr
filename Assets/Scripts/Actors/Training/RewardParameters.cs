@@ -7,24 +7,24 @@ public class RewardParameters
 {
     [Header("Rewards")]
     public float Proximity;
-    public float Velocity;
-    public float Movement;
+    //public float Velocity;
+    //public float Movement;
 
     [Header("Punishments")]
-    public float PlayerCollide;
+    //public float PlayerCollide;
     public float TerrainCollide;
-    public float TooClose;
+    //public float TooClose;
     public float Inaction;
 
     [Header("Parameters")]
 
     public static float REWARD_Proximity;
-    public static float REWARD_Velocity;
-    public static float REWARD_Movement;
+    //public static float REWARD_Velocity;
+    //public static float REWARD_Movement;
 
-    public static float PUNISH_PlayerCollide;
+    //public static float PUNISH_PlayerCollide;
     public static float PUNISH_TerrainCollide;
-    public static float PUNISH_TooClose;
+    //public static float PUNISH_TooClose;
     public static float PUNISH_Inaction;
 
     public static float TIME_Length;
@@ -37,20 +37,16 @@ public class RewardParameters
 
         TIME_Length = timeLength;
 
-        REWARD_Proximity = this.Proximity;
-        REWARD_Velocity = this.Velocity;
-        REWARD_Movement = this.Movement;
+        REWARD_Proximity = TimeScaled(this.Proximity);
 
-        PUNISH_PlayerCollide = -this.PlayerCollide;
-        PUNISH_TerrainCollide = -this.TerrainCollide;
-        PUNISH_TooClose = -this.TooClose;
-        PUNISH_Inaction = -this.Inaction;
+        PUNISH_TerrainCollide = -TimeScaled(this.TerrainCollide);
+        PUNISH_Inaction = -TimeScaled(this.Inaction);
 
         INITIALIZED = true;
     }
 
     protected float TimeScaled(float value) {
-        return ((value / 100) / TIME_Length) * Time.fixedDeltaTime;
+        return (value / TIME_Length) * Time.fixedDeltaTime;
     }
 
 }

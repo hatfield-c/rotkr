@@ -51,7 +51,7 @@ public abstract class ASensor : MonoBehaviour
     }
 
     public float ReadSensorPool() {
-        float closestZone = 0f;
+        float closestZone = this.zones;
 
         for (int i = 0; i < this.sensorCount; i++) {
             this.startBuffer = this.GetStartPos(i);
@@ -63,16 +63,16 @@ public abstract class ASensor : MonoBehaviour
                 this.dirBuffer
             );
 
-            if (this.debug && hitZone > 0) {
+            if (this.debug && hitZone < this.zones) {
                 Debug.Log($"Sensor ID {this.GetId()} hit ray {i} in zone {hitZone}.");
             }
 
-            if (hitZone > 0 && hitZone > closestZone) {
-                closestZone = hitZone / this.zones;
+            if (hitZone < closestZone) {
+                closestZone = hitZone;
             }
         }
 
-        return closestZone;
+        return closestZone / this.zones;
     }
 
     public float GetSensorCount() {
@@ -93,11 +93,11 @@ public abstract class ASensor : MonoBehaviour
         );
 
         if (!hasHit || !this.IsReadableTag(this.hitBuffer.collider.tag)) {
-            return 0;
+            return this.zones;
         }
 
-        float zone = ( (this.distance - this.hitBuffer.distance) / (this.distance / this.zones) );
-        int result = Mathf.FloorToInt(zone) + 1;
+        float zone = ( this.hitBuffer.distance / (this.distance / this.zones) );
+        int result = Mathf.CeilToInt(zone);
 
         return result * (this.returnZero ? 0 : 1);
     }

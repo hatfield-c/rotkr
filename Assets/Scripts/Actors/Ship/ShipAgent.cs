@@ -56,20 +56,12 @@ public class ShipAgent : Agent
     //***
     //***   vectorAction:
     //***       0 : Acceleration
-    //***           0 : Do nothing
-    //***           1 : Forward fast
-    //***           2 : Forward slow
-    //***           3 : Backward fast
-    //***           4 : Backward slow
+    //***           0 : Brake
+    //***           1 : Forward 
     //***       1 : Turn Direction
     //***           0 : Do nothing
-    //***           1 : Turn right fast
-    //***           2 : Turng right slow
-    //***           3 : Turn left fast
-    //***           4 : Turn left slow
-    //***       2 : Shoot
-    //***           0 : Do nothing
-    //***           1 : Activate cannons
+    //***           1 : Turn right
+    //***           2 : Turn left 
 
     public override void OnActionReceived(float[] vectorAction){
         float accel = 0f;
@@ -80,9 +72,8 @@ public class ShipAgent : Agent
         int action0 = Mathf.FloorToInt(vectorAction[0]);
         int action1 = Mathf.FloorToInt(vectorAction[1]);
 
+        if (action0 == 0) { brake = 1f; }
         if (action0 == 1) { accel = 1f; }
-        if (action0 == 2) { accel = -1f; }
-        if (action0 == 3) { brake = 1f; }
 
         if (action1 == 1) { turn = 1f; }
         if (action1 == 2) { turn = -1f; }
@@ -191,6 +182,10 @@ public class ShipAgent : Agent
         angle = Mathf.Floor(angle) / this.AngleSteps;
         angle = angle * angleSign;
         sensor.AddObservation(angle);
+
+        this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
+        this.vectorBuffer = this.transform.InverseTransformDirection(this.vectorBuffer);
+        Debug.Log(this.vectorBuffer);
 
         // distance to player
         float distanceZone = this.DiscreteDistance(

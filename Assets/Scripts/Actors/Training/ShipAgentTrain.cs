@@ -19,23 +19,22 @@ public class ShipAgentTrain : ShipAgent
         this.hasCollided = false;
         float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
 
-        if (distance <= this.minDistance) {
-            this.SetReward(RewardParameters.PUNISH_PlayerCollide);
-            this.resetFunction();
-            return;
-        }
-        
-       if(distance < this.desiredDistance - this.distancePadding) {
-            this.AddReward(RewardParameters.PUNISH_TooClose);
-        } else if(distance >= this.desiredDistance - this.distancePadding && distance <= this.desiredDistance + this.distancePadding) {
-            this.AddReward(RewardParameters.REWARD_Proximity);
-        } else{
-            this.AddReward(RewardParameters.PUNISH_Inaction);
-        }
+        //if (distance <= this.minDistance) {
+            //this.SetReward(RewardParameters.PUNISH_PlayerCollide);
+            //this.resetFunction();
+            //return;
+        //}
+
+        //if(distance < this.desiredDistance - this.distancePadding) {
+        //if (distance <= this.minDistance) {
+            //this.AddReward(RewardParameters.PUNISH_TooClose);
+        //} else if(distance >= this.desiredDistance - this.distancePadding && distance <= this.desiredDistance + this.distancePadding) {
+            //this.AddReward(RewardParameters.REWARD_Proximity);
+        //}
         
     }
 
-    void OnCollisionEnter(Collision collision){
+    void OnCollisionStay(Collision collision){
         if (this.hasCollided) {
             return;
         }
@@ -44,35 +43,60 @@ public class ShipAgentTrain : ShipAgent
         string tag = collision.gameObject.tag;
 
         if(tag == "terrain"){
-            this.SetReward(RewardParameters.PUNISH_TerrainCollide);
-            this.resetFunction();
+            this.AddReward(RewardParameters.PUNISH_TerrainCollide);
+            //this.resetFunction();
             return;
         }
     }
 
     public override void OnActionReceived(float[] vectorAction) {
         base.OnActionReceived(vectorAction);
-
         
         int action0 = Mathf.FloorToInt(vectorAction[0]);
+        int action1 = Mathf.FloorToInt(vectorAction[1]);
 
-        if (action0 == 1) {
-            float angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.up);
+        float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
 
-            float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
-
-            //if (Mathf.Abs(angle) < 90f && distance > this.minDistance + this.distancePadding) {
-            if (distance > this.minDistance + this.distancePadding) {
-                this.AddReward(RewardParameters.REWARD_Movement);
-            }
-        } else if(action0 == 3) {
-            float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
-
+        if (action0 == 0f && action1 == 0f) {
+            
             if (distance >= this.desiredDistance - this.distancePadding && distance <= this.desiredDistance + this.distancePadding) {
-                this.AddReward(RewardParameters.REWARD_Movement);
-            }
+                this.AddReward(RewardParameters.REWARD_Proximity);
+            } 
         }
 
+        if(action0 != 1f && distance > this.desiredDistance + this.distancePadding) {
+            this.AddReward(RewardParameters.PUNISH_Inaction);
+        }
+
+    }
+
+    public void EndEpisodeReward() {
+        float distance = Vector3.Distance(this.transform.position, this.playerObject.transform.position);
+        
+        if(distance <= this.minDistance) {
+            this.SetReward(-1f);
+        }
+
+        if (distance < this.desiredDistance - this.distancePadding) {
+            this.SetReward(0f);
+            return;
+        }
+
+        if (distance <= this.desiredDistance + this.distancePadding) {
+            this.SetReward(1f);
+            return;
+        }
+
+        float distanceDifference = distance - (this.desiredDistance + distancePadding);
+
+        if (distanceDifference > 500f) {
+            this.SetReward(0f);
+            return;
+        }
+        
+        float reward = (1f - (distanceDifference / 500f)) / 2f;
+
+        this.SetReward(reward);
     }
 
     public override void OnEpisodeBegin(){
@@ -83,10 +107,10 @@ public class ShipAgentTrain : ShipAgent
         actionsOut[0] = 0f;
         actionsOut[1] = 0f;
 
-        if (Input.GetKey(KeyCode.W)){
+        if (Input.GetKey(KeyCode.W)) {
             actionsOut[0] = 1f;
-        } else if(Input.GetKey(KeyCode.S)){
-            actionsOut[0] = 2f;
+        } else if (Input.GetKey(KeyCode.LeftControl)) {
+            actionsOut[0] = 0f;
         }
 
         if (Input.GetKey(KeyCode.A)){

@@ -67,7 +67,6 @@ public class TrainAcademy : MonoBehaviour
             EnemyFactory.GameDifficulty.Easy,
             this.EmptyStore
         );
-        this.Agent.resetFunction = this.EndEpisode;
         
         this.Target.Init(
             this.Agent,
@@ -75,8 +74,10 @@ public class TrainAcademy : MonoBehaviour
             this.SpawnPoints
         );
 
-        this.Sinker.WyeCompletelySunk += this.EndEpisode;
         this.ResetAcademy();
+
+        this.Agent.resetFunction = this.EndEpisode;
+        this.Sinker.WyeCompletelySunk += this.EndEpisode;
     }
 
     void FixedUpdate(){
@@ -90,6 +91,8 @@ public class TrainAcademy : MonoBehaviour
     }
 
     protected void EndEpisode(){
+        this.Agent.EndEpisodeReward();
+
         this.curReward = this.Agent.GetCumulativeReward().ToString();
 
         this.Agent.EndEpisode();
