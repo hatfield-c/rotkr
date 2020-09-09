@@ -8,10 +8,10 @@ using Unity.MLAgents.Sensors;
 public class ShipAgentTrain : ShipAgent
 {
     [Header("Train Parameters")]
+    public float minSpeed;
     public float minDistance;
     public float desiredDistance;
     public float distancePadding;
-    public float minSpeed;
 
     protected bool hasCollided = false;
 
@@ -64,8 +64,12 @@ public class ShipAgentTrain : ShipAgent
             } 
         }
 
-        if(action0 != 1f && distance > this.desiredDistance + this.distancePadding) {
+        if(this.shipBody.velocity.magnitude < this.minSpeed && distance > this.desiredDistance + this.distancePadding) {
             this.AddReward(RewardParameters.PUNISH_Inaction);
+        }
+
+        if(this.dizzyness > this.dizzyThreshold) {
+            this.AddReward(RewardParameters.PUNISH_DIZZY);
         }
 
     }
@@ -94,7 +98,7 @@ public class ShipAgentTrain : ShipAgent
             return;
         }
         
-        float reward = (1f - (distanceDifference / 500f)) / 2f;
+        float reward = (1f - (distanceDifference / 500f)) * RewardParameters.REWARD_EndProximity;
 
         this.SetReward(reward);
     }

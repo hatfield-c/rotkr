@@ -7,7 +7,7 @@ behaviors:
 
       learning_rate: 0.0003
 
-      beta: 0.007
+      beta: 0.011
       epsilon: 0.23
       lambd: 0.92
 
@@ -38,13 +38,13 @@ behaviors:
         strength: 1.0
 
       gail:
-        demo_path: C:\Users\Cody\Documents\Unity\rotkr\Assets\ML-Agents\Demonstrations\it0.demo
+        demo_path: C:\Users\Cody\Documents\Unity\rotkr\Assets\ML-Agents\Demonstrations\it0refined.demo
         strength: 0.05
         gamma: 0.75
         encoding_size: 128
 
     behavioral_cloning:
-        demo_path: C:\Users\Cody\Documents\Unity\rotkr\Assets\ML-Agents\Demonstrations\it0.demo
-        strength: 0.15
-        steps: 500000
+        demo_path: C:\Users\Cody\Documents\Unity\rotkr\Assets\ML-Agents\Demonstrations\it0refined.demo
+        strength: 0.1
+        steps: 750000
     

@@ -1462,11 +1462,16 @@ MonoBehaviour:
   - {fileID: 7247999726319617097}
   - {fileID: 3872317179023400836}
   - {fileID: 3848942442031963220}
-  OperationalDistance: 2000
-  DistanceSteps: 100
-  AngleSteps: 8
-  MaxSpeed: 75
-  MaxAngularSpeed: 6
+  operationalDistance: 1600
+  distanceSteps: 100
+  dirSteps: 10
+  maxSpeed: 60
+  speedSteps: 10
+  maxDizzy: 10
+  dizzySteps: 10
+  dizzyThreshold: 6
+  dizzyRate: 0.032
+  dizzyDecay: 0.8
 --- !u!114 &5121133252248034136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1480,7 +1485,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 8
+    VectorObservationSize: 11
     NumStackedVectorObservations: 1
     VectorActionSize: 0200000003000000
     VectorActionDescriptions: []

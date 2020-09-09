@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Record: 0
-  DemonstrationName: it0
+  Record: 1
+  DemonstrationName: it0_speed
   DemonstrationDirectory: Assets/ML-Agents/Demonstrations
 --- !u!114 &6859014772596621656
 MonoBehaviour:
@@ -40,15 +40,20 @@ MonoBehaviour:
   - {fileID: 6085287934513468007}
   - {fileID: 385167233411221930}
   - {fileID: 400654039092611706}
-  OperationalDistance: 2000
-  DistanceSteps: 100
-  AngleSteps: 8
-  MaxSpeed: 75
-  MaxAngularSpeed: 2
+  operationalDistance: 1600
+  distanceSteps: 100
+  dirSteps: 10
+  maxSpeed: 60
+  speedSteps: 10
+  maxDizzy: 10
+  dizzySteps: 10
+  dizzyThreshold: 6
+  dizzyRate: 0.032
+  dizzyDecay: 0.8
+  minSpeed: 20
   minDistance: 26
   desiredDistance: 68
   distancePadding: 20
-  minSpeed: 10
 --- !u!1001 &3523319572680513070
 PrefabInstance:
   m_ObjectHideFlags: 0

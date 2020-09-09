@@ -17,17 +17,26 @@ public class ShipAgent : Agent
     [SerializeField] protected List<ASensor> sensors = null;
 
     [Header("Normalization Parameters")]
-    [SerializeField] protected float OperationalDistance = 0;
-    [SerializeField] protected int DistanceSteps = 1;
-    [SerializeField] protected int AngleSteps = 1;
-    [SerializeField] float MaxSpeed = 0;
-    [SerializeField] protected float MaxAngularSpeed = 0; 
+    [SerializeField] protected float operationalDistance = 0;
+    [SerializeField] protected int distanceSteps = 1;
+    [SerializeField] protected int dirSteps = 1;
+    [SerializeField] float maxSpeed = 0;
+    [SerializeField] int speedSteps = 1;
+
+    [Header("Dizziness")]
+    [SerializeField] float maxDizzy = 0;
+    [SerializeField] int dizzySteps = 1;
+    [SerializeField] protected float dizzyThreshold;
+    [SerializeField] float dizzyRate = 0;
+    [SerializeField] float dizzyDecay = 0;
+
 
     protected Brain brain;
     protected GameObject playerObject;
     protected Rigidbody playerBody;
     protected WaterCalculator waterCalculator;
 
+    protected float dizzyness;
     protected Vector3 vectorBuffer = new Vector3();
 
     public void Init(
@@ -86,6 +95,14 @@ public class ShipAgent : Agent
         );
 
         this.shipManager.TakeAction(actions);
+
+        if(action1 > 0) {
+            this.dizzyness += this.dizzyRate;
+            this.dizzyness = Mathf.Clamp(this.dizzyness, 0, this.maxDizzy);
+        } else {
+            this.dizzyness -= this.dizzyRate * this.dizzyDecay;
+            this.dizzyness = Mathf.Clamp(this.dizzyness, 0, this.maxDizzy);
+        }
     }
 
     public override void OnEpisodeBegin(){
@@ -175,25 +192,56 @@ public class ShipAgent : Agent
         );
         sensor.AddObservation(angle);*/
 
-        // angle between player forward and target
+        /*// angle between player forward and target
         float angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.up);
         float angleSign = Mathf.Sign(angle);
         angle = (180f - Mathf.Abs(angle)) / (180f / this.AngleSteps);
         angle = Mathf.Floor(angle) / this.AngleSteps;
         angle = angle * angleSign;
-        sensor.AddObservation(angle);
+        sensor.AddObservation(angle);*/
 
-        this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
-        this.vectorBuffer = this.transform.InverseTransformDirection(this.vectorBuffer);
-        Debug.Log(this.vectorBuffer);
+        //this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
+        //this.vectorBuffer.Normalize();
+        //this.vectorBuffer = this.transform.InverseTransformDirection(this.playerObject.transform.position);
 
-        // distance to player
+        // X and Z direction to player
+        float dirVal = this.DiscretizeOrigin(
+            this.vectorBuffer.normalized.x,
+            1f,
+            dirSteps
+        );
+        sensor.AddObservation(dirVal);
+
+        dirVal = this.DiscretizeOrigin(
+            this.vectorBuffer.normalized.z,
+            1f,
+            dirSteps
+        );
+        sensor.AddObservation(dirVal);
+
+        // Speed of ship 
+        float speed = this.DiscretizeOrigin(
+            this.shipBody.velocity.magnitude,
+            this.maxSpeed,
+            this.speedSteps
+        );
+        sensor.AddObservation(speed);
+
+        // dizzyness of the ship
+        float dizzy = this.DiscretizeOrigin(
+            this.dizzyness,
+            this.maxDizzy,
+            this.dizzySteps
+        );
+        sensor.AddObservation(dizzy);
+
+        // distance to player 
         float distanceZone = this.DiscreteDistance(
             Vector3.Distance(this.transform.position, this.playerObject.transform.position)
         ); 
         sensor.AddObservation(distanceZone);
 
-        // 8
+        // 6
         foreach(ASensor raySensor in this.sensors) {
             float zone = raySensor.ReadSensorPool();
             sensor.AddObservation(zone);
@@ -220,9 +268,16 @@ public class ShipAgent : Agent
 
     public static void EmptyReset() {}
 
+    protected float DiscretizeOrigin(float value, float maxValue, int steps) {
+        float result = value / (maxValue / steps);
+        result = Mathf.Ceil(result) / maxValue;
+
+        return result;
+    }
+
     protected float DiscreteDistance(float distance) {
-        float distanceZone = (this.OperationalDistance - distance) / (this.OperationalDistance / this.DistanceSteps);
-        distanceZone = (Mathf.Floor(distanceZone) + 1) / this.DistanceSteps;
+        float distanceZone = (this.operationalDistance - distance) / (this.operationalDistance / this.distanceSteps);
+        distanceZone = (Mathf.Floor(distanceZone) + 1) / this.distanceSteps;
 
         return distanceZone;
     }

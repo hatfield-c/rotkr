@@ -379,8 +379,10 @@ MonoBehaviour:
     type: 3}
   RewardParameters:
     Proximity: 0.5
+    EndProximity: 0
     TerrainCollide: 1
     Inaction: 0.1
+    Dizzy: 0.1
   spawnScale: 0.05
 --- !u!114 &8304936273929454710
 MonoBehaviour:
