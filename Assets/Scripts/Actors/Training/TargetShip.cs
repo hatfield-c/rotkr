@@ -14,7 +14,6 @@ public class TargetShip : MonoBehaviour
     public ShipAgentTrain agent;
 
     [Header("Speed Parameters")]
-    public bool variedSpeed = false;
     public float speedMod = 500f;
     public float maxSpeed = 50f;
     public float minSpeed = 10f;
@@ -22,6 +21,7 @@ public class TargetShip : MonoBehaviour
     public float flipModifier = 6f;
     public float forwardBias = 0.1f;
     public float angleThreshold = 30f;
+    public float braking = 0.99f;
 
     [Header("Turn Parameters")]
     public float maxTurn = 20000f;
@@ -117,18 +117,22 @@ public class TargetShip : MonoBehaviour
             this.speedLerp = Mathf.InverseLerp(-this.maxSpeed, -this.minSpeed, -this.curSpeed);
         }
 
-        if(Random.value < Mathf.Pow(
+        if (Random.value < Mathf.Pow(
                 this.speedLerp, 
                 this.flipModifier
             )
         ){
-            if(this.speedDir < 0){
+            if(this.speedDir < 1){
                 this.speedDir = 1;
             } else {
                 if(Random.value < this.forwardBias){
-                    this.speedDir = -1;
+                    this.speedDir = 0;
                 }
             }
+        }
+
+        if(this.speedDir < 1) {
+            this.rb.velocity = this.rb.velocity * this.braking;
         }
 
         PhysicsHelper.ApplyForceToReachVelocity(this.rb, forwardBuffer * this.speedMod, this.power * this.speedDir);

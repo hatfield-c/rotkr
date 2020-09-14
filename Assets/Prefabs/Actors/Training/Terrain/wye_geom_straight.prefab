@@ -378,11 +378,11 @@ MonoBehaviour:
   AgentPrefab: {fileID: 6859014772596621656, guid: 48ae5dec1b4555c459b49b4ff030597c,
     type: 3}
   RewardParameters:
-    Proximity: 0.5
-    EndProximity: 0
+    Proximity: 2
+    EndProximity: 0.5
     TerrainCollide: 1
-    Inaction: 0.1
-    Dizzy: 0.1
+    TooClose: 0.2
+    Inaction: 0.03
   spawnScale: 0.05
 --- !u!114 &8304936273929454710
 MonoBehaviour:

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Record: 1
+  Record: 0
   DemonstrationName: it0_speed
   DemonstrationDirectory: Assets/ML-Agents/Demonstrations
 --- !u!114 &6859014772596621656
@@ -42,18 +42,14 @@ MonoBehaviour:
   - {fileID: 400654039092611706}
   operationalDistance: 1600
   distanceSteps: 100
-  dirSteps: 10
-  maxSpeed: 60
-  speedSteps: 10
-  maxDizzy: 10
-  dizzySteps: 10
-  dizzyThreshold: 6
-  dizzyRate: 0.032
-  dizzyDecay: 0.8
-  minSpeed: 20
-  minDistance: 26
-  desiredDistance: 68
-  distancePadding: 20
+  dirSteps: 16
+  maxSpeed: 50
+  speedSteps: 15
+  isTraining: 1
+  minDistance: 34.9
+  desiredDistance: 65
+  distancePadding: 30
+  rewardDistance: 250
 --- !u!1001 &3523319572680513070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61,6 +57,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2011698029923846864, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -60
+      objectReference: {fileID: 0}
     - target: {fileID: 3942272117582753456, guid: 48ec3e33112bda643810f817b5d51390,
         type: 3}
       propertyPath: shipAgent
@@ -125,6 +126,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342902316677852375, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -120
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342902316677852375, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.61237246
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342902316677852375, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.61237246
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342902316677852375, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.35355335
+      objectReference: {fileID: 0}
+    - target: {fileID: 7342902316677852375, guid: 48ec3e33112bda643810f817b5d51390,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.35355335
       objectReference: {fileID: 0}
     - target: {fileID: 8836518297980304642, guid: 48ec3e33112bda643810f817b5d51390,
         type: 3}

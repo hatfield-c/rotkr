@@ -14,9 +14,8 @@ public class RewardParameters
     [Header("Punishments")]
     //public float PlayerCollide;
     public float TerrainCollide;
-    //public float TooClose;
+    public float TooClose;
     public float Inaction;
-    public float Dizzy;
 
     [Header("Parameters")]
 
@@ -27,9 +26,8 @@ public class RewardParameters
 
     //public static float PUNISH_PlayerCollide;
     public static float PUNISH_TerrainCollide;
-    //public static float PUNISH_TooClose;
+    public static float PUNISH_TooClose;
     public static float PUNISH_Inaction;
-    public static float PUNISH_DIZZY;
 
     public static float TIME_Length;
     public static bool INITIALIZED = false;
@@ -46,7 +44,7 @@ public class RewardParameters
 
         PUNISH_TerrainCollide = -TimeScaled(this.TerrainCollide);
         PUNISH_Inaction = -TimeScaled(this.Inaction);
-        PUNISH_DIZZY = -TimeScaled(this.Dizzy);
+        PUNISH_TooClose = -TimeScaled(this.TooClose);
 
         INITIALIZED = true;
     }

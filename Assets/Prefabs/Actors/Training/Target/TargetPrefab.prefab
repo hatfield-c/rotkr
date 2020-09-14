@@ -471,20 +471,18 @@ MonoBehaviour:
   - {fileID: 7279950457001115578}
   - {fileID: 8406782163351325453}
   agent: {fileID: 0}
-  variedSpeed: 0
-  speedMod: 0
-  maxSpeed: 40
-  minSpeed: 10
-  power: 50
+  speedMod: 50
+  maxSpeed: 5
+  minSpeed: 1
+  power: 15
   flipModifier: 6
   forwardBias: 0.005
   angleThreshold: 30
-  maxTurn: 0
-  minTurn: 0
+  braking: 0.9999
+  maxTurn: 30000
+  minTurn: 10000
   oppositeChance: 0.3
   targetDistance: 20
-  breakForce: 3000
-  ratBreakForce: 10
   waterCutoff: 0.5
 --- !u!114 &1032285563647163112
 MonoBehaviour:

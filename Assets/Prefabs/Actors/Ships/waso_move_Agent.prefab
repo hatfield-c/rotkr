@@ -921,8 +921,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399e1eefa798b4a4081d263ff5bae761, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lootManager:
+    LootSpawn: {fileID: 0}
+    ScrapFactory:
+      Prefab: {fileID: 0}
+      MaxInstances: 1
+      MinInstances: 1
+      MaxTotalValue: 10
+      MinTotalValue: 10
+    DropForce: 500
+    DropAngle: 45
   hunkManager:
     hunkGroup: {fileID: 2486281390903155866}
+    BaseBreakForce: 3000
     jointData:
       origin: {fileID: 7589817684636043897}
       breakForce: 15000
@@ -937,6 +948,9 @@ MonoBehaviour:
       mass: 1
       useGravity: 0
     hunkDespawnTime: 7
+  healthManager:
+    DeathDelay: 20
+    DeathPercent: 100
   equipmentManager:
     gunList:
     - {fileID: 636789895717199728}
@@ -946,8 +960,12 @@ MonoBehaviour:
     - {fileID: 6039774243539510451}
     - {fileID: 7264168942194054237}
     ammunitionStorage: {fileID: 4092080869983497443}
+    activationThreshold: 0.5
+  BrainList: []
+  shipAgent: {fileID: 0}
   shipMovement: {fileID: 4751354181874706507}
   buoyancyManager: {fileID: 2894900889011502428}
+  actorShipReference: {fileID: 0}
 --- !u!114 &2894900889011502428
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,6 +989,7 @@ MonoBehaviour:
     floatMin: -0.2
     deadMax: 0.1
     deadMin: -0.15
+    stabilizingForce: -18
   parameters:
     force: 9.8
     forceRatio: 1.4
@@ -978,9 +997,13 @@ MonoBehaviour:
     threshold: -3
     torqueDamping: 0.95
     maxDepth: 1.4
+    maxForce: 10000
+    maxVelocity: 20
   friction:
     maxForce: 15000
     rate: 5
+  sinkAmount: 30
+  sinkForce: 0.1
 --- !u!114 &4751354181874706507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,6 +1022,9 @@ MonoBehaviour:
   maxSpeed: 500
   drag: 0
   Rigidbody: {fileID: 8539047575037818204}
+  waterCalculator: {fileID: 0}
+  maxTurn: 2
+  brakeAmount: 0.98
 --- !u!114 &6823966127674514145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1015,9 +1041,6 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
-  shipArea: {fileID: 0}
-  moveControl: {fileID: 4751354181874706507}
-  shipManager: {fileID: 7221693582931308270}
 --- !u!114 &42361185443027561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1031,7 +1054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 12
+    VectorObservationSize: 10
     NumStackedVectorObservations: 1
     VectorActionSize: 02000000
     VectorActionDescriptions: []

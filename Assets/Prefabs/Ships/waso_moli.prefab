@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 219012908}
-  m_LocalRotation: {x: 0.022304162, y: -0.030066598, z: 0.0058590937, w: 0.9992818}
+  m_LocalRotation: {x: -0.026566833, y: -0.03031706, z: 0.004382456, w: 0.99917763}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 2
-  m_FollowOffset: {x: 0, y: 7.335542, z: -25.496677}
+  m_FollowOffset: {x: 0, y: 14.512333, z: -56.537445}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -258,7 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 2
-  m_FollowOffset: {x: 0, y: 7.335542, z: -25.496677}
+  m_FollowOffset: {x: 0, y: 14.512333, z: -56.537445}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -350,7 +350,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110767920}
-  m_LocalRotation: {x: 0.022304177, y: -0.030066593, z: 0.0058590923, w: 0.9992818}
+  m_LocalRotation: {x: -0.026566833, y: -0.03031706, z: 0.004382456, w: 0.99917763}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -424,7 +424,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1281046598}
-  m_LocalRotation: {x: 0.022304162, y: -0.030066626, z: 0.005859105, w: 0.9992818}
+  m_LocalRotation: {x: -0.026566848, y: -0.030317089, z: 0.004382464, w: 0.99917763}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -500,7 +500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1347265120}
   m_LocalRotation: {x: 0.16924441, y: 0.030632174, z: 0.000000044703484, w: 0.98509794}
-  m_LocalPosition: {x: 0, y: 7.335542, z: -25.496677}
+  m_LocalPosition: {x: 0, y: 14.512333, z: -56.537445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1281046600}
@@ -600,11 +600,11 @@ MonoBehaviour:
   m_SplineCurvature: 0.1
   m_Orbits:
   - m_Height: 25
-    m_Radius: 10
-  - m_Height: 10
-    m_Radius: 25
+    m_Radius: 25.98
+  - m_Height: 17.9
+    m_Radius: 56.22
   - m_Height: 3
-    m_Radius: 20
+    m_Radius: 42.4
   m_LegacyHeadingBias: 3.4028235e+38
   m_Rigs:
   - {fileID: 1281046599}
@@ -698,7 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 2
-  m_FollowOffset: {x: 0, y: 7.335542, z: -25.496677}
+  m_FollowOffset: {x: 0, y: 14.512333, z: -56.537445}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1825,6 +1825,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hunkManager:
     hunkGroup: {fileID: 2486281390903155866}
+    BaseBreakForce: 3000
     jointData:
       origin: {fileID: 7589817684636043897}
       breakForce: 3000
@@ -1891,7 +1892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipBody: {fileID: 8539047575037818204}
-  maxAngle: 60
+  maxAngle: 30
   threshold: 3
 --- !u!114 &2894900889011502428
 MonoBehaviour:

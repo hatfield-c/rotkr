@@ -392,7 +392,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2155067110105397324}
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 2.96, y: 1.51, z: -0.34}
+  m_LocalPosition: {x: 1.2, y: 2.98, z: -0.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
@@ -445,7 +445,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2245905820598091312}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 1.51, z: 8.860001}
+  m_LocalPosition: {x: 0, y: 1.51, z: 5.99}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
@@ -871,8 +871,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3304651569434319782}
-  m_LocalRotation: {x: -0.6532815, y: 0.6532815, z: 0.27059805, w: 0.27059805}
-  m_LocalPosition: {x: 0, y: 5.61, z: -0.53}
+  m_LocalRotation: {x: -0.6830127, y: 0.6830127, z: 0.18301274, w: 0.18301274}
+  m_LocalPosition: {x: 0, y: 4.23, z: -0.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
@@ -895,11 +895,11 @@ MonoBehaviour:
   tagList:
   - terrain
   id: 2
-  sensorCount: 5
-  zones: 20
-  distance: 80
+  sensorCount: 1
+  zones: 2
+  distance: 20
   sphereRadius: 0.5
-  maxAngle: 70
+  maxAngle: 0
 --- !u!1 &3461313304082147601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,7 +1030,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4285492180485684089}
   m_LocalRotation: {x: 0, y: 0.3826836, z: -0, w: -0.92387944}
-  m_LocalPosition: {x: -2.96, y: 1.51, z: -0.34}
+  m_LocalPosition: {x: -1.2, y: 2.98, z: -0.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
@@ -1082,8 +1082,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4300931859699024416}
-  m_LocalRotation: {x: -0.27059805, y: 0.27059805, z: 0.6532815, w: 0.6532815}
-  m_LocalPosition: {x: 0, y: 5.61, z: -0.53}
+  m_LocalRotation: {x: -0.3535534, y: 0.3535534, z: 0.61237246, w: 0.61237246}
+  m_LocalPosition: {x: 0, y: 4.23, z: -0.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
@@ -1106,11 +1106,11 @@ MonoBehaviour:
   tagList:
   - terrain
   id: 1
-  sensorCount: 5
-  zones: 20
-  distance: 80
+  sensorCount: 1
+  zones: 2
+  distance: 20
   sphereRadius: 0.5
-  maxAngle: 70
+  maxAngle: 0
 --- !u!1 &4312528073005909698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,7 +1354,8 @@ MonoBehaviour:
       inferenceDevice: 0
     CombatBehavior:
       name: poki_Agent
-      neuralNetwork: {fileID: 0}
+      neuralNetwork: {fileID: 5022602860645237092, guid: c5500acf0205fce4fa4b00f11a89c46b,
+        type: 3}
       inferenceDevice: 0
   - Difficulty: 1
     PatrolBehavior:
@@ -1464,14 +1465,10 @@ MonoBehaviour:
   - {fileID: 3848942442031963220}
   operationalDistance: 1600
   distanceSteps: 100
-  dirSteps: 10
-  maxSpeed: 60
-  speedSteps: 10
-  maxDizzy: 10
-  dizzySteps: 10
-  dizzyThreshold: 6
-  dizzyRate: 0.032
-  dizzyDecay: 0.8
+  dirSteps: 16
+  maxSpeed: 50
+  speedSteps: 15
+  isTraining: 0
 --- !u!114 &5121133252248034136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,7 +1482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 11
+    VectorObservationSize: 10
     NumStackedVectorObservations: 1
     VectorActionSize: 0200000003000000
     VectorActionDescriptions: []
@@ -1877,7 +1874,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8808028623984978457}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1.51, z: -7.0299997}
+  m_LocalPosition: {x: 0, y: 1.51, z: -6.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}

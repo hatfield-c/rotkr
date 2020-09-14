@@ -18,6 +18,7 @@ public abstract class ASensor : MonoBehaviour
     protected RaycastHit hitBuffer = new RaycastHit();
 
     protected List<float> results = new List<float>();
+    protected List<Transform> debugObjects = new List<Transform>();
 
     public abstract Vector3 GetStartPos(int rayIndex);
 
@@ -37,7 +38,8 @@ public abstract class ASensor : MonoBehaviour
 
             int hitZone = this.ReadSensor(
                 this.startBuffer,
-                this.dirBuffer
+                this.dirBuffer,
+                i
             );
 
             this.results.Add((float)hitZone / this.zones);
@@ -60,7 +62,8 @@ public abstract class ASensor : MonoBehaviour
 
             int hitZone = this.ReadSensor(
                 this.startBuffer,
-                this.dirBuffer
+                this.dirBuffer,
+                i
             );
 
             if (this.debug && hitZone < this.zones) {
@@ -83,7 +86,15 @@ public abstract class ASensor : MonoBehaviour
         return this.id;
     }
 
-    protected int ReadSensor(Vector3 origin, Vector3 direction) {
+    public float GetMinZone() {
+        return 1f / this.zones;
+    }
+
+    public float GetMaxZone() {
+        return 1f;
+    }
+
+    protected int ReadSensor(Vector3 origin, Vector3 direction, int sensorIndex) {
         bool hasHit = Physics.SphereCast(
             origin, 
             this.sphereRadius,
@@ -93,7 +104,19 @@ public abstract class ASensor : MonoBehaviour
         );
 
         if (!hasHit || !this.IsReadableTag(this.hitBuffer.collider.tag)) {
+            if (this.debug) {
+                this.debugObjects[sensorIndex].transform.position = origin;
+                this.debugObjects[sensorIndex].transform.localScale = new Vector3(0.1f, 0.1f, this.distance);
+                this.debugObjects[sensorIndex].transform.Translate(Vector3.forward * (this.distance / 2));
+            }
+
             return this.zones;
+        }
+
+        if (this.debug) {
+            this.debugObjects[sensorIndex].transform.position = origin;
+            this.debugObjects[sensorIndex].transform.localScale = new Vector3(0.1f, 0.1f, this.hitBuffer.distance); 
+            this.debugObjects[sensorIndex].transform.Translate(Vector3.forward * (this.hitBuffer.distance / 2));
         }
 
         float zone = ( this.hitBuffer.distance / (this.distance / this.zones) );
@@ -127,6 +150,8 @@ public abstract class ASensor : MonoBehaviour
                 rayObject.transform.Translate(Vector3.forward * (this.distance / 2));
                 rayObject.transform.parent = this.transform;
                 rayObject.name = $"DebugRay{i}";
+
+                this.debugObjects.Add(rayObject.transform);
             }
         }
     }

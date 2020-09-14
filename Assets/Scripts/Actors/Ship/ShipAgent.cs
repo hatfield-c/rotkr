@@ -23,13 +23,8 @@ public class ShipAgent : Agent
     [SerializeField] float maxSpeed = 0;
     [SerializeField] int speedSteps = 1;
 
-    [Header("Dizziness")]
-    [SerializeField] float maxDizzy = 0;
-    [SerializeField] int dizzySteps = 1;
-    [SerializeField] protected float dizzyThreshold;
-    [SerializeField] float dizzyRate = 0;
-    [SerializeField] float dizzyDecay = 0;
-
+    [Header("Training")]
+    [SerializeField] bool isTraining = false;
 
     protected Brain brain;
     protected GameObject playerObject;
@@ -96,13 +91,6 @@ public class ShipAgent : Agent
 
         this.shipManager.TakeAction(actions);
 
-        if(action1 > 0) {
-            this.dizzyness += this.dizzyRate;
-            this.dizzyness = Mathf.Clamp(this.dizzyness, 0, this.maxDizzy);
-        } else {
-            this.dizzyness -= this.dizzyRate * this.dizzyDecay;
-            this.dizzyness = Mathf.Clamp(this.dizzyness, 0, this.maxDizzy);
-        }
     }
 
     public override void OnEpisodeBegin(){
@@ -111,17 +99,9 @@ public class ShipAgent : Agent
 
     //***
     //***   observations:
-    //***       1 : agent.forward *DOT* direction to player
-    //***       1 : agent.right *DOT* direction to player
-    //***       1 : player.velocity *DOT* direction to agent
-    //***       1 : agent velocity *DOT* direction to player
-    //**        3 : agent velocity (normalized)
-    //***       1 : distance from agent to player (normalized)
-    //***       1 : speed of the agent (normalized)
-    //***       1 : speed of the player (normalized)
-    //**        1 : turn speed of agent (normalized)
-    //***       8 : sample points of the water level surrounding the ship
-    //***      19
+    //***       1 : 
+    //***       
+    //***      11
     public override void CollectObservations(VectorSensor sensor){
         if(this.playerObject == null) {
             return;
@@ -129,95 +109,29 @@ public class ShipAgent : Agent
 
         this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
 
-        /*/ transform.forward * direction to player
-        float dotResult = Vector3.Dot(this.transform.forward, this.vectorBuffer.normalized);
-        sensor.AddObservation(dotResult);
+        // angle between ship forward and target
+        float angle = this.PerceiveAngle(
+            Vector3.forward,
+            this.vectorBuffer.normalized,
+            Vector3.up
+        );
+        sensor.AddObservation(angle);
 
-        // transform.right * direction to player
-        dotResult = Vector3.Dot(this.transform.right, this.vectorBuffer.normalized);
-        sensor.AddObservation(dotResult);
-
-        // player.velocity * direction to agent (from player)
-        dotResult = Vector3.Dot(
+        // angle between ship's forward and ship's velocity
+        angle = this.PerceiveAngle(
+            Vector3.forward,
+            this.transform.InverseTransformVector(this.shipBody.velocity).normalized, 
+            Vector3.up
+        );
+        sensor.AddObservation(angle);
+        
+        /*/ angle between target's velocity and this ship
+        angle = this.PerceiveAngle(
             this.playerObject.transform.InverseTransformVector(this.playerBody.velocity).normalized, 
-            this.playerObject.transform.InverseTransformPoint(this.transform.position).normalized
-        );
-        sensor.AddObservation(dotResult);
-
-        // velocity * direction to player
-        dotResult = Vector3.Dot(
-            this.transform.InverseTransformVector(this.shipBody.velocity.normalized), 
-            this.vectorBuffer.normalized
-        );
-        sensor.AddObservation(dotResult);
-
-        // velocity components (x, y, z)
-        sensor.AddObservation(
-            this.transform.InverseTransformVector(this.shipBody.velocity).normalized
-        );
-
-        // distance to player
-        sensor.AddObservation(this.vectorBuffer.magnitude / this.OperationalDistance);
-
-        // speed of agent
-        sensor.AddObservation(this.shipBody.velocity.magnitude / this.MaxSpeed);
-
-        // speed of player
-        sensor.AddObservation(this.playerBody.velocity.magnitude / this.MaxSpeed);
-
-        // turn rate of agent
-        sensor.AddObservation(this.shipBody.angularVelocity.y / this.MaxAngularSpeed);*/
-
-        // 4
-        // direction to player
-        //sensor.AddObservation(this.vectorBuffer.normalized);
-
-        /*// velocity components (x, y, z)
-        sensor.AddObservation(
-            this.transform.InverseTransformVector(this.shipBody.velocity).normalized
-        );*/
-
-        // transform.forward * direction to player
-        //float angle = Vector3.SignedAngle(Vector3.forward.normalized, this.vectorBuffer.normalized, Vector3.up);
-        //sensor.AddObservation(angle / 180);
-
-        /*/ angle between agent y and player y
-        angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.forward);
-        sensor.AddObservation(angle / 180);*/
-
-        /*/ velocity * direction to player
-        float angle = Vector3.Dot(
-            this.transform.InverseTransformVector(this.shipBody.velocity.normalized),
-            this.vectorBuffer.normalized
+            this.playerObject.transform.InverseTransformPoint(this.transform.position).normalized, 
+            Vector3.up
         );
         sensor.AddObservation(angle);*/
-
-        /*// angle between player forward and target
-        float angle = Vector3.SignedAngle(Vector3.forward, this.vectorBuffer.normalized, Vector3.up);
-        float angleSign = Mathf.Sign(angle);
-        angle = (180f - Mathf.Abs(angle)) / (180f / this.AngleSteps);
-        angle = Mathf.Floor(angle) / this.AngleSteps;
-        angle = angle * angleSign;
-        sensor.AddObservation(angle);*/
-
-        //this.vectorBuffer = this.transform.InverseTransformPoint(this.playerObject.transform.position);
-        //this.vectorBuffer.Normalize();
-        //this.vectorBuffer = this.transform.InverseTransformDirection(this.playerObject.transform.position);
-
-        // X and Z direction to player
-        float dirVal = this.DiscretizeOrigin(
-            this.vectorBuffer.normalized.x,
-            1f,
-            dirSteps
-        );
-        sensor.AddObservation(dirVal);
-
-        dirVal = this.DiscretizeOrigin(
-            this.vectorBuffer.normalized.z,
-            1f,
-            dirSteps
-        );
-        sensor.AddObservation(dirVal);
 
         // Speed of ship 
         float speed = this.DiscretizeOrigin(
@@ -227,19 +141,14 @@ public class ShipAgent : Agent
         );
         sensor.AddObservation(speed);
 
-        // dizzyness of the ship
-        float dizzy = this.DiscretizeOrigin(
-            this.dizzyness,
-            this.maxDizzy,
-            this.dizzySteps
-        );
-        sensor.AddObservation(dizzy);
-
         // distance to player 
         float distanceZone = this.DiscreteDistance(
             Vector3.Distance(this.transform.position, this.playerObject.transform.position)
         ); 
         sensor.AddObservation(distanceZone);
+
+        // 1-normalization term (what I call "zero-grounding" term)
+        //sensor.AddObservation(1f);
 
         // 6
         foreach(ASensor raySensor in this.sensors) {
@@ -250,6 +159,10 @@ public class ShipAgent : Agent
     }
 
     public void ResetAgent() {
+        if (!this.isTraining) {
+            return;
+        }
+
         this.shipBody.velocity = Vector3.zero;
         this.shipBody.angularVelocity = Vector3.zero;
         this.transform.eulerAngles = new Vector3(
@@ -261,23 +174,29 @@ public class ShipAgent : Agent
         this.shipManager.DisableSubsystems();
         this.shipManager.EnableSubsystems();
     }
+    
+    protected float PerceiveAngle(Vector3 start, Vector3 end, Vector3 axis) {
+        float angle = Vector3.SignedAngle(start, end, axis);
+        float angleSign = Mathf.Sign(angle);
 
-    public override void Heuristic(float[] actionsOut){
+        angle = (Mathf.Abs(angle) / 180f) * this.dirSteps;
+        angle = angleSign > 0 ? Mathf.Ceil(angle) : Mathf.Floor(angle);
+        angle = angle / this.dirSteps;
+        angle = angle * angleSign;
 
+        return angle;
     }
-
-    public static void EmptyReset() {}
 
     protected float DiscretizeOrigin(float value, float maxValue, int steps) {
         float result = value / (maxValue / steps);
-        result = Mathf.Ceil(result) / maxValue;
+        result = Mathf.Ceil(result) / steps;
 
         return result;
     }
 
     protected float DiscreteDistance(float distance) {
-        float distanceZone = (this.operationalDistance - distance) / (this.operationalDistance / this.distanceSteps);
-        distanceZone = (Mathf.Floor(distanceZone) + 1) / this.distanceSteps;
+        float distanceZone = distance / (this.operationalDistance / this.distanceSteps);
+        distanceZone = Mathf.Ceil(distanceZone) / this.distanceSteps;
 
         return distanceZone;
     }
@@ -304,4 +223,23 @@ public class ShipAgent : Agent
             }
         }
     }
+
+    public override void Heuristic(float[] actionsOut) {
+        actionsOut[0] = 0f;
+        actionsOut[1] = 0f;
+
+        if (Input.GetKey(KeyCode.W)) {
+            actionsOut[0] = 1f;
+        } else if (Input.GetKey(KeyCode.LeftControl)) {
+            actionsOut[0] = 0f;
+        }
+
+        if (Input.GetKey(KeyCode.A)) {
+            actionsOut[1] = 2f;
+        } else if (Input.GetKey(KeyCode.D)) {
+            actionsOut[1] = 1f;
+        }
+    }
+
+    public static void EmptyReset() { }
 }
