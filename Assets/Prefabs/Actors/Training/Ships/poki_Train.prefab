@@ -67,11 +67,6 @@ PrefabInstance:
       propertyPath: shipAgent
       value: 
       objectReference: {fileID: 6859014772596621656}
-    - target: {fileID: 3942272117582753456, guid: 48ec3e33112bda643810f817b5d51390,
-        type: 3}
-      propertyPath: BrainList.Array.data[0].CombatBehavior.neuralNetwork
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4312528073176205863, guid: 48ec3e33112bda643810f817b5d51390,
         type: 3}
       propertyPath: m_Name

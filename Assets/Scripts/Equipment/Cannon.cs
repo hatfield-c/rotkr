@@ -43,7 +43,7 @@ public class Cannon : MonoBehaviour, IEquipment
         this.reloadTimer.update();
     }
 
-    public void fire(){
+    public virtual void fire(){
         this.projectile.activate();
 
         this.projectile.getRigidbody().velocity = Vector3.zero;
@@ -68,7 +68,7 @@ public class Cannon : MonoBehaviour, IEquipment
         this.loaded = false;
     }
 
-    public void reload(){
+    public virtual void reload(){
         this.loaded = true;
     }
 

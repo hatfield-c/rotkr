@@ -5,12 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class ActorEquipment
 {
-    public Cannon[] gunList;
+    public ActorCannon[] gunList;
     public Transform ammunitionStorage;
     public float activationThreshold = 0.5f;
 
-    public void Init(){
+    public void Init(GameObject playerObject){
         this.ammunitionStorage.parent = null;
+
+        foreach(ActorCannon gun in this.gunList) {
+            gun.Init(playerObject);
+        }
     }
 
     public void Activate(float shoot){
@@ -22,13 +26,13 @@ public class ActorEquipment
             return;
         }
 
-        foreach(Cannon gun in this.gunList){
+        foreach(ActorCannon gun in this.gunList){
             gun.lightFuse();
         }
     }
 
     public bool CanShoot() {
-        foreach(Cannon gun in this.gunList) {
+        foreach(ActorCannon gun in this.gunList) {
             if (!gun.IsLoaded()) {
                 return false;
             }
@@ -38,13 +42,13 @@ public class ActorEquipment
     }
 
     public void Enable() {
-        foreach(Cannon gun in this.gunList) {
+        foreach(ActorCannon gun in this.gunList) {
             gun.Enable();
         }
     }
 
     public void Disable() {
-        foreach (Cannon gun in this.gunList) {
+        foreach (ActorCannon gun in this.gunList) {
             gun.Disable();
         }
     }
