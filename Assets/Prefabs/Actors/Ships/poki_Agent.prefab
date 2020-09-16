@@ -871,13 +871,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3304651569434319782}
-  m_LocalRotation: {x: -0.6830127, y: 0.6830127, z: 0.18301274, w: 0.18301274}
+  m_LocalRotation: {x: -0.50865006, y: 0.50865006, z: 0.49119768, w: 0.49119768}
   m_LocalPosition: {x: 0, y: 4.23, z: -0.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -135, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: -92, y: 0, z: 90}
 --- !u!114 &7184154810370196871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,8 +896,8 @@ MonoBehaviour:
   - terrain
   id: 2
   sensorCount: 1
-  zones: 2
-  distance: 20
+  zones: 20
+  distance: 80
   sphereRadius: 0.5
   maxAngle: 0
 --- !u!1 &3461313304082147601
@@ -1082,13 +1082,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4300931859699024416}
-  m_LocalRotation: {x: -0.3535534, y: 0.3535534, z: 0.61237246, w: 0.61237246}
+  m_LocalRotation: {x: -0.49119762, y: 0.49119762, z: 0.50865006, w: 0.50865006}
   m_LocalPosition: {x: 0, y: 4.23, z: -0.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7286146085228289252}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: -88, y: 0, z: 90}
 --- !u!114 &309549123309069244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,8 +1107,8 @@ MonoBehaviour:
   - terrain
   id: 1
   sensorCount: 1
-  zones: 2
-  distance: 20
+  zones: 20
+  distance: 80
   sphereRadius: 0.5
   maxAngle: 0
 --- !u!1 &4312528073005909698
@@ -1320,10 +1320,10 @@ MonoBehaviour:
     DropAngle: 75
   hunkManager:
     hunkGroup: {fileID: 8073920965602876612}
-    BaseBreakForce: 3000
+    BaseBreakForce: 5000
     jointData:
       origin: {fileID: 4312528073176205863}
-      breakForce: 3000
+      breakForce: 5000
       breakTorque: Infinity
       jointCollision: 0
       enablePreprocessing: 0
@@ -1354,7 +1354,7 @@ MonoBehaviour:
       inferenceDevice: 0
     CombatBehavior:
       name: poki_Agent
-      neuralNetwork: {fileID: 5022602860645237092, guid: c5500acf0205fce4fa4b00f11a89c46b,
+      neuralNetwork: {fileID: 5022602860645237092, guid: 0210170e61573a6488c74f35b28edcbd,
         type: 3}
       inferenceDevice: 0
   - Difficulty: 1
@@ -1431,8 +1431,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motor: {fileID: 5250350631413146441}
   steerPower: 30000
-  power: 50
-  maxSpeed: 250
+  power: 30
+  maxSpeed: 175
   drag: 0
   Rigidbody: {fileID: 2597896458723063042}
   waterCalculator: {fileID: 0}

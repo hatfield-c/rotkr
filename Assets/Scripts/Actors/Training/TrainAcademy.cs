@@ -53,8 +53,8 @@ public class TrainAcademy : MonoBehaviour
     }
   
     void Start(){
-        this.RewardText.transform.parent = null;
-        this.RewardTextPrevious.transform.parent = null;
+        this.RewardText.transform.SetParent(null);
+        this.RewardTextPrevious.transform.SetParent(null);
         this.RewardParameters.Init(this.Sinker.GetSinkTime());
 
         this.Agent = Instantiate(this.AgentPrefab);

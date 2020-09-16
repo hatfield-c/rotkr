@@ -43,7 +43,7 @@ public abstract class AShipMovement: MonoBehaviour, IShipMovement
     /// <summary>
     /// Vertical displacement above the water at which the ship can't accelerate
     /// </summary>
-    protected float cutoffThreshold = 0.5f;
+    [SerializeField] protected float cutoffThreshold = 0.5f;
 
     /// <summary>
     /// Starting Rotation of the Motor

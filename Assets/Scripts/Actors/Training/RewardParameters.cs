@@ -8,25 +8,22 @@ public class RewardParameters
     [Header("Rewards")]
     public float Proximity;
     public float EndProximity;
-    //public float Velocity;
-    //public float Movement;
+    //public float Alignment;
 
     [Header("Punishments")]
-    //public float PlayerCollide;
     public float TerrainCollide;
     public float TooClose;
+    public float EndTooClose;
     public float Inaction;
 
     [Header("Parameters")]
 
     public static float REWARD_Proximity;
     public static float REWARD_EndProximity;
-    //public static float REWARD_Velocity;
-    //public static float REWARD_Movement;
 
-    //public static float PUNISH_PlayerCollide;
     public static float PUNISH_TerrainCollide;
     public static float PUNISH_TooClose;
+    public static float PUNISH_EndTooClose;
     public static float PUNISH_Inaction;
 
     public static float TIME_Length;
@@ -35,7 +32,7 @@ public class RewardParameters
     public void Init(float timeLength){
         if(INITIALIZED){
             return;
-        }
+        } 
 
         TIME_Length = timeLength;
 
@@ -45,6 +42,7 @@ public class RewardParameters
         PUNISH_TerrainCollide = -TimeScaled(this.TerrainCollide);
         PUNISH_Inaction = -TimeScaled(this.Inaction);
         PUNISH_TooClose = -TimeScaled(this.TooClose);
+        PUNISH_EndTooClose = -this.EndTooClose;
 
         INITIALIZED = true;
     }

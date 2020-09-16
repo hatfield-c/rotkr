@@ -34,7 +34,7 @@ public class ShipAgent : Agent
     protected float dizzyness;
     protected Vector3 vectorBuffer = new Vector3();
 
-    public void Init(
+    public virtual void Init(
         Brain brain, 
         GameObject playerObject
         ){
@@ -160,7 +160,7 @@ public class ShipAgent : Agent
 
     public void ResetAgent() {
         if (!this.isTraining) {
-            return;
+            return; 
         }
 
         this.shipBody.velocity = Vector3.zero;
@@ -185,6 +185,17 @@ public class ShipAgent : Agent
         angle = angle * angleSign;
 
         return angle;
+    }
+
+    protected float DiscretizeAngle(float angle) {
+        float angleSign = Mathf.Sign(angle);
+        float discreteAngle = (Mathf.Abs(angle) / 180f) * this.dirSteps;
+        
+        discreteAngle = angleSign > 0 ? Mathf.Ceil(discreteAngle) : Mathf.Floor(discreteAngle);
+        discreteAngle = discreteAngle / this.dirSteps;
+        discreteAngle = discreteAngle * angleSign;
+
+        return discreteAngle;
     }
 
     protected float DiscretizeOrigin(float value, float maxValue, int steps) {

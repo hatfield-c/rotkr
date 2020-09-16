@@ -32,6 +32,11 @@ public class TargetShip : MonoBehaviour
     public float targetDistance = 3f;
     public float waterCutoff = 0.5f;
 
+    [Header("Zone Parameters")]
+    public GameObject minZone;
+    public GameObject desiredZone;
+    public GameObject rewardZone;
+
     protected int speedDir = 1;
     protected float curSpeed;
     protected float speedLerp;
@@ -178,6 +183,20 @@ public class TargetShip : MonoBehaviour
         int point = Random.Range(0, this.spawnPoints.childCount);
 
         return this.spawnPoints.GetChild(point);
+    }
+
+    public void UpdateZones(float minDistance, float desiredDistance, float rewardDistance) {
+        if(this.minZone != null) {
+            this.minZone.transform.localScale = Vector3.one * minDistance;
+        }
+
+        if (this.desiredZone != null) {
+            this.desiredZone.transform.localScale = Vector3.one * desiredDistance;
+        }
+
+        if (this.rewardZone != null) {
+            this.rewardZone.transform.localScale = Vector3.one * rewardDistance;
+        }
     }
 
     protected void UpdateDestination(){
