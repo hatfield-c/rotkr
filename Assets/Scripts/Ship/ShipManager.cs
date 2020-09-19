@@ -54,6 +54,8 @@ public class ShipManager : MonoBehaviour {
         ratGroupManager.Init(data, shipReferences, waterPlane, ratHealthGroup, allDeadCallback);
 
         UpdateScrapDisplay();
+
+        this.controls.Player.Quit.performed += context => AGameState.EndGame();
     }
     public ShipData GetData()
     {

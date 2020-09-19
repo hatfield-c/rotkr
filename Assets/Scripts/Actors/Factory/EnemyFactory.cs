@@ -96,6 +96,10 @@ public class EnemyFactory : MonoBehaviour
     }
 
     protected Transform GetSpawnLayer(){
+        if(this.LayersContainer == null) {
+            return this.transform;
+        }
+
         if(this.LayersContainer.childCount < 1){
             return this.LayersContainer;
         }
@@ -221,7 +225,7 @@ public class EnemyFactory : MonoBehaviour
     protected int GetMaxInstances(ActorShip ship){
         //todo: Determine max instances of each kind of ship
 
-        return 2;
+        return 10;
     }
 
     protected bool ShouldSpawn(){

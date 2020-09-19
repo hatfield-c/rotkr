@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fa6039cc3f280b044a880608bab849d5, type: 2}
+  - {fileID: 2100000, guid: 07d93f19fa2f7ad4c9e7ffe0ea4adff9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,6 +98,7 @@ MonoBehaviour:
   projectileAngle: 2.736
   projectileAcceleration: 100
   reloadTime: 1.5
+  BaseReloadTime: 1.5
   maxDelay: 0.35
   minDelay: 0
 --- !u!1 &8401884936810555428

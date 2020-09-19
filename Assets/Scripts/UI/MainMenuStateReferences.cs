@@ -8,4 +8,5 @@ public class MainMenuStateReferences : MonoBehaviour
 {
     public Button BTN_NewGame;
     public Button BTN_Quit;
+    public AudioSource AUDIO_MenuMusic;
 }

@@ -23,6 +23,7 @@ public class MainMenuState : AGameState
 
     #region references
     MainMenuStateReferences refs;
+    
     #endregion
 
     #region handlers
@@ -36,12 +37,16 @@ public class MainMenuState : AGameState
             chosenGameEntryPoint = GameEntryPoint.NewGame;
             UnsubscribeAll();
             ExecuteComplete?.Invoke();
+            refs.AUDIO_MenuMusic.Stop();
         });
         refs.BTN_Quit.onClick.AddListener(() =>
         {
             UnsubscribeAll();
             CancelComplete?.Invoke();
+            AGameState.EndGame();
         });
+
+        refs.AUDIO_MenuMusic.Play();
     }
     #endregion
 

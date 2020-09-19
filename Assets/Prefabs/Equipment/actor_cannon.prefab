@@ -36,6 +36,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: actor_cannon
       objectReference: {fileID: 0}
+    - target: {fileID: 642831796900464922, guid: abdb19834ec18e34eb7ed4caf4a05122,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 07d93f19fa2f7ad4c9e7ffe0ea4adff9, type: 2}
     - target: {fileID: 642831796900464924, guid: abdb19834ec18e34eb7ed4caf4a05122,
         type: 3}
       propertyPath: m_LocalPosition.x

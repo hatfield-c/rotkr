@@ -88,11 +88,11 @@ public class WyeState : AGameState
         {
             gate.PlayerEnteredTheEnd += () =>
             {
-                success = true;
-                UnsubscribeAll();
-                ChangeSubState(WyeSubState.Repairing);
+                CompleteLevel();
             };
         }
+
+        this.controls.Player.NextLevel.performed += context => CompleteLevel();
 
         // Subscribe to when the Wye is completely sunk (underwater)
         refs.WyeSinker.WyeCompletelySunk += () =>
@@ -113,6 +113,12 @@ public class WyeState : AGameState
     }
     #endregion
 
+    void CompleteLevel() {
+        success = true;
+        UnsubscribeAll();
+        ChangeSubState(WyeSubState.Repairing);
+    }
+
     #region private functions
     void UnsubscribeAll()
     {
@@ -120,6 +126,7 @@ public class WyeState : AGameState
             gate.PlayerEnteredTheEnd = null;
         refs.WyeSinker.WyeCompletelySunk = null;
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        this.controls.Player.NextLevel.performed -= context => CompleteLevel();
     }
 
     void ChangeSubState(WyeSubState state)
