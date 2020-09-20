@@ -35,6 +35,8 @@ public class EnemyFactory : MonoBehaviour
     protected int CurrentCost = 0;
     protected int CurrentChallengeRating = 0;
 
+    protected Sequence delaySequence;
+
     public void Init(
         EnemyFactory.GameDifficulty Difficulty, 
         GameObject WaterPlane,
@@ -51,10 +53,10 @@ public class EnemyFactory : MonoBehaviour
         this.FillEnemyWarehouse();
         this.FillLootWarehouse();
 
-        Sequence sequence = DOTween.Sequence();
-        sequence.Pause();
-        sequence.InsertCallback(this.InitialSpawnDelay, () => { this.CheckInventory(); });
-        sequence.Play();
+        this.delaySequence = DOTween.Sequence();
+        this.delaySequence.Pause();
+        this.delaySequence.InsertCallback(this.InitialSpawnDelay, () => { this.CheckInventory(); });
+        this.delaySequence.Play();
     }
 
     public void CheckInventory(){
@@ -262,5 +264,9 @@ public class EnemyFactory : MonoBehaviour
                 10
             );
         }
+    }
+
+    void OnDestroy() {
+        this.delaySequence.Kill();
     }
 }
